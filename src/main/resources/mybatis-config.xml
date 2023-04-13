@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+		<setting name="jdbcTypeForNull" value="NULL" />
+		<setting name="cacheEnabled" value="false" />
+	</settings>
+	<!-- vo의 별칭 만들기  -->
+	<typeAliases>
+		<typeAlias type="com.ict.login.model.vo.Kakao_LoginVO" alias="klvo"/>
+		
+		<typeAlias type="com.ict.member.model.vo.MemberVO" alias="mvo"/>
+		<typeAlias type="com.ict.member.model.vo.PointVO" alias="pvo"/>
+		<typeAlias type="com.ict.member.model.vo.InterestVO" alias="ivo"/>
+		<typeAlias type="com.ict.member.model.vo.InquiryVO" alias="iqvo"/>
+		
+		<typeAlias type="com.ict.alarm.model.vo.AlarmVO" alias="almvo"/>
+		
+		<typeAlias type="com.ict.project.model.vo.ProjectVO" alias="prjvo"/>
+		<typeAlias type="com.ict.project.model.vo.Prj_RegiVO" alias="regivo"/>
+		<typeAlias type="com.ict.project.model.vo.RegularVO" alias="rvo"/>
+		<typeAlias type="com.ict.project.model.vo.DonatorVO" alias="dvo"/>
+		
+		<typeAlias type="com.ict.special.model.vo.Special_DonateVO" alias="sdvo"/>
+		
+		<typeAlias type="com.ict.aids.model.vo.Req_AidsVO" alias="aidvo"/>
+		
+		<typeAlias type="com.ict.review.model.vo.ReviewVO" alias="revo"/>
+		
+		<typeAlias type="com.ict.goods.model.vo.GoodsVO" alias="gvo"/>
+		<typeAlias type="com.ict.goods.model.vo.Goods_SaleVO" alias="salevo"/>
+		
+		<typeAlias type="com.ict.basket.model.vo.Project_BasketVO" alias="pbvo"/>
+		<typeAlias type="com.ict.basket.model.vo.Goods_BasketVO" alias="gbvo"/>
+		
+		<typeAlias type="com.ict.story.model.vo.StoryVO" alias="strvo"/>
+		
+		<typeAlias type="com.ict.manager.model.vo.ManagerVO" alias="mngvo"/>	
+		<typeAlias type="com.ict.manager.model.vo.MngrSearchVO" alias="msvo"/>
+	</typeAliases>
+	
+	<mappers>
+		<mapper resource="mappers/login_mapper.xml"/>
+		<mapper resource="mappers/member_mapper.xml"/>
+		<mapper resource="mappers/basket_mapper.xml"/>
+		<mapper resource="mappers/goods_mapper.xml"/>
+		<mapper resource="mappers/project_mapper.xml"/>
+		<mapper resource="mappers/story_mapper.xml"/>
+		<mapper resource="mappers/search_mapper.xml"/>
+		<mapper resource="mappers/manager_mapper.xml"/>		
+	</mappers>
+	
+</configuration>

@@ -1,0 +1,50 @@
+@charset "UTF-8";
+ 
+.nanumi_table {
+	display: flex;
+	justify-content: center;
+	align-content: center;
+	text-align: center;
+	padding: 20px 40px 40px 40px;
+}
+
+h1 {
+	text-align: center;
+	margin-top: 50px;
+	font-size: 30px;
+	padding: 40px;
+}
+
+
+.contents {
+	display: flex;
+	justify-content:center;
+    border: 2px solid gray;
+    padding: 60px;
+    margin-bottom: 100px;
+    
+}
+.ans {
+	display: flex;
+	justify-content:center;
+    border: 2px solid gray;
+    padding: 60px;
+    margin-bottom: 100px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

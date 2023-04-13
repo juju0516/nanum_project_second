@@ -1,0 +1,213 @@
+@charset "UTF-8";
+
+/* table - detail page 추가 사항 */
+.tb-detail-wrap {
+	margin-bottom: 80px;
+}
+
+.tb-detail {
+	border: none;	
+	width: 60%;
+}
+
+.tb-detail tbody {
+	border: none;	
+	padding-top: 15px;
+}
+
+.tb-detail th {
+	background-color: rgb(224, 224, 224);
+	/* height: 45px; */
+	text-align: left;
+	text-indent: 10px;
+	font-size: 15px;
+	line-height: 43px;
+}
+
+.tb-detail td {
+	/* height: 45px; */
+	text-align: left;
+	text-indent: 25px;
+	font-size: 15px;
+}
+
+/* 상세화면 상단 admin 출력 */
+.admin-loc {
+	display: flex;
+	justify-content: flex-end;
+	width: 70%;
+	margin: 30px 0px 15px 0px;	
+}
+.admin-text {
+	padding-right: 17px;
+	font-size: 14px;
+	font-family: 'NanumSquareNeo';
+	font-family: 'NanumBarunGothic';
+}
+
+/* 상세화면 table header 좌측 출력 */
+.text-category {
+	padding-left: 10px;
+	font-family: 'NanumSquareNeoLight';
+}
+
+/* 상세화면 table header 우측 view 출력 */
+.title-view-wrap {
+	display: flex;
+	flex-direction: row;
+}
+
+.text-view {
+	line-height: 35px;
+	margin-left: auto;
+	margin-right: 20px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	font-family: 'NanumBarunGothic';
+	font-size: 14.5px;
+	border-radius: 10px;
+	background-color: rgb(249, 249, 249);
+	background-color: rgb(244, 244, 244);
+	/* background-color: rgb(234, 234, 234); */
+	padding: 0px 15px 0px 5px;
+	font-weight: lighter;
+}
+
+
+/* input */
+.input-title {
+	width: 90%;
+	height: 33px;
+	margin: 0px 12px;
+	text-indent: 10px;
+	
+	color: rgb(64, 64, 64);
+	font-size: 15px;
+	font-family: 'NanumSquareNeo';
+	
+	border: thin;
+	border-radius: 5px;
+}
+.input-date {
+	width: 215px;
+	height: 30px;
+	text-indent: 2px;
+	
+	color: rgb(64, 64, 64);
+	font-size: 14px;
+	font-family: 'NanumSquareNeo';
+	
+	border: 1px solid #aaa;
+	border-radius: 0.5em;
+	box-shadow: 0 1px 0 1px rgba(0, 0, 0, 0.04); 	
+}
+.input-text {
+	width: 130px;
+	height: 29px;
+	margin: 0px 10px 0px 10px;
+	text-indent: 2px;
+	text-align: right;
+	
+	color: rgb(64, 64, 64);
+	font-size: 14px;
+	font-family: 'NanumSquareNeo';
+	
+	border: 1px solid #aaa;
+	border-radius: 0.5em;
+	box-shadow: 0 1px 0 1px rgba(0, 0, 0, 0.04); 	
+}
+.input-file {
+	margin-left: 40px; 
+	vertical-align:13px;
+}
+
+.tr-color {
+	/* border: 1px solid rgb(224, 224, 224);  */
+	border-radius: 8px;
+	background-color: #EAEAEA80;
+	background-color: rgb(249, 249, 249);
+	height: 20px;
+}
+
+.img-attached {
+	padding-left: 30px;
+	padding-right: 20px;
+	height: 200px;
+}
+
+.tb-detail th select:focus {
+	border-color: #aaa;
+	box-shadow: 0 0 1px 2px rgba(224, 224, 224, .7);
+	color: #222;
+	outline: none;
+}
+
+
+/* textarea */
+.ta {	
+	width: 92%;
+	padding: 15px 0px 0px 15px;
+	font-family: 'NanumSquareNeo';
+	font-size: 14px;
+	line-height: 2.1;
+	
+	border: 1px solid #aaa;
+	border-radius: 0.5em;
+	box-shadow: 0 1px 0 1px rgba(0, 0, 0, 0.04); 	
+}
+.ta:hover {
+	border-color: #888;
+}
+.ta:focus {
+	border-color: #aaa;
+	color: #222;
+	outline: none;
+}
+
+/* textarea 위 아래 간격 */
+.tag-padding {
+	padding-top: 20px; 
+	padding-bottom: 20px;
+}
+.result-padding {
+	padding-top: 20px;
+}
+
+
+/* modal */
+.md-title {
+	text-align: center;
+	margin: auto;
+	font-size: 19px;
+	font-family: 'NanumSquareNeoExtraBold'; 
+	margin-bottom: 40px;
+}
+
+.md-wrap {
+	width: 100%;
+	height: 100%;
+	padding: 30px 0 35px 0;
+}
+
+.md-row-wrap {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	margin: 7px 0px 7px 0px; 
+}
+.md-label {
+	width: 100px;
+	line-height: 29px;
+	margin: 0px 30px 0px 0px;
+	
+	font-family: 'NanumSquareNeoBold';
+	font-size: 15px;
+	color: #444;	
+}
+.md-input-loc {
+	width: 210px;
+	height: 29px;
+	margin: 0px;
+	text-align: left;
+	text-indent: 10px; 
+}

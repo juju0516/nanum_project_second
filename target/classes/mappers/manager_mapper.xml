@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="manager">
+	<!-- ManagerController -->
+	<select id="mngr_count" resultType="int">
+		select count(*) from manager 
+	</select>
+	
+	<select id="mngr_list" parameterType="Map" resultType="mngvo">
+		select * from (
+        	select rownum r_num, a.* 
+            from (select * from manager order by manager_idx desc) a 
+        ) where r_num BETWEEN #{begin} and #{end}        
+	</select>
+	
+	<select id="mngr_one" parameterType="String" resultType="mngvo">
+		select * from manager where manager_id=#{manager_id} 
+	</select>
+	
+	<insert id="mngr_ins" parameterType="mngvo">
+		insert into manager (manager_idx, manager_id, manager_pw, manager_name, manager_phone, manager_state, begin_date) 
+		values (manager_seq.nextval, #{manager_id}, #{manager_pw}, #{manager_name}, #{manager_phone}, #{manager_state}, sysdate) 
+	</insert>
+	
+	<update id="mngr_update" parameterType="mngvo">
+		update manager set manager_id=#{manager_id}, manager_name=#{manager_name}, manager_phone=#{manager_phone} 
+		where manager_idx=#{manager_idx} 
+	</update>
+	
+	<update id="mngr_state" parameterType="Map">
+		update manager set manager_state=#{manager_state}, end_date=sysdate  
+		where manager_idx=#{manager_idx} 
+	</update>
+
+	
+	<!-- GoodsController -->
+	<!-- Goods -->
+	<select id="goods_count" resultType="int">
+		select count(*) from goods  
+	</select>
+	
+	<select id="goods_list" parameterType="Map" resultType="gvo">
+		select * from (
+        	select rownum r_num, a.* 
+            from (select * from goods order by goods_idx desc) a 
+        ) where r_num BETWEEN #{begin} and #{end}        
+	</select>
+	
+	<select id="goods_one" parameterType="String" resultType="gvo">
+		select * from goods where goods_idx=#{goods_idx} 
+	</select>
+	
+	<select id="goods_code" parameterType="String" resultType="gvo">
+		select * from goods where goods_code=#{goods_code} 
+	</select>
+	
+	<insert id="goods_ins" parameterType="gvo">
+		insert into goods (goods_idx, goods_code, goods_name, price, init_amount, cur_amount, 
+			goods_content, open_date, close_date, goods_hit, g_state, manager_id, 
+			goods_main_img, goods_soldout_img, goods_f_name1, goods_f_name2, goods_f_name3, 
+			delivery_charge, delivery_charge_l) 
+		values (goods_seq.nextval, #{goods_code}, #{goods_name}, #{price}, #{init_amount}, #{cur_amount}, 
+			#{goods_content}, sysdate, #{close_date}, #{goods_hit}, #{g_state}, #{manager_id}, 
+			#{goods_main_img}, #{goods_soldout_img}, #{goods_f_name1}, #{goods_f_name2}, #{goods_f_name3}, 
+			#{delivery_charge}, #{delivery_charge_l}) 
+	</insert>
+	
+	<update id="goods_update" parameterType="gvo">
+		update goods set goods_code=#{goods_code}, goods_name=#{goods_name}, price=#{price}, 
+			init_amount=#{init_amount}, goods_content=#{goods_content}, close_date=#{close_date}, 
+			goods_main_img=#{goods_main_img}, goods_soldout_img=#{goods_soldout_img}, 
+			goods_f_name1=#{goods_f_name1}, goods_f_name2=#{goods_f_name2}, goods_f_name3=#{goods_f_name3}, 
+			delivery_charge=#{delivery_charge}, delivery_charge_l=#{delivery_charge_l} 
+		where goods_idx=#{goods_idx} 
+	</update>
+	
+	<update id="goods_hit" parameterType="String">
+		update goods set goods_hit = goods_hit + 1 where goods_idx=#{goods_idx} 
+	</update>
+	
+	<update id="g_state" parameterType="Map">
+		update goods set g_state=#{g_state}  
+		where goods_idx=#{goods_idx} 
+	</update>
+	
+	<update id="goods_stock" parameterType="Map">
+		update goods set cur_amount = cur_amount + #{amount}   
+		where goods_idx=#{goods_idx} 
+	</update>
+	
+	<!-- Goods Sale -->
+	<select id="g_s_count" resultType="int">
+		select count(*) from goods_sale  
+	</select>
+	
+	<select id="g_s_list" parameterType="Map" resultType="salevo">
+		select * from (
+        	select rownum r_num, a.* 
+            from (select * from goods_sale order by goods_sale_idx desc) a 
+        ) where r_num BETWEEN #{begin} and #{end}        
+	</select>
+	
+	<select id="g_s_one" parameterType="String" resultType="salevo">
+		select * from goods_sale where goods_sale_idx=#{goods_sale_idx} 
+	</select>
+	
+	<update id="g_s_state" parameterType="Map">
+		update goods_sale set g_s_state=#{g_s_state}  
+		where goods_sale_idx=#{goods_sale_idx} 
+	</update>
+	
+	<update id="g_s_cancel" parameterType="Map">
+		update goods_sale set cancel_cmpl=sysdate, g_s_state=#{g_s_state}  
+		where goods_sale_idx=#{goods_sale_idx} 
+	</update>
+	
+	<!-- Member -->
+	<select id="mbr_point" parameterType="String" resultType="int">
+		select cur_point from member where id=#{id} 
+	</select>
+	
+	<update id="mbr_update_point" parameterType="Map">
+		update member set cur_point=#{point} where id=#{id} 
+	</update>
+	
+	<!-- Point -->
+	<insert id="manager.p_ins_refund" parameterType="pvo">
+		insert into point (point_idx, id, p_category, remain_point, 
+						   refund_point, refund_date, manager_id ) 
+		values (point_seq.nextval, #{id}, #{p_category}, #{remain_point}, 
+				#{refund_point}, sysdate, #{manager_id}) 
+	</insert>
+	
+	
+	<!-- ProjectController -->
+	<!-- Project -->
+</mapper>

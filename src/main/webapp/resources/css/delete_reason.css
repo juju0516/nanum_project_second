@@ -1,0 +1,45 @@
+@charset "UTF-8";
+
+ 
+
+.nanumi_table {
+	display: flex;
+	justify-content: center;
+	align-content: center;
+	text-align: center;
+	padding: 20px 40px 40px 40px;
+}
+
+h1 {
+	text-align: center;
+	margin-top: 50px;
+	font-size: 30px;
+	padding: 40px;
+}
+
+
+.contents {
+	display: flex;
+	justify-content:center;
+    border: 2px solid gray;
+    padding: 60px;
+}
+
+
+.delete{
+	display: flex;
+	justify-content: center;
+	margin-bottom: 90px;
+}
+
+.delete_btn{
+	border-radius: 5px; /*버튼 모서리 둥글게*/
+	width: 100px; 
+	height: 30px; 
+	color: white; 
+	border-color:rgb(0, 87, 146); 
+	background-color: rgb(0, 87, 146); 
+	font-size: 17px; 
+	margin-top: 22px;
+	font-family: 'NanumSquareNeoBold';
+}

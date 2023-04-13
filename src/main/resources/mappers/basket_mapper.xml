@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="basket">
+ 
+  	<!-- 굿즈 바구니 전체보기 -->
+ 	<select id="basket_goodslist" parameterType="String" resultType="gbvo">
+ 		SELECT * FROM GOODS_BASKET WHERE ID = #{id}
+ 	</select>
+ 
+ 	<!-- 굿즈 바구니 확인하기 id에 동일 상품이 존재하는지 -->
+ 	<select id="basket_goodsone" parameterType="Map" resultType="gbvo">
+ 		SELECT * FROM GOODS_BASKET WHERE ID = #{id} AND GOODS_IDX = #{goods_idx}
+ 	</select>
+ 	
+ 	<!-- 굿즈 바구니에 없는 제품이면, 추가하기(insert) -->
+ 	<insert id="basket_goodsinsert" parameterType="gbvo">
+ 		INSERT INTO 
+ 			GOODS_BASKET
+	 			(ID, GOODS_CODE, GOODS_NAME, GOODS_F_NAME, 
+	 			GOODS_BASKET_IDX, GOODS_IDX, PRICE, AMOUNT, 
+	 			DELIVERY_CHARGE)
+ 		VALUES (#{id}, #{goods_code}, #{goods_name}, #{goods_f_name}, 
+ 				goods_basket_seq.nextval, #{goods_idx}, #{price}, #{amount}, 
+ 				#{delivery_charge})
+ 	</insert>
+ 	
+ 	<!-- 굿즈 바구니에 있는 제품이면 수량만 증가시키기  -->
+	<update id="basket_goodsupdate"  parameterType="gbvo">
+ 		UPDATE 
+ 			GOODS_BASKET
+ 		SET 
+ 			AMOUNT = #{amount}
+ 		WHERE 
+ 			ID = #{id} AND GOODS_IDX = #{goods_idx}
+ 	</update> 
+
+ </mapper>

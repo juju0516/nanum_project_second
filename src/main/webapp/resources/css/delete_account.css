@@ -1,0 +1,44 @@
+@charset "UTF-8";
+
+ 
+.delete_account{
+	display: flex;
+	justify-content: center;
+	margin-bottom: 140px;
+	margin-top: 30px;
+}
+
+.delete_ok_btn {
+	border-radius: 5px; /*버튼 모서리 둥글게*/
+	width: 100px; 
+	height: 40px; 
+	color: white; 
+	border-color:rgb(0, 87, 146); 
+	background-color: rgb(0, 87, 146); 
+	font-size: 19px; 
+	font-family: 'NanumSquareNeoBold';
+}
+
+.account_pw {
+	display: flex;
+	justify-content: center;
+}
+
+.account_pw>td {
+	font-size: 15px;
+}
+
+h2 {
+	font-size: 30px;
+	display: flex;
+	justify-content: center;
+}
+
+section {
+	padding: 160px;
+	
+}
+
+.rec_delete {
+	border: 2px solid gray;
+}

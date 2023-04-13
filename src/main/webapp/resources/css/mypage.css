@@ -1,0 +1,100 @@
+@charset "UTF-8";
+
+/*여기부터 기본값*/
+html, body {
+	height: 100%;
+}
+
+body {
+	color: black;
+	display: flex;
+	flex-direction: column;
+	position: relative;
+}
+
+section {
+	flex: 1;
+}
+
+/*여기까지 기본값*/
+input[type="file"]::file-selector-button {
+	border-radius: 5px; /*버튼 모서리 둥글게*/
+	width: 70px;
+	height: 20px;
+	color: white;
+	border-color: rgb(0, 87, 146);
+	background-color: rgb(0, 87, 146);
+	font-size: 13px;
+	font-family: 'NanumSquareNeoBold';
+}
+
+.img_change_btn {
+	border-radius: 5px; /*버튼 모서리 둥글게*/
+	width: 40px;
+	height: 20px;
+	color: white;
+	border-color: rgb(0, 87, 146);
+	background-color: rgb(0, 87, 146);
+	font-size: 13px;
+	font-family: 'NanumSquareNeoBold';
+}
+
+.fileclass {
+	display: flex;
+	justify-content: center;
+	
+}
+
+.prof_img {
+	display: flex;
+	justify-content: center;
+	position: relative;
+}
+
+#picture {
+	display: flex;
+	justify-content: center;
+	width: 100%;
+	margin-top: 60px;
+	margin-bottom: 20px;
+}
+
+.nickname {
+	display: flex;
+	justify-content: center;
+	border-bottom: 2px solid gray;
+}
+
+.nick_table {
+	margin-bottom: 70px;
+}
+
+.change_btn {
+	border-radius: 5px; /*버튼 모서리 둥글게*/
+	width: 70px;
+	height: 20px;
+	color: white;
+	border-color: rgb(0, 87, 146);
+	background-color: rgb(0, 87, 146);
+	font-size: 13px;
+	font-family: 'NanumSquareNeoBold';
+}
+
+.bottom_btn {
+	border-radius: 5px; /*버튼 모서리 둥글게*/
+	width: 130px;
+	height: 40px;
+	color: white;
+	border-color: rgb(0, 87, 146);
+	background-color: rgb(0, 87, 146);
+	font-size: 13px;
+	font-family: 'NanumSquareNeoBold';
+	margin: 10px;
+}
+
+#mypage_btn {
+	padding-left: 30px;
+	text-align: center;
+	margin-top: 70px;
+	margin-bottom: 90px;
+}

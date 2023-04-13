@@ -1,0 +1,176 @@
+@charset "UTF-8";
+
+/*여기부터 기본값*/
+html,body{
+	height: 100%;
+}
+
+body {
+	color: black;
+	display: flex;
+  	flex-direction: column; 
+  	position: relative;
+}
+
+section{
+	flex: 1;
+}
+
+footer{
+	text-align: left;
+	text-decoration: none;
+}
+/*여기까지 기본값*/
+
+#wrap {
+	margin-top: 50px;
+	display: flex;
+	justify-content: center;
+}
+
+ul.prj_menu {
+	display: flex;
+	flex-direction: row;
+	
+	list-style-type: none;
+	font-size: 19px;
+	font-family: 'NanumSquareNeoBold'; 
+}
+
+ul.prj_menu a {
+	margin: 0px 20px 0px 20px;
+	padding-top: 20px;
+	background-color: white;
+	color: black;
+	text-decoration: none;
+	border-right: 3px solid white;
+}
+	
+ul.prj_menu a:hover{
+	color: black;
+	font-weight: bold;
+	font-size: 20px;
+	border-bottom: 2px solid black;
+}
+ 
+#regi_prj{
+	margin: 0px 0px 0px 70px;
+}
+	
+#btn_regi_prj{
+	border-radius: 5px; /*버튼 모서리 둥글게*/
+	width: 120px; 
+	height: 50px; 
+	color: white; 
+	border-color:rgb(0, 87, 146); 
+	background-color: rgb(0, 87, 146); 
+	font-size: 19px; 
+	font-family: 'NanumSquareNeoBold'; 
+}
+	
+/* 프로젝트 목록관련 스타일 */
+
+#wrap_prj1 {
+/* 	justify-content: space-evenly; 이미지 간격 동일하게
+ */
+ 	display: flex;
+ 	justify-content: center;
+ 	align-content: center;
+	position: relative;
+	width: 100%;
+	border: 1px solid white;
+	margin-top: 100px;
+}
+#wrap_prj2 {
+/* 	justify-content: space-evenly; 이미지 간격 동일하게
+ */
+ 	display: flex;
+ 	justify-content: center;
+ 	align-content: center;
+	position: relative;
+	width: 100%;
+	border: 1px solid white;
+	margin-bottom: 50px;
+}
+
+
+.prj_list1{
+    font-family: 'NanumBarunGothicLight'; 
+	font-size:12px;
+    color: black;
+   /*  margin-top:100px;
+    margin-bottom: 60px; */
+}
+
+.project{
+	text-align: center;	
+	padding:50px;
+    /* display: block; */
+    display: inline-block;
+    
+    text-decoration:none;
+    color: black;
+ 
+	margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 30px; 
+    width:230px; 
+}
+
+.prj_subject{
+  	font-size: 15px;
+  	font-weight: bold;
+	text-align: center;
+    margin-top: 20px;
+    margin-bottom: 4px;
+}
+
+.prj_period{
+  	font-size: 12px;
+	text-align:left;
+    margin-top: 20px;
+    margin-bottom: 4px;
+}
+.prj_Goal_point{
+  	font-size: 12px;
+	text-align:left;
+    margin-top: 20px;
+    margin-bottom: 4px;
+}
+.prj_cur_point{
+  	font-size: 12px;
+	text-align:left;
+    margin-top: 20px;
+    margin-bottom: 4px;
+}
+.prj_cur_people{
+  	font-size: 12px;
+	text-align:left;
+    margin-top: 20px;
+    margin-bottom: 4px;
+}
+ 
+.end{
+	float: none;
+	clear: both;
+}
+	
+	
+/*프로그래스바*/
+ #progressbar {
+ 	margin-top:10px;
+    appearance: none;
+    width: 85%;
+}
+#progressbar::-webkit-progress-bar { /*배경색*/
+    background:lightgray;
+    border-radius:5px;
+	box-shadow: inset 3px 3px 10px #ccc;
+}
+#progressbar::-webkit-progress-value { /*진행색*/
+	background: rgb(253, 95, 0);
+    background: -webkit-linear-gradient(rgb(253, 95, 0));
+    border-radius:5px;
+
+}
+

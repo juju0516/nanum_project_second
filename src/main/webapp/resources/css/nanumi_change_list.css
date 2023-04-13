@@ -1,0 +1,40 @@
+@charset "UTF-8";
+
+a {text-decoration: none;}
+
+
+h1 {
+	text-align: center;
+	margin-top: 90px;
+	font-size: 30px;
+}
+
+
+table {
+    width: 1000px;
+    margin: 50px auto 150px auto;
+    border-spacing: 0;
+    font-family: 'NanumSquareNeo';
+}
+
+th {
+	font-family: 'NanumSquareNeoBold';
+	font-size: 17px;
+	text-align: center;
+	padding: 15px;
+	background-color: #eaeaea;
+	border-bottom: 1px solid #d4d4d4;
+	border-top: 1px solid #d4d4d4;
+}
+
+tr {
+	font-size: 15px;
+	text-align: center;
+	padding: 10px;
+}
+
+td	{
+	padding: 20px;
+    border-bottom: 1px solid #d4d4d4;
+    margin: 5px;
+}

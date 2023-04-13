@@ -1,0 +1,49 @@
+@charset "UTF-8";
+
+ 
+
+#all_find{
+	display: flex;
+	justify-content: center;
+ 	align-content: center;
+ 	margin-bottom: 70px;
+}
+
+.find_id{
+	margin-top: 40px;
+	text-align: center;
+	font-size: 17px;
+	
+}
+.find_pw{
+	margin-top: 40px;
+	text-align: center;
+	font-size: 17px;
+}
+
+.next_btn {
+	border-radius: 5px; /*버튼 모서리 둥글게*/
+	width: 70px; 
+	height: 30px; 
+	color: white; 
+	border-color:rgb(0, 87, 146); 
+	background-color: rgb(0, 87, 146); 
+	font-size: 19px; 
+	margin-top: 22px;
+	font-family: 'NanumSquareNeoBold';
+	margin-left: 85px;
+	margin-bottom: 80px;
+}
+.next_btn2 {
+	border-radius: 5px; /*버튼 모서리 둥글게*/
+	width: 70px; 
+	height: 30px; 
+	color: white; 
+	border-color:rgb(0, 87, 146); 
+	background-color: rgb(0, 87, 146); 
+	font-size: 19px; 
+	margin-top: 40px;
+	font-family: 'NanumSquareNeoBold';
+	margin-left: 85px;
+	margin-bottom: 80px;
+}

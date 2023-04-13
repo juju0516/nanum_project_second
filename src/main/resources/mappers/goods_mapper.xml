@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="goods">
+ 	
+ 	<!-- 굿즈 전체 리스트 보기 -->
+ 	<select id="goodsList" resultType="gvo">
+ 		SELECT * FROM GOODS WHERE G_STATE='판매중' 
+ 	</select>
+ 	
+ 	<!-- 굿즈 상세보기 -->
+  	<select id="goodsDetail" resultType="gvo" parameterType="String">
+ 		SELECT * FROM GOODS WHERE GOODS_IDX = #{goods_idx}
+ 	</select> 
+ 	
+ 	
+ 	
+ 	<!-- 멤버 정보 가져오기 -->
+ 	<select id="memberinfo" resultType="mvo" parameterType="String">
+ 		SELECT * FROM MEMBER WHERE ID = #{id}
+ 	</select>
+ 	
+ 	
+ 	
+ 	<!-- 굿즈 판매내역 삽입 -->
+ 	<insert id="goodsSaleInsert" parameterType="salevo" >
+ 		INSERT INTO 
+ 			GOODS_SALE 
+			(GOODS_SALE_IDX, GOODS_IDX, PRICE, AMOUNT, TOTAL_PRICE, ID,
+			GOODS_CODE, GOODS_NAME, GOODS_F_NAME, SALE_DATE, G_S_STATE)
+ 		VALUES 
+ 			(GOODS_SALE_SEQ.NEXTVAL ,#{goods_idx}, #{price}, #{amount}, #{total_price}, #{id}, 
+ 			#{goods_code}, #{goods_name}, #{goods_f_name}, SYSDATE, #{g_s_state}
+ 			)
+ 	</insert>
+ 	
+ 	<!-- 굿즈 결제 완료후 1. goods DB 재고 수량 차감 / 2. 멤버 보유 포인트 수정 / 3. 포인트 디비내역 추가 -->
+ 	<!-- 1. goods DB 재고 수량 변경(초기값에서 차감하자)  -->
+ 	<update id="goodsCurAmountUpdate" parameterType="gvo">
+ 		UPDATE
+ 			GOODS 
+ 		SET 
+ 			CUR_AMOUNT = #{cur_amount} 
+ 		WHERE 
+ 			GOODS_IDX = #{goods_idx}
+ 	</update>
+ 	
+ 	<!-- 2. 멤버정보 수정 : 보유포인트 수정하기 -->
+ 	<update id="memberCurpointUpdate" parameterType="mvo">
+ 		UPDATE 
+ 			MEMBER
+		SET 
+			CUR_POINT = #{cur_point}
+		WHERE
+	 		ID = #{id}
+ 	</update>
+ 	
+ 	<!-- 3.포인트 내역 추가 -->
+ 	<insert id="salePointInsert" parameterType="pvo">
+ 		Insert into 
+ 			Point (
+ 			POINT_IDX, ID, P_CATEGORY, REMAIN_POINT, DEDUCT_POINT, DEDUCT_DATE
+ 			)
+ 		Values (
+ 			POINT_SEQ.NEXTVAL, #{id}, #{p_category}, #{remain_point}, #{deduct_point}, #{deduct_date}
+ 		)
+ 	</insert>
+ 	
+ 	
+ 	
+ 	
+ 
+ </mapper>

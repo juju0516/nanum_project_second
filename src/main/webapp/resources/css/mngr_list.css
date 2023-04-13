@@ -1,0 +1,246 @@
+@charset "UTF-8";
+
+.title {
+	text-align: center;
+	margin: 50px auto;
+	font-size: 25px;
+	font-family: 'NanumSquareNeoExtraBold'; 
+}
+
+label, .search-label {
+	margin: 10px 30px 0px 0px;
+	font-family: 'NanumSquareNeo';
+	font-size: 16px;
+	color: #444;	
+}
+select {
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	appearance: none;
+
+	width: 150px;
+	height: 33px;
+	line-height: 33px;
+	margin-right: 30px;
+	padding: 0 0 0 15px;
+	
+	font-family: 'NanumSquareNeo';
+	font-size: 13.5px;
+	color: #444;
+	
+	border: 1px solid #aaa;
+	border-radius: 0.5em;
+	box-shadow: 0 1px 0 1px rgba(0, 0, 0, 0.04); 	
+}
+.select-l {
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	appearance: none;
+
+	width: 210px;
+	height: 33px;
+	line-height: 33px;
+	margin-right: 30px;
+	padding: 0 0 0 15px;
+	
+	font-family: 'NanumSquareNeo';
+	font-size: 14px;
+	color: #444;
+	
+	border: 1px solid #aaa;
+	border-radius: 0.5em;
+	box-shadow: 0 1px 0 1px rgba(0, 0, 0, 0.04); 	
+}
+.select-s {
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	appearance: none;
+
+	width: 50px;
+	height: 29px;
+	line-height: 29px;
+	margin-right: 30px;
+	padding: 0 0 0 15px;
+	
+	font-family: 'NanumSquareNeo';
+	font-size: 13.5px;
+	color: #444;
+	
+	border: 1px solid #aaa;
+	border-radius: 0.5em;
+	box-shadow: 0 1px 0 1px rgba(0, 0, 0, 0.04); 	
+}
+
+select:hover, .select-l:hover, .select-s:hover {
+	border-color: #888;
+}
+select:focus, .select-l:focus, .select-s:focus {
+	border-color: #aaa;
+	box-shadow: 0 0 1px 3px rgba(59, 153, 252, .7); 
+	box-shadow: 0 0 0 3px -moz-mac-focusring;
+	color: #222;
+	outline: none;
+}
+
+input {
+	width: 200px;
+	height: 29px;
+	margin-right: 30px;
+	text-indent: 2px;
+	
+	color: rgb(64, 64, 64);
+	font-size: 14px;
+	font-family: 'NanumSquareNeo';
+	
+	border-left: 1px;
+	border-right: 1px;
+	border-top: 1px;
+	outline: none;
+}
+
+.btn-location {
+	margin: 0 auto;
+}
+.btn-detail {
+	width: 120px; 
+	height: 33px; 
+	border-radius: 5px; /*버튼 모서리 둥글게*/
+	color: #fff; 
+	background-color: #00000080; 
+	background-color: #005792;
+	/*  background-color: rgb(94, 94, 94);  */ 
+	border: none;
+	font-size: 14px; 
+	font-family: 'NanumSquareNeo'; 
+	cursor: pointer;
+}
+.btn-detail-s {
+	width: 100px; 
+	height: 33px; 
+	border-radius: 5px; /*버튼 모서리 둥글게*/
+	color: #fff; 
+	/* background-color: #00000080;  */
+	background-color: #005792;
+	/* background-color: rgb(94, 94, 94);  */
+	border: none;
+	font-size: 13px; 
+	font-family: 'NanumSquareNeo'; 
+	cursor: pointer;
+}
+.btn-detail-ss {
+	width: 70px; 
+	height: 33px; 
+	border-radius: 5px; /*버튼 모서리 둥글게*/
+	color: #fff; 
+	/* background-color: #00000080;  */
+	background-color: #005792;
+	/* background-color: rgb(94, 94, 94);  */
+	border: none;
+	font-size: 13px; 
+	font-family: 'NanumSquareNeo'; 
+	cursor: pointer;
+}
+.btn-detail-l {
+	width: 150px; 
+	height: 34px; 
+	border-radius: 5px; /*버튼 모서리 둥글게*/
+	color: #fff; 
+	/* background-color: #00000080;  */
+	background-color: #005792;
+	/* background-color: rgb(94, 94, 94);  */
+	border: none;
+	font-size: 14px; 
+	font-family: 'NanumSquareNeo'; 
+	cursor: pointer;
+}
+
+.btn-disabled {
+	background-color: #888; 
+}
+
+.only-btn-wrap {
+	display: flex;
+	justify-content: flex-end;
+	width: 75%;
+	margin-bottom: 20px;
+}
+
+/* 상세 페이지 하단 큰 버튼 */
+.btn-wrap-btm {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	margin-bottom: 90px;
+}
+.btn-btm-loc {
+	margin: 0px 20px;
+} 
+
+
+/* 리스트 페이지 검색 메뉴와 버튼 블럭 */
+.search-wrap {
+	display: flex;
+	flex-direction: row;
+	/* justify-content: center; */
+	/* align-items: center; */
+	
+	margin: 0 auto;
+	width: 70%;
+	margin-top: 70px;
+	margin-bottom: 70px;
+}
+
+.search-row {
+	display: flex;
+	flex-direction: row;
+	
+	margin: 0 auto;
+	width: 70%;
+	margin-top: 40px;
+	margin-bottom: 20px;
+}
+
+
+/* table - list */
+.table-wrap {
+	padding: 30px 0;
+	margin-bottom: 50px;
+}
+
+table {
+	white-space: nowrap;
+	margin: auto;
+	width: 70%;
+	overflow: auto;
+	border-collapse: collapse;
+	border-top: 2px solid #888;
+	border-bottom: 2px solid #888;
+	font-family: 'NanumSquareNeo'; 
+}
+
+tbody {	
+	border-top: 1.5px solid #888;	
+}
+
+tr { 
+	height: 45px; 
+}
+
+th {
+	font-size: 14.5px;
+	/* height: 45px; */
+}
+
+td {
+	/* height: 45px; */
+	text-align: center;
+	font-size: 14px;
+}
+
+td a {
+	text-decoration: none;
+	color: black;
+}
+td a:hover {
+	border-bottom: 1px solid #888;
+}
