@@ -9,7 +9,7 @@
 <title>Nanum 🌷 : Project_list</title>
 <link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square-neo.css" rel="stylesheet">
 <link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-barun-gothic.css" rel="stylesheet">
-<link href="resources/css/project_list.css" type="text/css" rel="stylesheet">
+<link href="resources/css/prj_list.css" type="text/css" rel="stylesheet">
 <link href="resources/css/paging.css?after" type="text/css" rel="stylesheet">
 </head>
 <body>

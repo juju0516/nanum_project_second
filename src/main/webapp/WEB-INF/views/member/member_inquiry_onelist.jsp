@@ -26,22 +26,30 @@
 
 	</section>
 	<section>
-		<table class="contents">
-			<tr>
-				<td>이름:</td>
-				<td><input type="text" id="user" placeholder="이름을 입력하세요"></td>
-			</tr>
-			<tr>
-				<td>ID:</td>
-				<td>${mvo.nickname}</td>
-			</tr>
-			<tr>
-				<td>내용:</td>
-				<td><textarea rows="20" cols="40">
-					</textarea></td>
-			</tr>
-		</table>
 		<form method="get">
+			<table class="contents">
+				<tr>
+					<td>제목:</td>
+					<td><input type="text" id="subject" name="subject"
+						placeholder="문의 제목을 입력하세요"></td>
+				</tr>
+				<tr>
+					<td>ID:</td>
+					<c:choose>
+						<c:when test="${empty mvo.nickname}">
+							<td>${mvo.name}</td>
+						</c:when>
+						<c:otherwise>
+							<td>${mvo.nickname}</td>
+						</c:otherwise>
+					</c:choose>
+				</tr>
+				<tr>
+					<td>내용:</td>
+					<td><textarea rows="20" cols="40" name="content" id="content">
+					</textarea></td>
+				</tr>
+			</table>
 			<div class="inquiry">
 				<input type="button" value="등록" class="inq_btn"
 					onclick="member_inquiry_ok(this.form)">

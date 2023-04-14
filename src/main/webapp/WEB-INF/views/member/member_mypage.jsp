@@ -70,11 +70,13 @@
 	        url: "member_image_change.do",
 	        type: 'post',
 	        data: formData,
-	        dataType: 'json',
+	        dataType: 'text',
 	        contentType: false,
 	        processData: false,
 	        success: function(result) {
-	            console.log(result);
+	          if(result == 1){
+	        	  location.reload();
+	          }
 	        },
 	        error: function(e) {
 	            console.log(e);
@@ -95,17 +97,13 @@
 		<h2 style="text-align: center; margin-top: 90px;">마이페이지</h2>
 		<form method="post" enctype="multipart/form-data" id="sendImgForm">
 			<div id="picture">
-				<c:choose>
-					<c:when test="${change=='image'}">
-						<img src="/resources/upload/${mvo.id}/attach/${mvo.p_f_name}"
-							width="150px;" id="p_f_name" name="p_f_name">
-					</c:when>
-					<c:otherwise>
-						<img src="${mvo.p_f_name}" width="150px;" id="p_f_name"
-							name="p_f_name">
-					</c:otherwise>
-				</c:choose>
-			</div>
+					<c:choose>
+						<c:when test="${mvo.p_f_name != null}">
+							<img src="/resources/upload/${mvo.id}/attach/${mvo.p_f_name}"
+								width="150px;" id="p_f_name" name="p_f_name">
+						</c:when>
+					</c:choose>
+				</div>
 			<div class="fileclass" style="min-width: 300px;">
 				<input type="file" id="profile_img" name="profile_img"
 					style="min-width: 254px; margin-left: 15px;"> <input

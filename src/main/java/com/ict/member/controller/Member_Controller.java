@@ -1,21 +1,27 @@
 package com.ict.member.controller;
 
 import java.io.File;
+import java.lang.reflect.Method;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ict.common.FileReName;
 import com.ict.common.Paging;
 import com.ict.member.model.service.Member_Service;
+import com.ict.member.model.vo.InquiryVO;
 import com.ict.member.model.vo.MemberVO;
 
 @Controller
@@ -40,6 +46,7 @@ public class Member_Controller {
 		this.fileReName = fileReName;
 	}
 
+	// 마이페이지
 	@RequestMapping("member_mypage.do")
 	public ModelAndView getMyPage(HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView("member/member_mypage");
@@ -63,6 +70,7 @@ public class Member_Controller {
 		return mv;
 	}
 
+	// 닉네임 변경
 	@RequestMapping("member_nick_change.do")
 	public ModelAndView getChangeNick(HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView("redirect:member_mypage.do");
@@ -83,107 +91,100 @@ public class Member_Controller {
 		return mv;
 	}
 
-	@RequestMapping("member_image_change.do")
-	public ModelAndView getChangeImage(HttpSession session, HttpServletRequest request,
-			@RequestParam("p_f_name") MultipartFile p_f_name) throws Exception {
-		ModelAndView mv = new ModelAndView("redirect:member_mypage.do");
-		String id = (String) request.getSession().getAttribute("memberID");
-		String path = session.getServletContext().getRealPath("/resources/upload/" + id + "/attach");// 폴더경로
+	/*
+	 * // 프로필 사진 ajax
+	 * 
+	 * @ResponseBody public String getChangeImg(@RequestParam("p_f_name")
+	 * MultipartFile multipartFile) { String result ="0"; int chk = member_Service.
+	 * }
+	 */
+
+	// 프로필 사진 변경
+	@RequestMapping(value = "member_image_change.do", method = RequestMethod.POST)
+	@ResponseBody
+	public String memberImageChange(HttpSession session, HttpServletRequest request,
+			@RequestParam("p_f_name") MultipartFile multipartFile) {
+		ModelAndView mv = new ModelAndView("member_mypage.do");
+		String id = (String) session.getAttribute("memberID");
+		String path = session.getServletContext().getRealPath("/resources/upload/" + id + "/attach");
+		// System.out.println(path);
+
 		MemberVO mvo = member_Service.getNickname_Name(id);
-		System.out.println(id);
-		MultipartFile file_name = mvo.getF_param();
+		MultipartFile oldFile = mvo.getF_param();
 		try {
-			if (file_name.isEmpty()) {
-				mvo.setP_f_name("");
+			String newFileName = null;
+			if (multipartFile.isEmpty()) {
+				newFileName = "";
 			} else {
-				// 이름 중복 여부
-				String str = fileReName.exec(path, mvo.getF_param().getOriginalFilename());
-				mvo.setP_f_name(str);
+				// 파일 이름 중복 방지
+
+				// 파일 원래이름
+				String originalFileName = multipartFile.getOriginalFilename();
+				// 파일 확장자 가져오기
+				String fileExtension = FilenameUtils.getExtension(originalFileName);
+				// 확장자 제외하고 가져오기
+				String baseFileName = FilenameUtils.getBaseName(originalFileName);
+				// 유일한 파일 이름 생성
+				String uniqueFileName = getUniqueFileName(baseFileName, fileExtension, path);
+				newFileName = uniqueFileName + "." + fileExtension;
 			}
-			mv.addObject("cPage", "1");
-			int res = member_Service.getChangeProf(mvo);
-			if (res > 0) {
-				p_f_name.transferTo(new File(path + "/" + mvo.getP_f_name()));
+
+			mvo.setP_f_name(newFileName);
+			int result = member_Service.getChangeProf(mvo);
+			if (result > 0) {
+				if (!multipartFile.isEmpty()) {
+					multipartFile.transferTo(new File(path + "/" + newFileName));
+				}
+				if (oldFile != null && !oldFile.isEmpty()) {
+					File oldFileObj = new File(path + "/" + oldFile.getOriginalFilename());
+					if (oldFileObj.exists()) {
+						oldFileObj.delete();
+					}
+				}
 			}
+			return String.valueOf(result);
 		} catch (Exception e) {
 			System.out.println(e);
 		}
-
-		if (p_f_name.isEmpty()) {
-			String str = "resources/images/system/profile2.png";
-			mvo.setP_f_name(str);
-			mv.addObject("mvo", mvo);
-		} else {
-			request.getSession().setAttribute("change", "image");
-			mvo.setP_f_name(p_f_name.getOriginalFilename());
-			mv.addObject("mvo", mvo);
-		}
-		
-		
-
-		return mv;
+		return null;
 	}
 
+	// 고유한 파일 이름 생성
+	private String getUniqueFileName(String baseFileName, String fileExtension, String path) {
+		String newFileName = baseFileName + "_" + System.currentTimeMillis();
+		File file = new File(path + "/" + newFileName + "." + fileExtension);
+		int i = 1;
+		while (file.exists()) {
+			newFileName = baseFileName + "_" + System.currentTimeMillis() + "_" + i;
+			file = new File(path + "/" + newFileName + "." + fileExtension);
+			i++;
+		}
+		return newFileName;
+	}
+
+	// 보유 나누미
 	@RequestMapping("member_point.do")
 	public ModelAndView getPoint(HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView("member/member_point");
-
 		String id = (String) request.getSession().getAttribute("memberID");
 		MemberVO mvo = member_Service.getNickname_Name(id);
-		// String nickname = request.getParameter("name");
-		String nickname = mvo.getNickname();
-		String name = mvo.getName();
-		// System.out.println(nickname +"닉/이름"+name);
-		int cur_point = mvo.getCur_point();
-		// System.out.println(cur_point);
-
-		mvo.setCur_point(cur_point);
-		mv.addObject("cur_point", cur_point);
 		mv.addObject("mvo", mvo);
 
-		if (nickname == null) {
-			mvo.setNickname(name);
-			mv.addObject("name", name);
-			mv.addObject("mvo", mvo);
-
-		} else {
-			mvo.setNickname(nickname);
-			mv.addObject("name", nickname);
-			mv.addObject("mvo", mvo);
-		}
 		return mv;
 	}
 
+	// 나누미 전환 신청
 	@RequestMapping("member_point_change.do")
 	public ModelAndView getPointChange(HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView("member/member_point_change");
-
 		String id = (String) request.getSession().getAttribute("memberID");
 		MemberVO mvo = member_Service.getNickname_Name(id);
-		// String nickname = request.getParameter("name");
-		String nickname = mvo.getNickname();
-		String name = mvo.getName();
-		// System.out.println(nickname +"닉/이름"+name);
-		int cur_point = mvo.getCur_point();
-		// System.out.println(cur_point);
-
-		mvo.setCur_point(cur_point);
-		mv.addObject("cur_point", cur_point);
 		mv.addObject("mvo", mvo);
 
-		if (nickname == null) {
-			mvo.setNickname(name);
-			mv.addObject("name", name);
-			mv.addObject("mvo", mvo);
-
-		} else {
-			mvo.setNickname(nickname);
-			mv.addObject("name", nickname);
-			mv.addObject("mvo", mvo);
-		}
 		return mv;
 	}
 
+	// 나누미 전환 신청 완료 페이지
 	@RequestMapping("member_point_change_ok.do")
 	public ModelAndView getPointChangeOk(HttpServletRequest request, @RequestParam("select") String select,
 			@RequestParam(name = "writenanum", required = false) String writenanum) {
@@ -324,8 +325,10 @@ public class Member_Controller {
 	}
 
 	@RequestMapping("member_inquiry.do")
-	public ModelAndView getInquiry(HttpServletRequest request) {
+	public ModelAndView getInquiry(HttpServletRequest request, InquiryVO iqvo) {
 		ModelAndView mv = new ModelAndView("member/member_inquiry");
+
+		// 전체 게시물의 수
 		int count = member_Service.getTotalCount();
 		paging.setTotalRecord(count);
 
@@ -361,14 +364,43 @@ public class Member_Controller {
 			paging.setEndBlock(paging.getTotalPage());
 		}
 
-		List<MemberVO> list = member_Service.getList(paging.getBegin(), paging.getEnd());
+		List<InquiryVO> list = member_Service.getInqList(paging.getBegin(), paging.getEnd());
 		mv.addObject("paging", paging);
 		mv.addObject("list", list);
 		return mv;
+		
+		
+		// 관리자페이지에서 답변 달면 답변 대기 -> 답변 완료로 변경되어야 한다
 	}
 
+	@RequestMapping("member_inquiry_ok.do")
+	public ModelAndView getInquiryOk(HttpServletRequest request, InquiryVO iqvo) {
+		ModelAndView mv = new ModelAndView("redirect:member_inquiry.do");
+
+		String id = (String) request.getSession().getAttribute("memberID");
+		String content = request.getParameter("content");
+		String subject = request.getParameter("subject");
+
+		iqvo.setId(id);
+		iqvo.setInq_title(subject);
+		iqvo.setInq_content(content);
+
+		int res = member_Service.getInqInsert(iqvo);
+		mv.addObject("id", id);
+		mv.addObject("res", res);
+		return mv;
+	}
+	
+	// 삭제
+	@RequestMapping(value = "member_inquiry_delete.do", method = RequestMethod.GET)
+	public ModelAndView getDeleteInquiry(@RequestParam("inquiry_idx") int inquiry_idx) {
+		int result = member_Service.getDeleteInquiry(inquiry_idx);
+		return new ModelAndView("redirect:member_inquiry.do");
+	}
+
+	// 질문 인서트
 	@RequestMapping("member_inquiry_onelist.do")
-	public ModelAndView getInquiryOnelist(HttpServletRequest request) {
+	public ModelAndView getInquiryOnelist(HttpServletRequest request, InquiryVO iqvo) {
 		ModelAndView mv = new ModelAndView("member/member_inquiry_onelist");
 		String id = (String) request.getSession().getAttribute("memberID");
 		MemberVO mvo = member_Service.getNickname_Name(id);
@@ -389,36 +421,22 @@ public class Member_Controller {
 		return mv;
 	}
 
-	@RequestMapping("member_inquiry_ok.do")
-	public ModelAndView getInquiryOk(HttpServletRequest request) {
-		ModelAndView mv = new ModelAndView("redirect:member_inquiry.do");
-		return mv;
-	}
-
+	// 원리스트 
 	@RequestMapping("member_inquiry_onelist_ans.do")
 	public ModelAndView getInquiryOnelistAns(HttpServletRequest request) {
-		ModelAndView mv = new ModelAndView("member/member_inquiry_onelist_ans");
-		String id = (String) request.getSession().getAttribute("memberID");
-		MemberVO mvo = member_Service.getNickname_Name(id);
-		// String nickname = request.getParameter("name");
-		String nickname = mvo.getNickname();
-		String name = mvo.getName();
-		cPage = request.getParameter("cPage");
+	    ModelAndView mv = new ModelAndView("member/member_inquiry_onelist_ans");
+	    String id = (String) request.getSession().getAttribute("memberID");
+	    MemberVO mvo = member_Service.getNickname_Name(id);
+	    int inquiry_idx = Integer.parseInt(request.getParameter("inquiry_idx"));
+	    
+	    InquiryVO iqvo = member_Service.getInqOneList(inquiry_idx);
+	    String contents = iqvo.getInq_content().trim();
+	    
+	    mv.addObject("contents", contents);
+	    mv.addObject("iqvo", iqvo);
+	    mv.addObject("mvo", mvo);
 
-		MemberVO onelist = member_Service.getOneList(id);
-
-		if (nickname == null) {
-			mvo.setNickname(name);
-			mv.addObject("name", name);
-			mv.addObject("mvo", mvo);
-
-		} else {
-			mvo.setNickname(nickname);
-			mv.addObject("name", nickname);
-			mv.addObject("mvo", mvo);
-			mv.addObject("onelist", onelist);
-		}
-		return mv;
+	    return mv;
 	}
 
 	@RequestMapping("member_regular_list.do")

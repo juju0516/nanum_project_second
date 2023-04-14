@@ -9,6 +9,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.ict.member.model.vo.InquiryVO;
 import com.ict.member.model.vo.MemberVO;
 
 @Repository
@@ -46,5 +47,23 @@ public class Member_DAO {
 	public int getMemberUpdate(MemberVO mvo) {
 		return sqlSessionTemplate.update("member.update", mvo);
 	}
-
+	
+	public int getInqInsert(InquiryVO iqvo) {
+		return sqlSessionTemplate.insert("inquiry.insert", iqvo);
+	}
+	
+	public List<InquiryVO> getInqList(int begin, int end) {
+	Map<String, Integer> map = new HashMap<String, Integer>();
+	map.put("begin", begin);
+	map.put("end", end);
+	return sqlSessionTemplate.selectList("inquiry.list", map);
+	}
+	
+	public InquiryVO getInqOneList(int inquiry_idx) {
+	    return sqlSessionTemplate.selectOne("inquiry.onelist_idx", inquiry_idx);
+	}
+	
+	public int getDeleteInquiry(int inquiry_idx) {
+		return sqlSessionTemplate.delete("inquiry.delete", inquiry_idx);
+	}
 }

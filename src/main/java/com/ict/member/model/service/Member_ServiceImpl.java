@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ict.member.model.dao.Member_DAO;
+import com.ict.member.model.vo.InquiryVO;
 import com.ict.member.model.vo.MemberVO;
 
 @Service
@@ -51,6 +52,26 @@ public class Member_ServiceImpl implements Member_Service{
 	@Override
 	public int getMemberUpdate(MemberVO mvo) {
 		return member_DAO.getMemberUpdate(mvo);
+	}
+	
+	@Override
+	public int getInqInsert(InquiryVO iqvo) {
+		return member_DAO.getInqInsert(iqvo);
+	}
+	
+	@Override
+	public InquiryVO getInqOneList(int inquiry_idx) {
+	    return member_DAO.getInqOneList(inquiry_idx);
+	}
+	
+	@Override
+	public List<InquiryVO> getInqList(int begin, int end) {
+		return member_DAO.getInqList(begin, end);
+	}
+	
+	@Override
+	public int getDeleteInquiry(int inquiry_idx) {
+		return member_DAO.getDeleteInquiry(inquiry_idx);
 	}
 	
 }

@@ -12,6 +12,12 @@
 		f.action = "member_inquiry_onelist.do"
 		f.submit();
 	};
+
+	function delete_go(f) {
+		f.action = "member_inquiry_delete.do"
+		f.submit();
+		alert("문의가 삭제됩니다.");
+	};
 </script>
 <link
 	href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square-neo.css"
@@ -50,13 +56,13 @@
 									<tr class="list">
 										<td>${paging.totalRecord - ((paging.nowPage-1)*paging.numPerPage + vs.index)}</td>
 										<td><a
-											href="member_inquiry_onelist_ans.do?id=${k.id}&cPage=${paging.nowPage}">문의
-												제목</a></td>
-										<td>날짜&nbsp;&nbsp;</td>
-										<td>상태(완료/대기중)&nbsp;&nbsp;</td>
+											href="member_inquiry_onelist_ans.do?inquiry_idx=${k.inquiry_idx}&cPage=${paging.nowPage}">${k.inq_title}<input
+												type="hidden" name="inquiry_idx" value="${k.inquiry_idx}"></a></td>
+										<td>${k.inq_date.substring(0,10)}</td>
+										<td>${k.inq_state}</td>
 										<td><input type="image"
 											src="resources/images/system/trash.png" style="width: 30px;"
-											onclick=""></td>
+											onclick="delete_go(this.form)"></td>
 									</tr>
 								</c:forEach>
 							</c:otherwise>

@@ -70,11 +70,11 @@
 }
 
 .progressbar li.active:before {
-    background: rgb(0, 87, 146)  url(user.svg) no-repeat center center;
+    background: rgb(0, 87, 146)  ;
     background-size: 60%;
 }
 .progressbar li::before {
-    background: rgb(253, 95, 0) url(user.svg) no-repeat center center;
+    background: rgb(253, 95, 0) ;
     background-size: 60%;
 }
 

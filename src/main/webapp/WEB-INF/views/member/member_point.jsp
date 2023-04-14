@@ -38,8 +38,24 @@
 		</div>
 		<div class="my_nanumi">
 			<h2>보유 나누미</h2>
-			<img src="resources/images/system/profile2.png" width="200px;">
-			<h3>${mvo.nickname}님 ${mvo.cur_point}나누미</h3>
+			<form method="post" enctype="multipart/form-data" id="sendImgForm">
+				<div id="picture">
+					<c:choose>
+						<c:when test="${mvo.p_f_name != null}">
+							<img src="/resources/upload/${mvo.id}/attach/${mvo.p_f_name}"
+								width="150px;" id="p_f_name" name="p_f_name">
+						</c:when>
+					</c:choose>
+				</div>
+			</form>
+			<c:choose>
+				<c:when test="${empty mvo.nickname}">
+					<h3>${mvo.name}님 ${mvo.cur_point}나누미</h3>
+				</c:when>
+				<c:otherwise>
+					<h3>${mvo.nickname}님 ${mvo.cur_point}나누미</h3>
+				</c:otherwise>
+			</c:choose>
 		</div>
 		<form method="get">
 			<div class="button">
