@@ -23,6 +23,7 @@ import com.ict.common.Paging;
 import com.ict.member.model.service.Member_Service;
 import com.ict.member.model.vo.InquiryVO;
 import com.ict.member.model.vo.MemberVO;
+import com.ict.member.model.vo.PointVO;
 
 @Controller
 public class Member_Controller {
@@ -53,20 +54,23 @@ public class Member_Controller {
 
 		String id = (String) request.getSession().getAttribute("memberID");
 		MemberVO mvo = member_Service.getNickname_Name(id);
-		// String nickname = request.getParameter("name");
-		String nickname = mvo.getNickname();
-		String name = mvo.getName();
+		mv.addObject("mvo", mvo);
 
-		if (nickname == null) {
-			mvo.setNickname(name);
-			mv.addObject("name", name);
-			mv.addObject("mvo", mvo);
+		// System.out.println("id:" + id);
+		if (id != null) {
+			mvo = member_Service.getNickname_Name(id);
 
 		} else {
+			mvo = member_Service.getNickname_Name(id);
+			String nickname = "카카오 로그인 완료";
 			mvo.setNickname(nickname);
-			mv.addObject("name", nickname);
+			mv.addObject("nickname", nickname);
 			mv.addObject("mvo", mvo);
+
+			//System.out.println("mvo" + mvo);
+			//System.out.println("nickname:" + nickname);
 		}
+
 		return mv;
 	}
 
@@ -75,12 +79,10 @@ public class Member_Controller {
 	public ModelAndView getChangeNick(HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView("redirect:member_mypage.do");
 		String id = (String) request.getSession().getAttribute("memberID");
-		System.out.println(id); // null
+		//System.out.println(id); // null
 
 		MemberVO mvo = member_Service.getNickname_Name(id);
 		String nickname = request.getParameter("nickname");
-		System.out.println(mvo); // null
-		System.out.println(nickname);
 
 		mvo.setNickname(nickname);
 		mv.addObject("nickname", nickname);
@@ -90,14 +92,6 @@ public class Member_Controller {
 		// request.getSession().setAttribute("change", "ok");
 		return mv;
 	}
-
-	/*
-	 * // 프로필 사진 ajax
-	 * 
-	 * @ResponseBody public String getChangeImg(@RequestParam("p_f_name")
-	 * MultipartFile multipartFile) { String result ="0"; int chk = member_Service.
-	 * }
-	 */
 
 	// 프로필 사진 변경
 	@RequestMapping(value = "member_image_change.do", method = RequestMethod.POST)
@@ -192,12 +186,11 @@ public class Member_Controller {
 
 		String id = (String) request.getSession().getAttribute("memberID");
 		MemberVO mvo = member_Service.getNickname_Name(id);
-		// String nickname = request.getParameter("name");
+		List<PointVO> pvoList = member_Service.getPointID(id);
+		PointVO pvo = pvoList.get(0); // 첫 번째 PointVO 객체를 가져옴
 		String nickname = mvo.getNickname();
 		String name = mvo.getName();
-		// System.out.println(nickname +"닉/이름"+name);
 		int cur_point = mvo.getCur_point();
-		// System.out.println(cur_point);
 
 		mvo.setCur_point(cur_point);
 		mv.addObject("cur_point", cur_point);
@@ -218,18 +211,43 @@ public class Member_Controller {
 		if (select.equals("other")) {
 			selectnanum = writenanum;
 		}
-		// String selectbtn = request.getParameter("select");
 
-		// String writename = request.getParameter("writename");
-		// System.out.println(writename+"name/select"+selectnanum);
+		String req_name = request.getParameter("writename");
+
+		pvo.setReq_name(req_name);
+
+		if (select.equals("other")) {
+			int money = Integer.parseInt(writenanum) * 100;
+			pvo.setReq_money(money);
+			int point = money / 100;
+			// System.out.println("point:" + point);
+			pvo.setReq_point(point);
+		} else {
+			 String[] split = select.replaceAll("[^0-9()]", "").split("\\(|\\)");
+			    String str_point = split[0];
+			    int point = Integer.parseInt(str_point);
+			    String priceStr = split[1].replaceAll(",", "");
+			    int money = Integer.parseInt(priceStr);
+			    
+			   // System.out.println("money:"+money);
+			   // System.out.println("point:"+point);
+			    
+			    pvo.setReq_money(money);
+			    pvo.setReq_point(point);
+		}
+		member_Service.getPointInsert(pvo);
+		// 디비에 값이 하나도 없을 경우 "Index 0 out of bounds for length 0"오류 발생
+		// 페이징처리
 		return mv;
 	}
 
 	@RequestMapping("member_nanumi_change_list.do")
-	public ModelAndView getNanumiChangeList(HttpServletRequest request) {
+	public ModelAndView getNanumiChangeList(HttpServletRequest request, PointVO pvo) {
 		ModelAndView mv = new ModelAndView("member/member_nanumi_change_list");
 
-		int count = member_Service.getTotalCount();
+		// String id = (String) request.getSession().getAttribute("memberID");
+
+		int count = member_Service.getTotalCountPoint();
 		paging.setTotalRecord(count);
 
 		// 전체 페이지의 수
@@ -264,7 +282,9 @@ public class Member_Controller {
 			paging.setEndBlock(paging.getTotalPage());
 		}
 
-		List<MemberVO> list = member_Service.getList(paging.getBegin(), paging.getEnd());
+		List<PointVO> list = member_Service.getChangePointList(paging.getBegin(), paging.getEnd());
+		//System.out.println("list:" + list);
+
 		mv.addObject("paging", paging);
 		mv.addObject("list", list);
 
@@ -329,7 +349,7 @@ public class Member_Controller {
 		ModelAndView mv = new ModelAndView("member/member_inquiry");
 
 		// 전체 게시물의 수
-		int count = member_Service.getTotalCount();
+		int count = member_Service.getTotalCountInq();
 		paging.setTotalRecord(count);
 
 		// 전체 페이지의 수
@@ -368,8 +388,7 @@ public class Member_Controller {
 		mv.addObject("paging", paging);
 		mv.addObject("list", list);
 		return mv;
-		
-		
+
 		// 관리자페이지에서 답변 달면 답변 대기 -> 답변 완료로 변경되어야 한다
 	}
 
@@ -390,7 +409,7 @@ public class Member_Controller {
 		mv.addObject("res", res);
 		return mv;
 	}
-	
+
 	// 삭제
 	@RequestMapping(value = "member_inquiry_delete.do", method = RequestMethod.GET)
 	public ModelAndView getDeleteInquiry(@RequestParam("inquiry_idx") int inquiry_idx) {
@@ -421,22 +440,22 @@ public class Member_Controller {
 		return mv;
 	}
 
-	// 원리스트 
+	// 원리스트
 	@RequestMapping("member_inquiry_onelist_ans.do")
 	public ModelAndView getInquiryOnelistAns(HttpServletRequest request) {
-	    ModelAndView mv = new ModelAndView("member/member_inquiry_onelist_ans");
-	    String id = (String) request.getSession().getAttribute("memberID");
-	    MemberVO mvo = member_Service.getNickname_Name(id);
-	    int inquiry_idx = Integer.parseInt(request.getParameter("inquiry_idx"));
-	    
-	    InquiryVO iqvo = member_Service.getInqOneList(inquiry_idx);
-	    String contents = iqvo.getInq_content().trim();
-	    
-	    mv.addObject("contents", contents);
-	    mv.addObject("iqvo", iqvo);
-	    mv.addObject("mvo", mvo);
+		ModelAndView mv = new ModelAndView("member/member_inquiry_onelist_ans");
+		String id = (String) request.getSession().getAttribute("memberID");
+		MemberVO mvo = member_Service.getNickname_Name(id);
+		int inquiry_idx = Integer.parseInt(request.getParameter("inquiry_idx"));
 
-	    return mv;
+		InquiryVO iqvo = member_Service.getInqOneList(inquiry_idx);
+		String contents = iqvo.getInq_content().trim();
+
+		mv.addObject("contents", contents);
+		mv.addObject("iqvo", iqvo);
+		mv.addObject("mvo", mvo);
+
+		return mv;
 	}
 
 	@RequestMapping("member_regular_list.do")

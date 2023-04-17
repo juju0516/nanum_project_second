@@ -57,7 +57,7 @@
 				<h3 style="margin-right: 65px;">나누미 전환</h3>
 				<div class="radio_list">
 					<ul>
-						<li><input type="radio" name="select" value="50 나누미(5,000원)">50
+						<li><input type="radio" name="select" value="50나누미(5,000원)">50
 							나누미( 5,000원)</li>
 						<li><input type="radio" name="select" value="100나누미(10,000원)">100
 							나누미(10,000원)</li>

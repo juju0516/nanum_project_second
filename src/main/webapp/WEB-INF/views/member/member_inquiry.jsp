@@ -43,7 +43,7 @@
 							<th>제목&nbsp;</th>
 							<th>날짜&nbsp;</th>
 							<th>답변 상태&nbsp;</th>
-							<th class="">삭제&nbsp;</th>
+							<th>삭제&nbsp;</th>
 						</tr>
 						<c:choose>
 							<c:when test="${empty list}">
@@ -56,8 +56,10 @@
 									<tr class="list">
 										<td>${paging.totalRecord - ((paging.nowPage-1)*paging.numPerPage + vs.index)}</td>
 										<td><a
-											href="member_inquiry_onelist_ans.do?inquiry_idx=${k.inquiry_idx}&cPage=${paging.nowPage}">${k.inq_title}<input
-												type="hidden" name="inquiry_idx" value="${k.inquiry_idx}"></a></td>
+											href="member_inquiry_onelist_ans.do?inquiry_idx=${k.inquiry_idx}&cPage=${paging.nowPage}">
+												${k.inq_title} <input type="hidden" name="inquiry_idx"
+												value="${k.inquiry_idx}">
+										</a></td>
 										<td>${k.inq_date.substring(0,10)}</td>
 										<td>${k.inq_state}</td>
 										<td><input type="image"
@@ -73,13 +75,12 @@
 		</form>
 	</section>
 	<section>
-		<!-- 
 		<form>
-		<div class="contents">
-			<input type="button" class="moreview" value="더보기" onclick="">
-		</div>
+			<div class="contents">
+				<input type="button" class="moreview" value="더보기" onclick="">
+			</div>
 		</form>
-		 -->
+
 	</section>
 	<jsp:include page="../footer.jsp" />
 </body>

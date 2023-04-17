@@ -17,7 +17,7 @@
 		select * from(
 		select rownum r_num, a.*
 		from (select * from inquiry order by
-		inquiry_idx desc)
+		inquiry_idx asc)
 		a) where r_num between #{begin} and #{end}
 	</select>
 	<delete id="delete" parameterType="int">
@@ -27,6 +27,9 @@
 	<select id="onelist_idx" parameterType="int" resultType="iqvo">
 		select *
 		from inquiry where inquiry_idx = #{inquiry_idx}
+	</select>
+	<select id="count" resultType="int">
+		select count(*) from inquiry
 	</select>
 
 </mapper>

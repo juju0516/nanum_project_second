@@ -112,6 +112,8 @@ public class Login_Controller {
 		String birth = request.getParameter("birth");
 		String phone = request.getParameter("phone");
 		String email = request.getParameter("email");
+		
+		request.getSession().setAttribute("memberID", id);
 
 		int result = login_Service.getMemberJoin(mvo);
 		mv.addObject("id", id);
@@ -120,19 +122,6 @@ public class Login_Controller {
 
 	@RequestMapping("login_sign_up_final.do")
 	public ModelAndView getSignUpFinal(HttpServletRequest request, @RequestParam("id") String id) {
-
-		/*
-		 * , @RequestParam("id") String id,
-		 * 
-		 * @RequestParam("nickname") String nickname, @RequestParam("sample3_postcode")
-		 * String sample3_postcode,
-		 * 
-		 * @RequestParam("sample3_address") String sample3_address,
-		 * 
-		 * @RequestParam("sample3_detailAddress") String sample3_detailAddress,
-		 * 
-		 * @RequestParam("sample3_extraAddress") String sample3_extraAddress
-		 */
 
 		String nickname = request.getParameter("nickname");
 		String sample3_postcode = request.getParameter("sample3_postcode");
@@ -153,7 +142,6 @@ public class Login_Controller {
 		MemberVO mvo = login_Service.getSignId(id);
 		mvo.setAddress(address);
 		mvo.setNickname(nickname);
-		// request.getSession().setAttribute("memberID", id);
 		int result = login_Service.getMemberAdd(mvo);
 
 		// 회원 폴더 생성(본인 폴더 루트로 바꿔주세요)
@@ -228,7 +216,10 @@ public class Login_Controller {
 			request.getSession().setAttribute("access_token", access_token);
 			request.getSession().setAttribute("refresh_token", refresh_token);
 			request.getSession().setAttribute("login", "ok");
-			request.getSession().setAttribute("memberID", "coffee");
+			
+			String id = "kakao:" + access_token; // 카카오 로그인으로 인증된 회원의 ID
+			request.getSession().setAttribute("memberID", id);
+			
 
 		} catch (Exception e) {
 			System.out.println(e);

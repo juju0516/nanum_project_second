@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.ict.member.model.vo.InquiryVO;
 import com.ict.member.model.vo.MemberVO;
+import com.ict.member.model.vo.PointVO;
 
 @Repository
 public class Member_DAO {
@@ -31,8 +32,14 @@ public class Member_DAO {
 		return sqlSessionTemplate.update("member.update_prof", mvo);
 	}
 	
-	public int getTotalCoutn() {
+	public int getTotalCount() {
 		return sqlSessionTemplate.selectOne("member.count");
+	}
+	public int getTotalCountInq() {
+		return sqlSessionTemplate.selectOne("inquiry.count");
+	}
+	public int getTotalCountPoint() {
+		return sqlSessionTemplate.selectOne("point.count");
 	}
 	public List<MemberVO> getList(int begin, int end) {
 		Map<String, Integer> map = new HashMap<String, Integer>();
@@ -65,5 +72,19 @@ public class Member_DAO {
 	
 	public int getDeleteInquiry(int inquiry_idx) {
 		return sqlSessionTemplate.delete("inquiry.delete", inquiry_idx);
+	}
+	
+	public int getPointInsert(PointVO pvo) {
+		return sqlSessionTemplate.insert("point.insert_point", pvo);
+	}
+	
+	public List<PointVO> getChangePointList(int begin, int end) {
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("begin", begin);
+		map.put("end", end);
+		return sqlSessionTemplate.selectList("point.point_list", map);
+	}
+	public List<PointVO> getPointID(String id) {
+		return sqlSessionTemplate.selectList("point.getpoint_id", id);
 	}
 }

@@ -51,6 +51,7 @@
 		<mapper resource="mappers/search_mapper.xml"/>
 		<mapper resource="mappers/manager_mapper.xml"/>		
 		<mapper resource="mappers/inquiry_mapper.xml"/>		
+		<mapper resource="mappers/point_mapper.xml"/>		
 	</mappers>
 	
 </configuration>

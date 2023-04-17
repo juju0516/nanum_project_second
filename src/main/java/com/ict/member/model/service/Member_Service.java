@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ict.member.model.vo.InquiryVO;
 import com.ict.member.model.vo.MemberVO;
+import com.ict.member.model.vo.PointVO;
 
 public interface Member_Service {
 	
@@ -11,6 +12,8 @@ public interface Member_Service {
 	public int getChangeNick(MemberVO mvo);
 	public int getChangeProf(MemberVO mvo);
 	public int getTotalCount();
+	public int getTotalCountInq();
+	public int getTotalCountPoint();
 	public List<MemberVO> getList(int begin, int end);
 	public MemberVO getOneList(String id);
 	public int getMemberUpdate(MemberVO mvo);
@@ -18,4 +21,7 @@ public interface Member_Service {
 	public InquiryVO getInqOneList(int inquiry_idx);
 	public List<InquiryVO>getInqList(int begin, int end);
 	public int getDeleteInquiry(int inquiry_idx);
+	public int getPointInsert(PointVO pvo);
+	public List<PointVO>getChangePointList(int begin, int end);
+	public List<PointVO> getPointID(String id);
 }

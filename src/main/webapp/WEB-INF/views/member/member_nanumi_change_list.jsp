@@ -26,7 +26,7 @@
 						<th>제목&nbsp;</th>
 						<th>나누미&nbsp;</th>
 						<th>상태&nbsp;</th>
-						<th class="">날짜&nbsp;</th>
+						<th>날짜&nbsp;</th>
 					</tr>
 
 					<c:choose>
@@ -39,10 +39,10 @@
 							<c:forEach var="k" items="${list}" varStatus="vs">
 								<tr class="list">
 									<td>${paging.totalRecord - ((paging.nowPage-1)*paging.numPerPage + vs.index)}</td>
-									<td>[종류]제목&nbsp;&nbsp;</td>
-									<td>차감/증액 포인트 액수&nbsp;&nbsp;</td>
-									<td>상태입력(신청중/차감/증액)&nbsp;&nbsp;</td>
-									<td>날짜출력&nbsp;&nbsp;</td>
+									<td>[${k.p_category}]포인트 전환 신청</td>
+									<td>${k.req_point}</td>
+									<td>${k.p_state}</td>
+									<td>${k.req_p_date.substring(0,10)}</td>
 								</tr>
 							</c:forEach>
 						</c:otherwise>

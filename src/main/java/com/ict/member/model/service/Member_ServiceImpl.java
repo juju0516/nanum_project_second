@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.ict.member.model.dao.Member_DAO;
 import com.ict.member.model.vo.InquiryVO;
 import com.ict.member.model.vo.MemberVO;
+import com.ict.member.model.vo.PointVO;
 
 @Service
 public class Member_ServiceImpl implements Member_Service{
@@ -36,7 +37,7 @@ public class Member_ServiceImpl implements Member_Service{
 	
 	@Override
 	public int getTotalCount() {
-		return member_DAO.getTotalCoutn();
+		return member_DAO.getTotalCount();
 	}
 	
 	@Override
@@ -72,6 +73,31 @@ public class Member_ServiceImpl implements Member_Service{
 	@Override
 	public int getDeleteInquiry(int inquiry_idx) {
 		return member_DAO.getDeleteInquiry(inquiry_idx);
+	}
+	
+	@Override
+	public int getTotalCountInq() {
+		return member_DAO.getTotalCountInq();
+	}
+	
+	@Override
+	public int getTotalCountPoint() {
+		return member_DAO.getTotalCountPoint();
+	}
+	
+	@Override
+	public int getPointInsert(PointVO pvo) {
+		return member_DAO.getPointInsert(pvo);
+	}
+	
+	@Override
+	public List<PointVO> getChangePointList(int begin, int end) {
+		return member_DAO.getChangePointList(begin, end);
+	}
+	
+	@Override
+	public List<PointVO> getPointID(String id) {
+		return member_DAO.getPointID(id);
 	}
 	
 }
