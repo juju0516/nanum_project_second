@@ -52,6 +52,29 @@ public class Login_ServiceImpl implements Login_Service {
 		return login_DAO.FindIdPw(id);
 	}
 	
-
+	@Override
+	public MemberVO FindId_Phone(String id) {
+		return login_DAO.FindId_Phone(id);
+	}
+	
+	@Override
+	public MemberVO FindPw_Phone(String pw) {
+		return login_DAO.FindPw_Phone(pw);
+	}
+	
+	@Override
+	public MemberVO FindId_Email(String id) {
+		return login_DAO.FindId_Email(id);
+	}
+	
+	@Override
+	public MemberVO FindPw_Email(String pw) {
+		return login_DAO.FindPw_Email(pw);
+	}
+	
+	@Override
+	public MemberVO getPw(String pw) {
+		return login_DAO.FindPw(pw);
+	}
 
 }

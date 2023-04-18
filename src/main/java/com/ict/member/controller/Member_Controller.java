@@ -347,6 +347,8 @@ public class Member_Controller {
 	@RequestMapping("member_inquiry.do")
 	public ModelAndView getInquiry(HttpServletRequest request, InquiryVO iqvo) {
 		ModelAndView mv = new ModelAndView("member/member_inquiry");
+		
+		//String id = (String) request.getSession().getAttribute("memberID");
 
 		// 전체 게시물의 수
 		int count = member_Service.getTotalCountInq();
@@ -385,6 +387,7 @@ public class Member_Controller {
 		}
 
 		List<InquiryVO> list = member_Service.getInqList(paging.getBegin(), paging.getEnd());
+		
 		mv.addObject("paging", paging);
 		mv.addObject("list", list);
 		return mv;

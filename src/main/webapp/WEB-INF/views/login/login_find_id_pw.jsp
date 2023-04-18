@@ -6,12 +6,12 @@
 <meta charset="UTF-8">
 <title>find id pw</title>
 <script type="text/javascript">
-	/* function find_id_go(f) {
-		alert("설정하신 아이디는 **** 입니다.");
+	 function find_id_go(f) {
+		alert("설정하신 아이디는" + ${mvo.id} + "입니다.");
 	}
 	function find_pw_go(f) {
 		alert("패스워드가 이메일로 발송되었습니다.");
-	} */
+	} 
 </script>
 <link
 	href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square-neo.css"
@@ -34,11 +34,11 @@
 						<table>
 							<tr>
 								<td>이름:</td>
-								<td><input type="text" id="user" placeholder="이름을 입력하세요"></td>
+								<td><input type="text" id="user" name="i_write_id"  placeholder="이름을 입력하세요"></td>
 							</tr>
 							<tr>
 								<td>전화번호:</td>
-								<td><input type="text" id="user"
+								<td><input type="text" id="user" name="i_write_phone" 
 									placeholder="(-)를 제외하고 입력하세요"></td>
 							</tr>
 						</table>
@@ -52,7 +52,7 @@
 					</div>
 					<div class="next">
 						<a href="next_page"><button class="next_btn"
-								onclick="find_id_go">완료</button></a>
+								onclick="find_id_go(this.form)">완료</button></a>
 					</div>
 				</div>
 				<div style="margin: 50px; border-left: 3px solid gray;"></div>
@@ -62,17 +62,17 @@
 						<table>
 							<tr>
 								<td>ID:</td>
-								<td><input type="text" id="user" placeholder="ID를 입력하세요"></td>
+								<td><input type="text" id="user" name="p_write_id" placeholder="ID를 입력하세요"></td>
 							</tr>
 							<tr>
 								<td>e-mail:</td>
-								<td><input type="text" id="user" placeholder="e-mail 입력하세요"></td>
+								<td><input type="text" id="user" name="p_write_email" placeholder="e-mail 입력하세요"></td>
 							</tr>
 						</table>
 					</div>
 					<div class="next2">
 						<a href="next_page2"><button class="next_btn2"
-								onclick="find_pw_go">완료</button></a>
+								onclick="find_pw_go(this.form)">완료</button></a>
 					</div>
 				</div>
 			</div>

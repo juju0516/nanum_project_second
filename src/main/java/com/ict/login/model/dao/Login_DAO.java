@@ -45,6 +45,30 @@ public class Login_DAO {
 	public MemberVO FindIdPw(String id) {
 		return sqlSessionTemplate.selectOne("login_mapper.dologin", id);
 	}
-
+	
+	// 패스워드 가져오기
+	public MemberVO FindPw(String pw) {
+		return sqlSessionTemplate.selectOne("login_mapper.dogetpw", pw);
+	}
+	
+	// 폰번호로 아이디찾기
+	public MemberVO FindId_Phone(String id) {
+		return sqlSessionTemplate.selectOne("login_mapper.find_id_phone", id);
+	}
+	
+	// 폰번호로 비번찾기
+	public MemberVO FindPw_Phone(String pw) {
+		return sqlSessionTemplate.selectOne("login_mapper.find_pw_phone", pw);
+	}
+	
+	// 이메일로 아이디찾기
+	public MemberVO FindId_Email(String id) {
+		return sqlSessionTemplate.selectOne("login_mapper.find_id_email", id);
+	}
+	
+	// 이메일로 비번찾기
+	public MemberVO FindPw_Email(String pw) {
+		return sqlSessionTemplate.selectOne("login_mapper.find_pw_email", pw);
+	}
 	
 }

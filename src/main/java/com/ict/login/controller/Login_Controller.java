@@ -72,8 +72,16 @@ public class Login_Controller {
 	}
 
 	@RequestMapping("login_find_id.do")
-	public ModelAndView getFindIDPage() {
-		return new ModelAndView("login/login_find_id_pw");
+	public ModelAndView getFindIDPage(HttpServletRequest request) {
+		ModelAndView mv = new  ModelAndView("login/login_find_id_pw");
+		String i_write_id = request.getParameter("i_write_id");
+		String i_write_phone = request.getParameter("i_write_phone");
+		String p_write_id = request.getParameter("p_write_id");
+		String p_write_email = request.getParameter("p_write_email");
+		
+		// 여기서부터
+		
+		return mv;
 	}
 
 	@RequestMapping("login_find_id_email.do")
