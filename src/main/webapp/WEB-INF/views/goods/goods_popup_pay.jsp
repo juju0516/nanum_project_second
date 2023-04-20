@@ -75,7 +75,7 @@ table .head { /*th보다 아래에 있어야 배경색이 먹힘.*/
 	background-color: #fd5f00; 
 }
 </style>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.3/jquery.min.js"></script>
 <script type="text/javascript">
 	function cancel() {
 	 	if (confirm("결제를 취소하시겠습니까?") == true) {
@@ -111,7 +111,7 @@ table .head { /*th보다 아래에 있어야 배경색이 먹힘.*/
 						<td>${gvo.price * amount}나누미</td>
 						<%-- <td>${gvo.delivery_charge} 나누미</td> --%>
 						<td>6 나누미</td>
-						<td>${(gvo.price * amount) + 6}나누미</td>
+						<td>${(gvo.price * amount) + gvo.delivery_charge}나누미</td>
 					</tr>
 				</tbody>
 			</table>

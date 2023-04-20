@@ -11,7 +11,6 @@
 <link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-barun-gothic.css" rel="stylesheet">
 
 <style type="text/css">
-
 .goods_top {
     max-width: 1000px;
     margin: 100px auto 100px auto;
@@ -76,7 +75,7 @@ span.commingSoon {
 	color: red;
 }
 </style>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 </head>
 <body>
 <form method="post" name="f">
@@ -111,7 +110,7 @@ span.commingSoon {
 				           		<c:choose>
 				           			<c:when test="${k.cur_amount == 0}">
 										<a href="goods_detail.do?goods_idx=${k.goods_idx}" class="goods">
-				           				<img src="resources/images/system/${k.goods_soldout_img}" width="300" >
+				           				<img src="resources/upload/system/attach/${k.goods_soldout_img}" width="300" >
 						              	<p><span class="goods_period">기간 : ${k.open_date.substring(0,10)} ~ ${k.close_date.substring(0,10)}</span></p>
 						               	<p><span class="goods_name"> [굿즈]${k.goods_name}</span></p>
 						               	<p><span class="goods_price" style="display: none;"> ${k.price} 나누미</span></p>
@@ -121,7 +120,7 @@ span.commingSoon {
 				           			<c:otherwise>
 				           				
 										<a href="goods_detail.do?goods_idx=${k.goods_idx}" class="goods">
-				           				<img src="resources/images/system/${k.goods_main_img}" width="300">
+				           				<img src="resources/upload/system/attach/${k.goods_main_img}" width="300">
 						              	<p><span class="goods_period">기간 : ${k.open_date.substring(0,10)} ~ ${k.close_date.substring(0,10)}</span></p>
 						               	<p><span class="goods_name"> [굿즈]${k.goods_name}</span></p>
 				               			<p><span class="goods_price"> ${k.price} 나누미</span></p>

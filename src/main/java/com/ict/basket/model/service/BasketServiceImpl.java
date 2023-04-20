@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.ict.basket.model.dao.BasketDAO;
 import com.ict.basket.model.vo.Goods_BasketVO;
+import com.ict.basket.model.vo.PrjListBasketVO;
 import com.ict.basket.model.vo.Project_BasketVO;
 
 @Service
@@ -18,23 +19,28 @@ public class BasketServiceImpl implements BasketService {
 	public void setBasketDAO(BasketDAO basketDAO) {
 		this.basketDAO = basketDAO;
 	}
-//	
-//	// 프로젝트바구니
+	
+	// 프로젝트바구니
 //	@Override
-//	public List<Project_BasketVO> getBasketPrjList(String id) throws Exception {
+//	public List<Project_BasketVO> getBasketPrjList(PrjListBasketVO plistbvo) throws Exception {
 //		// 프로젝트 바구니 리스트
-//		return basketDAO.getBasketPrjList(id);
+//		return basketDAO.getBasketPrjList(plistbvo);
 //	}
-//	
-//	@Override
-//	public int getBasketPrjDelete(int project_basket_idx) {
-//		// 프로젝트 바구니 삭제하기
-//		return basketDAO.getBasketPrjDelete(project_basket_idx);
-//	}
-//	
-//	
-//	
-//
+	@Override
+	public List<PrjListBasketVO> getBasketPrjList(String id) throws Exception {
+		return basketDAO.getBasketPrjList(id);
+	}
+	
+	
+	@Override
+	public int getBasketPrjDelete(int project_basket_idx) {
+		// 프로젝트 바구니 삭제하기
+		return basketDAO.getBasketPrjDelete(project_basket_idx);
+	}
+	
+	
+	
+
 	// 굿즈바구니
 	@Override
 	public List<Goods_BasketVO> getBasketGoodsList(String id) throws Exception {
@@ -61,17 +67,22 @@ public class BasketServiceImpl implements BasketService {
 		return basketDAO.getBasketGoodsUpdate(gbvo);
 	}
 	
-//	@Override
-//	public int getBasketGoodsEdit(int goods_idx, int amount) throws Exception {
-//		// 장바구니에서 수량 수정하기(증가하거나 감소하거나(1까지))
-//		return basketDAO.getBasketGoodsEdit(goods_idx, amount);
-//	}
-//	
-//	@Override
-//	public int getBasketGoodsDelete(int goods_basket_idx) throws Exception {
-//		// 장바구니에서 물품 삭제하기
-//		return basketDAO.getBasketGoodsDelete(goods_basket_idx);
-//	}
-//
+	@Override
+	public int getBasketGoodsEdit(String goods_basket_idx, String amount) throws Exception {
+		// 장바구니에서 수량 수정하기(증가하거나 감소하거나(1까지))
+		return basketDAO.getBasketGoodsEdit(goods_basket_idx, amount);
+	}
+	
+	@Override
+	public int getBasketGoodsDelete(String goods_basket_idx) throws Exception {
+		// 장바구니에서 물품 삭제하기
+		return basketDAO.getBasketGoodsDelete(goods_basket_idx);
+	}
+
+	@Override
+	public Goods_BasketVO getBasketGoodsOneList(String goods_basket_idx) throws Exception {
+		// 굿즈바구니에서 다중선택시 goods_basket_idx 로 굿즈 정보 가져오기
+		return basketDAO.getBasketGoodsOneList(goods_basket_idx);
+	}
 
 }

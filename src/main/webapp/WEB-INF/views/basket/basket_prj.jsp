@@ -140,33 +140,33 @@ td {
 		</ul>
 	</div>
 </header>
-<%-- 	<jsp:include page="prj_basket.jsp" /> --%>
-
 					
 <section>
 <div class="basket_wrap">
 	<article class="dnt_wrap">
 		<table>
 		<thead> <tr><th class="basket_name" colspan="4"> 프로젝트 </th></tr> </thead>
-<%-- 			<c:choose>
-				<c:when test="${empty basket_prj}">
-					<tr><th class="empty_basket" colspan="4" style="text-align: center;">후원 바구니가 비어있습니다.</th></tr>
+			<c:choose>
+				<c:when test="false">
+<%-- 				<c:when test="${empty basket_prj}"> --%>
+					<tr><th class="empty_basket" colspan="4" style="text-align: center;">프로젝트 바구니가 비어있습니다.</th></tr>
 				</c:when>
-				<c:otherwise> --%>
+				<c:otherwise>
 					<c:forEach var="k" items="${basket_prj}">
 						<tr>
-							<td><img class="thumbnail" src="resources/images/system/kittt.png" width="150px"></td>
-							<td><span class="subject">ABCD 기부 프로젝트</span><br>
-								<span class="period">기간: ${''} ~ ${''} 2023.03.06 ~ 2023.04.07</span><br>
-								<progress id="progressbar" value="${''}" min="0" max="100"></progress><b>&nbsp;${''}%</b>
+							<td><img class="thumbnail" src="resources/${k.id}/upload/attach/${k.prj_f_name}" width="150px"></td>
+							<td><span class="subject">${k.basket_prj}</span><br>
+								<span class="period">기간: ${k.prj_begin_date.substring(0,10)} ~ ${k.prj_end_date.substring(0,10)}</span><br>
+								<progress id="progressbar" value="${Math.round(((k.cur_point + k.r_cur_point) / k.goal_point) * 100)}" min="0" max="100"></progress>
+								<b>&nbsp;${Math.min(Math.round(((k.cur_point + k.r_cur_point) / k.goal_point) * 100), 100)}%</b>
 							 </td>
-							 <td style="text-align: right;"><a href="#나누미결제"><button class="payment_btn" onclick="dnt">참여하기</button></a></td>
-							 <td><a href="#목록삭제하기"><button class="del_btn">x</button></a> </td>
+							 <td style="text-align: right;"><input type="button" class="payment_btn" value="참여하기" onclick="dnt()"></td>
+							 <td><input type="button" class="del_btn" value="x" onclick="listdelete()"></td>
 						</tr>
 					
 		 			</c:forEach>
-<%-- 				</c:otherwise>
-			</c:choose>  --%>
+				</c:otherwise>
+			</c:choose> 
 		</table>
 	</article>
 </div>

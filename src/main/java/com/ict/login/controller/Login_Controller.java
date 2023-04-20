@@ -59,7 +59,7 @@ public class Login_Controller {
 		// vo에 담겨있는 패스워드.equals 받은패스워드
 		// 해서 맞으면 패스워드 맞음
 
-		 //System.out.println("id:"+id);
+		// System.out.println("id:"+id);
 		if (mvo != null) {
 			if (mvo.getPw().equals(pw)) {
 				// System.out.println("pw:"+pw);
@@ -73,14 +73,18 @@ public class Login_Controller {
 
 	@RequestMapping("login_find_id.do")
 	public ModelAndView getFindIDPage(HttpServletRequest request) {
-		ModelAndView mv = new  ModelAndView("login/login_find_id_pw");
+		ModelAndView mv = new ModelAndView("login/login_find_id_pw");
 		String i_write_id = request.getParameter("i_write_id");
 		String i_write_phone = request.getParameter("i_write_phone");
 		String p_write_id = request.getParameter("p_write_id");
 		String p_write_email = request.getParameter("p_write_email");
-		
-		// 여기서부터
-		
+
+		if (i_write_id != null && i_write_phone != null) {
+			MemberVO foundId = login_Service.FindId_Phone(i_write_id);
+			mv.addObject("foundId", foundId);
+			mv.setViewName("login/findIdResult");
+		}
+
 		return mv;
 	}
 
@@ -120,7 +124,7 @@ public class Login_Controller {
 		String birth = request.getParameter("birth");
 		String phone = request.getParameter("phone");
 		String email = request.getParameter("email");
-		
+
 		request.getSession().setAttribute("memberID", id);
 
 		int result = login_Service.getMemberJoin(mvo);
@@ -155,13 +159,25 @@ public class Login_Controller {
 		// 회원 폴더 생성(본인 폴더 루트로 바꿔주세요)
 		String path = "D:\\kmj\\springstudy\\nanum\\src\\main\\webapp\\resources\\upload\\" + id + "\\attach";
 		String path2 = "D:\\kmj\\springstudy\\nanum\\src\\main\\webapp\\resources\\upload\\" + id + "\\s_editor";
+		String path_1 = "D:\\kmj\\springstudy\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\nanum\\resources\\upload\\"
+				+ id + "\\attach";
+		String path2_1 = "D:\\kmj\\springstudy\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\nanum\\resources\\upload\\"
+				+ id + "\\s_editor";
 		File folder = new File(path);
 		File folder2 = new File(path2);
+		File folder_1 = new File(path_1);
+		File folder2_1 = new File(path2_1);
 
 		if (!folder.exists()) {
 			try {
-				folder.mkdirs(); 
-				folder2.mkdirs(); 
+				folder.mkdirs();
+				folder2.mkdirs();
+
+				if (!folder_1.mkdirs())
+					System.out.println("folder_1 생성 실패.");
+
+				if (!folder2_1.mkdirs())
+					System.out.println("folder2_1 생성 실패.");
 			} catch (Exception e) {
 				e.getStackTrace();
 			}
@@ -224,10 +240,9 @@ public class Login_Controller {
 			request.getSession().setAttribute("access_token", access_token);
 			request.getSession().setAttribute("refresh_token", refresh_token);
 			request.getSession().setAttribute("login", "ok");
-			
+
 			String id = "kakao:" + access_token; // 카카오 로그인으로 인증된 회원의 ID
 			request.getSession().setAttribute("memberID", id);
-			
 
 		} catch (Exception e) {
 			System.out.println(e);

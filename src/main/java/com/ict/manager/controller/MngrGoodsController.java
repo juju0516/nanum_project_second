@@ -1,9 +1,7 @@
 package com.ict.manager.controller;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -11,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,7 +20,7 @@ import com.ict.common.Paging;
 import com.ict.goods.model.vo.GoodsVO;
 import com.ict.goods.model.vo.Goods_SaleVO;
 import com.ict.manager.model.service.GoodsService;
-import com.ict.member.model.vo.MemberVO;
+import com.ict.manager.model.vo.MngrSearchVO;
 import com.ict.member.model.vo.PointVO;
 
 @Controller
@@ -38,6 +35,8 @@ public class MngrGoodsController {
 	private FileReName fileReName;
 
 	private String cPage, s_cPage;
+	// 굿즈 정보 검색어
+	private String g_s_word;
 	// 굿즈 구매 내역 검색 조건들
 	private String s_type, s_word, s_state, b_date, e_date;
 
@@ -47,12 +46,30 @@ public class MngrGoodsController {
 	public ModelAndView managerGoodsList(HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView("manager/mngr_goods_list");
 
+		// 왼쪽 사이드바 메뉴 선택인 경우 검색어 초기화
+		if(request.getParameter("init") != null &&
+		   request.getParameter("init").equals("y")) {
+			g_s_word = "";   //System.out.println("init g_s_word:" + g_s_word);
+			paging.init(6, 2); 
+			cPage = "1";
+		}
+		// 검색버튼이 눌러진 경우
+		if(request.getParameter("search") != null &&
+		   request.getParameter("search").equals("y"))	{
+			g_s_word = request.getParameter("search-word");  //System.out.println("search g_s_word:" + g_s_word);
+			paging.init(6, 2); 
+			cPage = "1";
+		}
+		
+		System.out.println("g_s_word:" + g_s_word);
+			
 		// 1. 전체 게시물의 수 구하기
 		try {
-			int count = goodsService.getTotalCount(); // System.out.println("count : " + count);
+			int count = goodsService.getTotalCount(g_s_word);  System.out.println("count : " + count);
 			paging.setTotalRecord(count);
 		} catch (Exception e) {
 			logger.info("managerGoodsList: getTotalCount() err");
+			e.printStackTrace();
 			return new ModelAndView("manager/error");
 		}
 
@@ -105,7 +122,8 @@ public class MngrGoodsController {
 			// System.out.println("begin, end :" + paging.getBegin() + ", " +
 			// paging.getEnd());
 
-			List<GoodsVO> list = goodsService.getGoodsList(paging.getBegin(), paging.getEnd());
+			List<GoodsVO> list = goodsService.getGoodsList(
+							paging.getBegin(), paging.getEnd(), g_s_word);
 			mv.addObject("goods_list", list);
 			mv.addObject("paging", paging);
 		} catch (Exception e) {
@@ -156,6 +174,7 @@ public class MngrGoodsController {
 		vo.setGoods_name(request.getParameter("goods_name"));
 		vo.setPrice(Integer.parseInt(request.getParameter("price")));
 		vo.setInit_amount(Integer.parseInt(request.getParameter("init_amount")));
+		vo.setCur_amount(vo.getInit_amount());
 		vo.setClose_date(request.getParameter("close_date"));
 		vo.setDelivery_charge(Integer.parseInt(request.getParameter("delivery_charge")));
 		vo.setDelivery_charge_l(Integer.parseInt(request.getParameter("delivery_charge_l")));
@@ -380,9 +399,40 @@ public class MngrGoodsController {
 	public ModelAndView managerGoodsSale(HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView("manager/mngr_goods_sale");
 	
+		// 왼쪽 사이드바 메뉴 선택인 경우 검색어 초기화
+		if(request.getParameter("init") != null &&
+		   request.getParameter("init").equals("y")) {
+			s_type=""; s_word=""; s_state=""; b_date=""; e_date="";
+			s_paging.init(6, 2); 
+			s_cPage = "1";
+		}
+		// 검색버튼이 눌러진 경우
+		if(request.getParameter("search") != null &&
+				request.getParameter("search").equals("y"))	{
+			s_type = request.getParameter("s_type");
+			s_word = request.getParameter("s_word");  //System.out.println("search s_word:" + s_word);
+			s_state = request.getParameter("s_state");
+			b_date = request.getParameter("b_date");
+			e_date = request.getParameter("e_date");
+			
+			paging.init(6, 2); 
+			cPage = "1";
+		}
+				
+		MngrSearchVO vo = new MngrSearchVO();
+		vo.setS_type(s_type);
+		vo.setS_word(s_word);
+		vo.setS_state(s_state);
+		vo.setB_date(b_date);
+		vo.setE_date(e_date);
+		
+		System.out.println("s_type/s_wordstate/b_date/e_date: [" + 
+				vo.getS_type() + "][" + vo.getS_word() + "][" + vo.getS_state() +
+				"][" + vo.getB_date() + "][" + vo.getE_date() + "]");	
+		
 		// 1. 전체 게시물의 수 구하기
 		try {
-			int count = goodsService.getSaleTotalCount();  //System.out.println("count : " + count);
+			int count = goodsService.getSaleTotalCount(vo);  System.out.println("count : " + count);
 			s_paging.setTotalRecord(count);
 		} catch (Exception e) {
 			logger.info("managerGoodsSale: getSaleTotalCount() err");
@@ -439,96 +489,13 @@ public class MngrGoodsController {
 			// System.out.println("begin, end :" + s_paging.getBegin() + ", " +
 			// s_paging.getEnd());
 
-			List<Goods_SaleVO> s_list = goodsService.getGoodsSaleList(s_paging.getBegin(), s_paging.getEnd());
+			vo.setBegin(s_paging.getBegin());
+			vo.setEnd(s_paging.getEnd());
+			List<Goods_SaleVO> s_list = goodsService.getGoodsSaleList(vo);
 			mv.addObject("g_s_list", s_list);
 			mv.addObject("paging", s_paging);
 		} catch (Exception e) {
 			logger.info("getGoodsSale() err" + e);
-			e.printStackTrace();
-			return new ModelAndView("manager/error");
-		}
-
-		return mv;
-	}
-
-	// mngr_goods_sale.jsp에서 검색결과를 출력
-	@RequestMapping("mngr_goods_sale_search.do")
-	public ModelAndView managerGoodsSaleSearch(HttpServletRequest request) {
-		ModelAndView mv = new ModelAndView("manager/mngr_goods_sale");	
-		
-		s_type = request.getParameter("s_type");
-		s_word = request.getParameter("s_word");
-		s_state = request.getParameter("state");
-		b_date = request.getParameter("b_date");
-		e_date = request.getParameter("e_date");
-		
-		Map<String, String> s_map = new HashMap<String, String>();
-		
-	
-		// 1. 전체 게시물의 수 구하기
-		try {
-			int count = goodsService.getSaleTotalCount();  //System.out.println("count : " + count);
-			s_paging.setTotalRecord(count);
-		} catch (Exception e) {
-			logger.info("managerGoodsSale: getSaleTotalCount() err");
-			e.printStackTrace();
-			return new ModelAndView("manager/error");
-		}
-
-		// 2. 전체 페이지의 수 구하기
-		// 전체 게시글의 수가 한 페이지에 보여지는 게시글의 수 이하이면, 전체 페이지수는 1
-		if (s_paging.getTotalRecord() <= s_paging.getNumPerPage()) {
-			s_paging.setTotalPage(1);
-		} else {
-			s_paging.setTotalPage(s_paging.getTotalRecord() / s_paging.getNumPerPage());
-
-			if (s_paging.getTotalRecord() % s_paging.getNumPerPage() != 0)
-				s_paging.setTotalPage(s_paging.getTotalPage() + 1);
-		}
-
-		// 3. 현재 페이지 구하기
-		// cmd가 list이면 무조건 cPage라는 현재 페이지 값을 가지고 가야한다.
-		// cPage를 nowPage로 변경시킨다.
-		System.out.println("managerGoodsSale[s_cPage<-req.s_cPage]:" + s_cPage + "<-" + request.getParameter("s_cPage"));
-		if (request.getParameter("s_cPage") != null)
-			s_cPage = request.getParameter("s_cPage");
-
-		// ListCommand에 최초로 오는 경우는 cPage가 없으므로 무조건 cPage는 null이다.
-		if (s_cPage == null || s_cPage.equals(""))
-			s_paging.setNowPage(1);
-		else
-			s_paging.setNowPage(Integer.parseInt(s_cPage));
-
-		// ** 4. 현재 페이지의 시작번호와 끝번호 구하기
-		s_paging.setBegin((s_paging.getNowPage() - 1) * s_paging.getNumPerPage() + 1);
-		s_paging.setEnd((s_paging.getBegin() - 1) + s_paging.getNumPerPage());
-
-		// ** 5. 현재 페이지에서 시작 블록과 끝 블록을 구하기
-		s_paging.setBeginBlock(
-				(int) ((s_paging.getNowPage() - 1) / s_paging.getPagePerBlock()) * s_paging.getPagePerBlock() + 1);
-		s_paging.setEndBlock(s_paging.getBeginBlock() + s_paging.getPagePerBlock() - 1);
-
-		// 1page => block 1-2, 2 => 1-2
-		// 3page => block 3-4, 4 => 3-4
-		// 5page => block 5-6, 6 => 5-6
-
-		// 주의 사항 : endBlock이 totalPage보다 클 수 있다.
-		// 이때는 쓸데없는 endBlock이 생성된다.
-		// 따라서 endBlock이 totalPage보다 크면
-		// endBlock을 totalPage로 변경하자.
-		if (s_paging.getEndBlock() > s_paging.getTotalPage())
-			s_paging.setEndBlock(s_paging.getTotalPage());
-
-		// ** 6. 시작번호와 끝번호로 DB에서 원하는 만큼의 게시물 가져오기
-		try {
-			// System.out.println("begin, end :" + s_paging.getBegin() + ", " +
-			// s_paging.getEnd());
-
-			List<Goods_SaleVO> s_list = goodsService.getGoodsSaleList(s_paging.getBegin(), s_paging.getEnd());
-			mv.addObject("g_s_list", s_list);
-			mv.addObject("paging", s_paging);
-		} catch (Exception e) {
-			logger.info("getGoodsSaleSearch() err" + e);
 			e.printStackTrace();
 			return new ModelAndView("manager/error");
 		}

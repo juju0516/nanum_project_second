@@ -32,6 +32,10 @@ public class ProjectVO {
 	private String	prj_result;
 	private String	manager_id;
 	
+	
+	
+	
+	
 	public int getProject_idx() {
 		return project_idx;
 	}

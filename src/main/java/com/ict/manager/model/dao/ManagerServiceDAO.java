@@ -50,4 +50,21 @@ public class ManagerServiceDAO {
 		
 		return sqlSessionTemplate.update("manager.mngr_state", map);
 	}
+	
+	// alarm
+	public int getPointStateCount(String p_state) {
+		return sqlSessionTemplate.selectOne("manager.p_state_cnt", p_state);
+	}
+	public int getPrjRegiStateCount(String p_r_state) {
+		return sqlSessionTemplate.selectOne("manager.p_r_state_cnt", p_r_state);
+	}
+	public int getGoodsSaleStateCount(String g_s_state) {
+		return sqlSessionTemplate.selectOne("manager.g_s_state_cnt", g_s_state);
+	}
+	public int getReqAidsStateCount(String req_state) {
+		return sqlSessionTemplate.selectOne("manager.req_state_cnt", req_state);
+	}
+	public int getInquiryStateCount(String inq_state) {
+		return sqlSessionTemplate.selectOne("manager.inq_state_cnt", inq_state);
+	}
 }

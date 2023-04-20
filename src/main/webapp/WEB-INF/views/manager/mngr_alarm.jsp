@@ -119,18 +119,18 @@
 		<div class="title"> 신규 알림 </div>
 		<div class="grid-wrap">
 		<div class="alarm-grid">
-			<div class="alarm-type1"><a href="mngr_point_Req.do"> 포인트 전환 신청 </a></div>
-			<div class="alarm-value1"> 00 건 </div>
+			<div class="alarm-type1"><a href="mngr_point_req.do"> 포인트 전환 신청 </a></div>
+			<div class="alarm-value1"> ${p_cnt} 건 </div>
 			<div class="alarm-type2"><a href="mngr_prj_regi.do"> 신규 프로젝트 신청 </a></div>
-			<div class="alarm-value2"> 00 건 </div>
+			<div class="alarm-value2"> ${p_r_cnt + p_r_c_cnt} 건 </div>
 			<div class="alarm-type3"><a href="mngr_goods_sale.do"> 굿즈 판매 </a></div>
-			<div class="alarm-value3"> 00 건 </div>
+			<div class="alarm-value3"> ${g_s_cnt} 건 </div>
 			<div class="alarm-type4"><a href="mngr_goods_sale.do"> 굿즈 주문 취소 </a></div>
-			<div class="alarm-value4"> 00 건 </div>
+			<div class="alarm-value4"> ${g_s_c_cnt} 건 </div>
 			<div class="alarm-type5"><a href="mngr_aids_list.do"> 보조 기구 신청 </a></div>
-			<div class="alarm-value5"> 00 건 </div>
+			<div class="alarm-value5"> ${req_cnt} 건 </div>
 			<div class="alarm-type6"><a href="mngr_member_inquiry.do"> 신규 문의글 </a></div>
-			<div class="alarm-value6"> 00 건 </div>
+			<div class="alarm-value6"> ${inq_cnt} 건 </div>
 		</div>
 		</div>
 	</section>

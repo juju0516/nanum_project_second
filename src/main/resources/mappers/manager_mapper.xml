@@ -5,135 +5,564 @@
 <mapper namespace="manager">
 	<!-- ManagerController -->
 	<select id="mngr_count" resultType="int">
-		select count(*) from manager 
+		select count(*) from manager
 	</select>
-	
+
 	<select id="mngr_list" parameterType="Map" resultType="mngvo">
-		select * from (
-        	select rownum r_num, a.* 
-            from (select * from manager order by manager_idx desc) a 
-        ) where r_num BETWEEN #{begin} and #{end}        
+		select *
+		from (
+		select rownum r_num, a.*
+		from (select * from manager order by manager_idx desc) a
+		) where r_num BETWEEN #{begin} and #{end}
 	</select>
-	
+
 	<select id="mngr_one" parameterType="String" resultType="mngvo">
-		select * from manager where manager_id=#{manager_id} 
+		select *
+		from manager where manager_id=#{manager_id}
 	</select>
-	
+
 	<insert id="mngr_ins" parameterType="mngvo">
-		insert into manager (manager_idx, manager_id, manager_pw, manager_name, manager_phone, manager_state, begin_date) 
-		values (manager_seq.nextval, #{manager_id}, #{manager_pw}, #{manager_name}, #{manager_phone}, #{manager_state}, sysdate) 
+		insert into manager
+		(manager_idx, manager_id, manager_pw, manager_name, manager_phone,
+		manager_state, begin_date)
+		values (manager_seq.nextval, #{manager_id}, #{manager_pw}, #{manager_name},
+		#{manager_phone}, #{manager_state}, sysdate)
 	</insert>
-	
+
 	<update id="mngr_update" parameterType="mngvo">
-		update manager set manager_id=#{manager_id}, manager_name=#{manager_name}, manager_phone=#{manager_phone} 
-		where manager_idx=#{manager_idx} 
-	</update>
-	
-	<update id="mngr_state" parameterType="Map">
-		update manager set manager_state=#{manager_state}, end_date=sysdate  
-		where manager_idx=#{manager_idx} 
+		update manager set
+		manager_id=#{manager_id}, manager_name=#{manager_name},
+		manager_phone=#{manager_phone}
+		where manager_idx=#{manager_idx}
 	</update>
 
+	<update id="mngr_state" parameterType="Map">
+		update manager set
+		manager_state=#{manager_state}, end_date=sysdate
+		where manager_idx=#{manager_idx}
+	</update>
+
+	<!-- alarm --> 
+	<select id="p_state_cnt" parameterType="String" resultType="int">
+		select count(*) from point where P_STATE LIKE '%'||#{p_state}||'%' 
+	</select>
 	
+	<select id="p_r_state_cnt" parameterType="String" resultType="int">
+		select count(*) from prj_regi where P_R_STATE LIKE '%'||#{p_r_state}||'%'
+	</select>
+	
+	<select id="g_s_state_cnt" parameterType="String" resultType="int">
+		select count(*) from goods_sale where G_S_STATE = #{g_s_state} 
+	</select>
+	
+	<select id="req_state_cnt" parameterType="String" resultType="int">
+		select count(*) from REQ_AIDS where REQ_STATE LIKE '%'||#{req_state}||'%' 
+	</select>
+	
+	<select id="inq_state_cnt" parameterType="String" resultType="int">
+		select count(*) from INQUIRY where INQ_STATE LIKE '%'||#{inq_state}||'%' 
+	</select>
+
+
 	<!-- GoodsController -->
 	<!-- Goods -->
 	<select id="goods_count" resultType="int">
-		select count(*) from goods  
+		select count(*) from goods
 	</select>
-	
-	<select id="goods_list" parameterType="Map" resultType="gvo">
+
+	<select id="goods_s_count" parameterType="String"
+		resultType="int">
+		select count(*) from goods where goods_name LIKE
+		'%'||#{g_s_word}||'%'
+	</select>
+
+	<select id="goods_list" parameterType="msvo" resultType="gvo">
+		select *
+		from (
+		select rownum r_num, a.*
+		from (select * from goods order by goods_idx desc) a
+		) where r_num BETWEEN #{begin} and #{end}
+	</select>
+
+	<select id="goods_s_list" parameterType="msvo" resultType="gvo">
 		select * from (
-        	select rownum r_num, a.* 
-            from (select * from goods order by goods_idx desc) a 
-        ) where r_num BETWEEN #{begin} and #{end}        
+		select rownum r_num, a.*
+		from (select * from goods where goods_name LIKE '%'||#{s_word}||'%' order
+		by goods_idx desc) a
+		) where r_num BETWEEN #{begin} and #{end}
 	</select>
-	
+
 	<select id="goods_one" parameterType="String" resultType="gvo">
-		select * from goods where goods_idx=#{goods_idx} 
+		select
+		* from goods where goods_idx=#{goods_idx}
 	</select>
-	
+
 	<select id="goods_code" parameterType="String" resultType="gvo">
-		select * from goods where goods_code=#{goods_code} 
+		select * from goods where goods_code=#{goods_code}
 	</select>
-	
+
 	<insert id="goods_ins" parameterType="gvo">
-		insert into goods (goods_idx, goods_code, goods_name, price, init_amount, cur_amount, 
-			goods_content, open_date, close_date, goods_hit, g_state, manager_id, 
-			goods_main_img, goods_soldout_img, goods_f_name1, goods_f_name2, goods_f_name3, 
-			delivery_charge, delivery_charge_l) 
-		values (goods_seq.nextval, #{goods_code}, #{goods_name}, #{price}, #{init_amount}, #{cur_amount}, 
-			#{goods_content}, sysdate, #{close_date}, #{goods_hit}, #{g_state}, #{manager_id}, 
-			#{goods_main_img}, #{goods_soldout_img}, #{goods_f_name1}, #{goods_f_name2}, #{goods_f_name3}, 
-			#{delivery_charge}, #{delivery_charge_l}) 
+		insert into goods
+		(goods_idx, goods_code, goods_name, price, init_amount, cur_amount,
+		goods_content, open_date, close_date, goods_hit, g_state, manager_id,
+		goods_main_img, goods_soldout_img, goods_f_name1, goods_f_name2,
+		goods_f_name3,
+		delivery_charge, delivery_charge_l)
+		values (goods_seq.nextval, #{goods_code}, #{goods_name}, #{price},
+		#{init_amount}, #{cur_amount},
+		#{goods_content}, sysdate, #{close_date}, #{goods_hit}, #{g_state}, #{manager_id},
+		#{goods_main_img}, #{goods_soldout_img}, #{goods_f_name1},
+		#{goods_f_name2}, #{goods_f_name3},
+		#{delivery_charge}, #{delivery_charge_l})
 	</insert>
-	
+
 	<update id="goods_update" parameterType="gvo">
-		update goods set goods_code=#{goods_code}, goods_name=#{goods_name}, price=#{price}, 
-			init_amount=#{init_amount}, goods_content=#{goods_content}, close_date=#{close_date}, 
-			goods_main_img=#{goods_main_img}, goods_soldout_img=#{goods_soldout_img}, 
-			goods_f_name1=#{goods_f_name1}, goods_f_name2=#{goods_f_name2}, goods_f_name3=#{goods_f_name3}, 
-			delivery_charge=#{delivery_charge}, delivery_charge_l=#{delivery_charge_l} 
-		where goods_idx=#{goods_idx} 
+		update goods set
+		goods_code=#{goods_code}, goods_name=#{goods_name}, price=#{price},
+		init_amount=#{init_amount}, goods_content=#{goods_content},
+		close_date=#{close_date},
+		goods_main_img=#{goods_main_img}, goods_soldout_img=#{goods_soldout_img},
+		goods_f_name1=#{goods_f_name1}, goods_f_name2=#{goods_f_name2},
+		goods_f_name3=#{goods_f_name3},
+		delivery_charge=#{delivery_charge}, delivery_charge_l=#{delivery_charge_l} 
+		where goods_idx=#{goods_idx}
 	</update>
-	
+
 	<update id="goods_hit" parameterType="String">
-		update goods set goods_hit = goods_hit + 1 where goods_idx=#{goods_idx} 
+		update goods set goods_hit
+		= goods_hit + 1 where goods_idx=#{goods_idx}
 	</update>
-	
+
 	<update id="g_state" parameterType="Map">
-		update goods set g_state=#{g_state}  
-		where goods_idx=#{goods_idx} 
+		update goods set
+		g_state=#{g_state}
+		where goods_idx=#{goods_idx}
 	</update>
-	
+
 	<update id="goods_stock" parameterType="Map">
-		update goods set cur_amount = cur_amount + #{amount}   
-		where goods_idx=#{goods_idx} 
+		update goods set
+		cur_amount = cur_amount + #{amount}
+		where goods_idx=#{goods_idx}
 	</update>
-	
+
 	<!-- Goods Sale -->
-	<select id="g_s_count" resultType="int">
-		select count(*) from goods_sale  
+	<select id="g_s_count" parameterType="msvo" resultType="int">
+		select count(*) from goods_sale
+		<if test="e_date != null and e_date != ''">
+			where sale_date <![CDATA[<=]]> TO_DATE(#{e_date}, 'YYYY-MM-DD')
+		</if>
+		<if test="s_type != null and s_type != '' and s_type != 'none'">
+			<choose>
+				<when test="s_type == '제품명'">AND (goods_name LIKE '%'||#{s_word}||'%')</when>
+				<when test="s_type == '제품번호'">AND (goods_code LIKE '%'||#{s_word}||'%')</when>
+			</choose>
+		</if>
+		<if test="s_state != null and s_state != '' and s_state != 'none'">
+			AND (g_s_state = #{s_state})
+		</if>
+		<if test="b_date != null and b_date != ''">
+			AND (sale_date <![CDATA[>=]]> TO_DATE(#{b_date}, 'YYYY-MM-DD'))
+		</if>
 	</select>
-	
-	<select id="g_s_list" parameterType="Map" resultType="salevo">
+
+	<select id="g_s_list" parameterType="msvo" resultType="salevo">
 		select * from (
-        	select rownum r_num, a.* 
-            from (select * from goods_sale order by goods_sale_idx desc) a 
-        ) where r_num BETWEEN #{begin} and #{end}        
+		select rownum r_num, a.*
+		from (select * from goods_sale
+		<if test="e_date != null and e_date != ''">
+			where sale_date <![CDATA[<=]]> TO_DATE(#{e_date}, 'YYYY-MM-DD')
+		</if>
+		<if test="s_type != null and s_type != '' and s_type != 'none'">
+			<choose>
+				<when test="s_type == '제품명'">AND (goods_name LIKE '%'||#{s_word}||'%')</when>
+				<when test="s_type == '제품번호'">AND (goods_code LIKE '%'||#{s_word}||'%')</when>
+			</choose>
+		</if>
+		<if test="s_state != null and s_state != '' and s_state != 'none'">
+			AND (g_s_state = #{s_state})
+		</if>
+		<if test="b_date != null and b_date != ''">
+			AND (sale_date <![CDATA[>=]]> TO_DATE(#{b_date}, 'YYYY-MM-DD'))
+		</if>
+		order by goods_sale_idx desc) a
+		) where r_num BETWEEN #{begin} and #{end}
 	</select>
-	
+
 	<select id="g_s_one" parameterType="String" resultType="salevo">
-		select * from goods_sale where goods_sale_idx=#{goods_sale_idx} 
+		select *
+		from goods_sale where goods_sale_idx=#{goods_sale_idx}
 	</select>
-	
+
 	<update id="g_s_state" parameterType="Map">
-		update goods_sale set g_s_state=#{g_s_state}  
-		where goods_sale_idx=#{goods_sale_idx} 
+		update goods_sale set
+		g_s_state=#{g_s_state}
+		where goods_sale_idx=#{goods_sale_idx}
 	</update>
-	
+
 	<update id="g_s_cancel" parameterType="Map">
-		update goods_sale set cancel_cmpl=sysdate, g_s_state=#{g_s_state}  
-		where goods_sale_idx=#{goods_sale_idx} 
+		update goods_sale set
+		cancel_cmpl=sysdate, g_s_state=#{g_s_state}
+		where goods_sale_idx=#{goods_sale_idx}
 	</update>
-	
+
 	<!-- Member -->
 	<select id="mbr_point" parameterType="String" resultType="int">
-		select cur_point from member where id=#{id} 
+		select
+		cur_point from member where id=#{id}
 	</select>
-	
+
 	<update id="mbr_update_point" parameterType="Map">
-		update member set cur_point=#{point} where id=#{id} 
+		update member set
+		cur_point=#{point} where id=#{id}
 	</update>
-	
+
 	<!-- Point -->
 	<insert id="manager.p_ins_refund" parameterType="pvo">
-		insert into point (point_idx, id, p_category, remain_point, 
-						   refund_point, refund_date, manager_id ) 
-		values (point_seq.nextval, #{id}, #{p_category}, #{remain_point}, 
-				#{refund_point}, sysdate, #{manager_id}) 
+		insert into
+		point (point_idx, id, p_category, remain_point,
+		refund_point, refund_date, manager_id )
+		values (point_seq.nextval, #{id}, #{p_category}, #{remain_point},
+		#{refund_point}, sysdate, #{manager_id})
 	</insert>
-	
-	
+
+
 	<!-- ProjectController -->
 	<!-- Project -->
+	<select id="prj_count" parameterType="msvo" resultType="int">
+		select count(*) from project where (prj_category NOT LIKE '%'||'상시'||'%')  
+			<choose>
+				<when test="s_type == '시작날짜'">
+					<if test="b_date != '' and e_date == ''">
+						AND (prj_begin_date <![CDATA[>=]]> TO_DATE(#{b_date}, 'YYYY-MM-DD'))
+					</if>
+					<if test="b_date == '' and e_date != ''">
+						AND (prj_begin_date <![CDATA[<=]]> TO_DATE(#{e_date}, 'YYYY-MM-DD'))
+					</if>
+					<if test="b_date != '' and e_date != ''">
+						AND (prj_begin_date BETWEEN TO_DATE(#{b_date}, 'YYYY-MM-DD') AND TO_DATE(#{e_date}, 'YYYY-MM-DD'))
+					</if>
+				</when>
+				<when test="s_type == '종료날짜'">
+					<if test="b_date != '' and e_date == ''">
+						AND (prj_end_date <![CDATA[>=]]> TO_DATE(#{b_date}, 'YYYY-MM-DD'))
+					</if>
+					<if test="b_date == '' and e_date != ''">
+						AND (prj_end_date <![CDATA[<=]]> TO_DATE(#{e_date}, 'YYYY-MM-DD'))
+					</if>
+					<if test="b_date != '' and e_date != ''">
+						AND (prj_end_date BETWEEN TO_DATE(#{b_date}, 'YYYY-MM-DD') AND TO_DATE(#{e_date}, 'YYYY-MM-DD'))
+					</if>
+				</when>
+			</choose>
+		<if test="s_state != null and s_state != ''">
+			AND prj_category = #{s_state}
+		</if>
+	</select>
+
+	<select id="prj_list" parameterType="msvo" resultType="prjvo">
+		select * from (
+		select rownum r_num, a.*
+		from (select * from project where (prj_category NOT LIKE '%'||'상시'||'%')   
+			<choose>
+				<when test="s_type == '시작날짜'">
+					<if test="b_date != '' and e_date == ''">
+						AND (prj_begin_date <![CDATA[>=]]> TO_DATE(#{b_date}, 'YYYY-MM-DD'))
+					</if>
+					<if test="b_date == '' and e_date != ''">
+						AND (prj_begin_date <![CDATA[<=]]> TO_DATE(#{e_date}, 'YYYY-MM-DD'))
+					</if>
+					<if test="b_date != '' and e_date != ''">
+						AND (prj_begin_date BETWEEN TO_DATE(#{b_date}, 'YYYY-MM-DD') AND TO_DATE(#{e_date}, 'YYYY-MM-DD'))
+					</if>
+				</when>
+				<when test="s_type == '종료날짜'">
+					<if test="b_date != '' and e_date == ''">
+						AND (prj_end_date <![CDATA[>=]]> TO_DATE(#{b_date}, 'YYYY-MM-DD'))
+					</if>
+					<if test="b_date == '' and e_date != ''">
+						AND (prj_end_date <![CDATA[<=]]> TO_DATE(#{e_date}, 'YYYY-MM-DD'))
+					</if>
+					<if test="b_date != '' and e_date != ''">
+						AND (prj_end_date BETWEEN TO_DATE(#{b_date}, 'YYYY-MM-DD') AND TO_DATE(#{e_date}, 'YYYY-MM-DD'))
+					</if>
+				</when>
+			</choose>
+		<if test="s_state != null and s_state != ''">
+			AND prj_category = #{s_state}
+		</if>
+		order by project_idx desc) a 
+		) where r_num BETWEEN #{begin} and #{end}
+	</select>
+
+	<select id="prj_one" parameterType="String" resultType="prjvo">
+		select * from project where project_idx=#{project_idx}
+	</select>
+	
+	<insert id="prj_ins" parameterType="prjvo">
+		insert into project (
+			project_idx, prj_category, id, prj_title, nickname, prj_content, prj_main_img, 
+			f_name1,f_name2,f_name3,f_name4, dnt_flag,regular, onetime, goal_point, vlt_flag, 
+			goal_num_people, tag, aprv_date, prj_begin_date, prj_end_date, prj_hit, manager_id 
+		) 
+		values (
+			project_seq.nextval, #{prj_category}, #{id},#{prj_title},#{nickname},#{prj_content},#{prj_main_img},
+			#{f_name1},#{f_name2},#{f_name3},#{f_name4},#{dnt_flag},#{regular},#{onetime},#{goal_point},#{vlt_flag},
+			#{goal_num_people},#{tag}, sysdate, TO_DATE(#{prj_begin_date}, 'YYYY-MM-DD'), TO_DATE(#{prj_end_date}, 'YYYY-MM-DD'), 
+			#{prj_hit}, #{manager_id} 
+		) 
+	</insert>
+
+	<update id="prj_update" parameterType="prjvo">
+		update project set
+		prj_category=#{prj_category}, id=#{id}, prj_title=#{prj_title}, nickname=#{nickname}, prj_content=#{prj_content},  
+		prj_main_img=#{prj_main_img}, f_name1=#{f_name1}, f_name2=#{f_name2}, f_name3=#{f_name3}, f_name4=#{f_name4}, 
+		dnt_flag=#{dnt_flag}, regular=#{regular}, onetime=#{onetime}, goal_point=#{goal_point}, vlt_flag=#{vlt_flag}, 
+		goal_num_people=#{goal_num_people}, tag=#{tag}, prj_end_date=#{prj_end_date}, prj_begin_date=#{prj_begin_date},
+		prj_result=#{prj_result}, manager_id=#{manager_id}   
+		where project_idx=#{project_idx} 
+	</update>
+	
+	<update id="prj_category" parameterType="Map">
+		update project set prj_category=#{prj_category}, manager_id=#{manager_id}  
+		where project_idx=#{project_idx} 
+	</update>
+	
+	<!-- Project Regi -->
+	<select id="regi_count" parameterType="msvo" resultType="int">
+		select count(*) from prj_regi  
+		<if test="(b_date != null and b_date != '') or (e_date != null and e_date != '') or 
+				  (s_state != null and s_state != '')">
+		where 
+			<if test="(b_date != null and b_date != '') and (e_date == null or e_date == '')">
+				(submit_date <![CDATA[>=]]> TO_DATE(#{b_date}, 'YYYY-MM-DD'))
+			</if>
+			<if test="(b_date == null or b_date == '') and (e_date != null and e_date != '')">
+				(submit_date <![CDATA[<=]]> TO_DATE(#{e_date}, 'YYYY-MM-DD'))
+			</if>
+			<if test="(b_date != null and b_date != '') and (e_date != null and e_date != '')">
+				(submit_date BETWEEN TO_DATE(#{b_date}, 'YYYY-MM-DD') AND TO_DATE(#{e_date}, 'YYYY-MM-DD'))
+			</if>
+			<if test="((b_date != null and b_date != '') or (e_date != null and e_date != '')) 
+					 and (s_state != null and s_state != '')">
+				AND p_r_state = #{s_state}
+			</if>
+			<if test="((b_date == null or b_date == '') and (e_date == null or e_date == '')) 
+					 and (s_state != null and s_state != '')">
+				p_r_state = #{s_state} 
+			</if>
+		</if>
+	</select>
+
+	<select id="regi_list" parameterType="msvo" resultType="regivo">
+		select * from (
+		select rownum r_num, a.*
+		from (select * from prj_regi  
+		<if test="(b_date != null and b_date != '') or (e_date != null and e_date != '') or 
+				  (s_state != null and s_state != '')">
+		where 
+			<if test="(b_date != null and b_date != '') and (e_date == null or e_date == '')">
+				(submit_date <![CDATA[>=]]> TO_DATE(#{b_date}, 'YYYY-MM-DD'))
+			</if>
+			<if test="(b_date == null or b_date == '') and (e_date != null and e_date != '')">
+				(submit_date <![CDATA[<=]]> TO_DATE(#{e_date}, 'YYYY-MM-DD'))
+			</if>
+			<if test="(b_date != null and b_date != '') and (e_date != null and e_date != '')">
+				(submit_date BETWEEN TO_DATE(#{b_date}, 'YYYY-MM-DD') AND TO_DATE(#{e_date}, 'YYYY-MM-DD'))
+			</if>
+			<if test="((b_date != null and b_date != '') or (e_date != null and e_date != '')) 
+					 and (s_state != null and s_state != '')">
+				AND p_r_state = #{s_state}
+			</if>
+			<if test="((b_date == null or b_date == '') and (e_date == null or e_date == '')) 
+					 and (s_state != null and s_state != '')">
+				p_r_state = #{s_state} 
+			</if>
+		</if>
+		order by prj_regi_idx desc) a 
+		) where r_num BETWEEN #{begin} and #{end}
+	</select>
+
+	<select id="regi_one" parameterType="String" resultType="regivo">
+		select * from prj_regi where prj_regi_idx=#{prj_regi_idx}
+	</select>
+
+	<!-- 
+	<update id="regi_update" parameterType="regivo">
+		update prj_regi set
+		p_r_state=#{p_r_state}, id=#{id}, prj_title=#{prj_title}, nickname=#{nickname}, content=#{content},  
+		f_name5=#{f_name5}, f_name1=#{f_name1}, f_name2=#{f_name2}, f_name3=#{f_name3}, f_name4=#{f_name4}, 
+		regular=#{regular}, onetime=#{onetime}, goal_point=#{goal_point},
+		goal_num_people=#{goal_num_people}, tag=#{tag}, period=#{period}
+		id_f_name=#{id_f_name}, crtf_f_name1=#{crtf_f_name1}, crtf_f_name2=#{crtf_f_name2},
+		crtf_f_name3=#{crtf_f_name3}, crtf_f_name4=#{crtf_f_name4}, crtf_f_name5=#{crtf_f_name5},
+		req_cancel=#{req_cancel}, manager_id=#{manager_id} 
+		where prj_regi_idx=#{prj_regi_idx} 
+	</update> 
+	-->
+	
+	<update id="regi_state" parameterType="Map">
+		update prj_regi set p_r_state=#{p_r_state}, judge_date=sysdate, manager_id=#{manager_id}  
+		where prj_regi_idx=#{prj_regi_idx} 
+	</update>
+	
+	
+	<!-- Project Aids -->
+	<select id="aids_count" parameterType="msvo" resultType="int">
+		select count(*) from project where prj_category LIKE '%'||'상시'||'%' 
+		<if test="s_range != null and s_range != ''">
+			<choose>
+				<when test="s_range == '제목'">
+					AND prj_title LIKE '%'||#{s_word}||'%' 
+				</when>
+				<when test="s_range == '내용'">
+					AND prj_content LIKE '%'||#{s_word}||'%' 
+				</when>
+				<when test="s_range == '제목 + 내용'">
+					AND ((prj_title LIKE '%'||#{s_word}||'%') OR 
+						 (prj_content LIKE '%'||#{s_word}||'%')) 
+				</when>
+			</choose>
+		</if>
+		<choose>
+			<when test="s_type == '시작 날짜'">
+				<if test="(b_date != null and b_date != '') and (e_date == null or e_date == '')">
+					AND (prj_begin_date <![CDATA[>=]]> TO_DATE(#{b_date}, 'YYYY-MM-DD'))
+				</if>
+				<if test="(b_date == null or b_date == '') and (e_date != null and e_date != '')">
+					AND (prj_begin_date <![CDATA[<=]]> TO_DATE(#{e_date}, 'YYYY-MM-DD'))
+				</if>
+				<if test="(b_date != null and b_date != '') and (e_date != null and e_date != '')">
+					AND (prj_begin_date BETWEEN TO_DATE(#{b_date}, 'YYYY-MM-DD') AND TO_DATE(#{e_date}, 'YYYY-MM-DD'))
+				</if>
+			</when>
+			<when test="s_type == '종료 날짜'">
+				<if test="(b_date != null and b_date != '') and (e_date == null or e_date == '')">
+					AND (prj_end_date <![CDATA[>=]]> TO_DATE(#{b_date}, 'YYYY-MM-DD'))
+				</if>
+				<if test="(b_date == null or b_date == '') and (e_date != null and e_date != '')">
+					AND (prj_end_date <![CDATA[<=]]> TO_DATE(#{e_date}, 'YYYY-MM-DD'))
+				</if>
+				<if test="(b_date != null and b_date != '') and (e_date != null and e_date != '')">
+					AND (prj_end_date BETWEEN TO_DATE(#{b_date}, 'YYYY-MM-DD') AND TO_DATE(#{e_date}, 'YYYY-MM-DD'))
+				</if>
+			</when>
+		</choose>
+	</select>
+
+	<select id="aids_list" parameterType="msvo" resultType="prjvo">
+		select * from (
+		select rownum r_num, a.*
+		from (select * from project where prj_category LIKE '%'||'상시'||'%' 
+		<if test="s_range != null and s_range != ''">
+			<choose>
+				<when test="s_range == '제목'">
+					AND prj_title LIKE '%'||#{s_word}||'%' 
+				</when>
+				<when test="s_range == '내용'">
+					AND prj_content LIKE '%'||#{s_word}||'%' 
+				</when>
+				<when test="s_range == '제목 + 내용'">
+					AND ((prj_title LIKE '%'||#{s_word}||'%') OR 
+						 (prj_content LIKE '%'||#{s_word}||'%')) 
+				</when>
+			</choose>
+		</if>
+		<choose>
+			<when test="s_type == '시작 날짜'">
+				<if test="(b_date != null and b_date != '') and (e_date == null or e_date == '')">
+					AND (prj_begin_date <![CDATA[>=]]> TO_DATE(#{b_date}, 'YYYY-MM-DD'))
+				</if>
+				<if test="(b_date == null or b_date == '') and (e_date != null and e_date != '')">
+					AND (prj_begin_date <![CDATA[<=]]> TO_DATE(#{e_date}, 'YYYY-MM-DD'))
+				</if>
+				<if test="(b_date != null and b_date != '') and (e_date != null and e_date != '')">
+					AND (prj_begin_date BETWEEN TO_DATE(#{b_date}, 'YYYY-MM-DD') AND TO_DATE(#{e_date}, 'YYYY-MM-DD'))
+				</if>
+			</when>
+			<when test="s_type == '종료 날짜'">
+				<if test="(b_date != null and b_date != '') and (e_date == null or e_date == '')">
+					AND (prj_end_date <![CDATA[>=]]> TO_DATE(#{b_date}, 'YYYY-MM-DD'))
+				</if>
+				<if test="(b_date == null or b_date == '') and (e_date != null and e_date != '')">
+					AND (prj_end_date <![CDATA[<=]]> TO_DATE(#{e_date}, 'YYYY-MM-DD'))
+				</if>
+				<if test="(b_date != null and b_date != '') and (e_date != null and e_date != '')">
+					AND (prj_end_date BETWEEN TO_DATE(#{b_date}, 'YYYY-MM-DD') AND TO_DATE(#{e_date}, 'YYYY-MM-DD'))
+				</if>
+			</when>
+		</choose>
+		order by project_idx desc) a 
+		) where r_num BETWEEN #{begin} and #{end}
+	</select>
+
+	<select id="aids_one" parameterType="String" resultType="prjvo">
+		select * from project where project_idx=#{project_idx}
+	</select>
+	
+	<insert id="aids_ins" parameterType="prjvo">
+		insert into project (
+			project_idx, prj_category, id, prj_title, prj_content, prj_main_img, 
+			f_name1,f_name2,f_name3,f_name4, regular, onetime, goal_point, 
+			goal_num_people, tag, prj_begin_date, prj_end_date, prj_hit, manager_id 
+		) 
+		values (
+			project_seq.nextval, #{prj_category}, #{id},#{prj_title}, #{prj_content},#{prj_main_img},
+			#{f_name1},#{f_name2},#{f_name3},#{f_name4}, #{regular},#{onetime}, #{goal_point},
+			#{goal_num_people}, #{tag}, TO_DATE(#{prj_begin_date}, 'YYYY-MM-DD'), TO_DATE(#{prj_end_date}, 'YYYY-MM-DD'), 
+			#{prj_hit}, #{manager_id} 
+		) 
+	</insert>
+
+	<update id="aids_update" parameterType="prjvo">
+		update project set
+			id=#{id}, prj_title=#{prj_title}, prj_content=#{prj_content},  
+			prj_main_img=#{prj_main_img}, f_name1=#{f_name1}, f_name2=#{f_name2}, f_name3=#{f_name3}, f_name4=#{f_name4}, 
+			regular=#{regular}, onetime=#{onetime}, goal_point=#{goal_point}, 
+			tag=#{tag}, prj_end_date=#{prj_end_date}, prj_begin_date=#{prj_begin_date},
+			prj_result=#{prj_result}, manager_id=#{manager_id}  
+		where project_idx=#{project_idx} 
+	</update>
+	
+	<update id="aids_category" parameterType="Map">
+		update project set prj_category=#{prj_category}, manager_id=#{manager_id}  
+		where project_idx=#{project_idx} 
+	</update>
+	
+	<!-- MemberController -->
+	<select id="mbr_count" parameterType="msvo" resultType="int">
+		select count(*) from member 
+		<if test="s_type != null and s_type != ''">
+			<choose>
+				<when test="s_type == 'User ID'">
+					where id LIKE '%'||#{s_word}||'%' 
+				</when>
+				<when test="s_type == '이름'">
+					where name LIKE '%'||#{s_word}||'%' 
+				</when>
+			</choose>
+		</if>
+	</select>
+	
+	<select id="mbr_list" parameterType="msvo" resultType="mvo">
+		select * from (
+		select rownum r_num, a.*
+		from (select * from member  
+		<if test="s_type != null and s_type != ''">
+			<choose>
+				<when test="s_type == 'User ID'">
+					where id LIKE '%'||#{s_word}||'%' 
+				</when>
+				<when test="s_type == '이름'">
+					where name LIKE '%'||#{s_word}||'%' 
+				</when>
+			</choose>
+		</if>
+		order by member_idx desc) a 
+		) where r_num BETWEEN #{begin} and #{end}
+	</select>
+	
+	<select id="mbr_one" parameterType="String" resultType="mvo">
+		select * from member where member_idx=#{member_idx} 
+	</select>
+	
 </mapper>

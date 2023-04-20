@@ -29,4 +29,18 @@ public class Project_Send_Controller {
 		ModelAndView mv = new ModelAndView("project/prj_vol_donator");
 		return mv;
 	}
+	
+	@RequestMapping("prj_save_go.do")
+	public ModelAndView prj_save_go() {
+		ModelAndView mv = new ModelAndView();
+		return mv;
+	}
+	
+	@RequestMapping("prj_regi_ok.do")
+	public ModelAndView prj_regi_ok() {
+		ModelAndView mv = new ModelAndView();
+		return mv;
+		
+	}
+	
 }

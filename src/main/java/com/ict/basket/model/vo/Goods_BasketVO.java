@@ -8,9 +8,10 @@ public class Goods_BasketVO {
 	private String goods_f_name;
 	
 	private int goods_basket_idx;
-	private int goods_idx, price;
+	private int goods_idx; 
+	private int price;
 	private int amount;
-	private int delivery_charge; /*총 가격 필요?*/
+	private int delivery_charge;
 	
 	// getter / setter
 

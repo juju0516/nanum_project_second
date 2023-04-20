@@ -91,20 +91,21 @@
 				<c:if test="${vo.goods_f_name1 ne null}">		
 				<img src="resources/upload/system/attach/${vo.goods_f_name1}" class="img-attached">
 					<span style="vertical-align:17px;"> ${vo.goods_f_name1}</span>
+				</c:if>
 					<input class="input-file" type="file" name="f_name1">
-				<br></c:if>
+				<br>
 				
 				<c:if test="${vo.goods_f_name2 ne null}">	
 				<img src="resources/upload/system/attach/${vo.goods_f_name2}" class="img-attached">
-					<span style="vertical-align:17px;"> ${vo.goods_f_name2} </span>
+					<span style="vertical-align:17px;"> ${vo.goods_f_name2} </span></c:if>
 					<input class="input-file" type="file" name="f_name2">
-				<br></c:if>
+				<br>
 				
 				<c:if test="${vo.goods_f_name3 ne null}">
 				<img src="resources/upload/system/attach/${vo.goods_f_name3}" class="img-attached">
-					<span style="vertical-align:17px;"> ${vo.goods_f_name3} </span>
+					<span style="vertical-align:17px;"> ${vo.goods_f_name3} </span></c:if>
 					<input class="input-file" type="file" name="f_name3">
-				<br></c:if>
+				<br>
 				</td>				
 			</tr>
 			<tr class="tr-color"><td></td><td></td></tr>

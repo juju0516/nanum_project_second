@@ -73,7 +73,7 @@
 			<tbody>
 				<tr>
 					<td>기념일 후원 종류</td>
-					<td>나만의기념일</td>
+					<td>${listname}</td>
 				</tr>
 				<tr>
 					<td>후원종류</td>

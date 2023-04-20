@@ -34,6 +34,9 @@
 			height: 300px;
 		}
 		
+		.sp_name{
+			margin-left: -20px;
+		}
 	</style>
 </head>
 <body>
@@ -47,39 +50,47 @@
 	<form action="get">
 		<div class="sp_group">
 			<div class="sp_list">
-				<a href="my_speacialday.do?p_list=1"><img class="sp_list_image" src="resources/images/system/fetusname.png"></a>
-				<br>태명
+				<a href="my_speacialday1.do"><img class="sp_list_image" src="resources/images/system/fetusname.png"></a>
+				<br>
+				<div class="sp_name">태명</div>
 			</div>
 			<div class="sp_list">
-				<a href="my_speacialday.do?p_list=2"><img class="sp_list_image" src="resources/images/system/baby.png"></a>
-				<br>탄생
+				<a href="my_speacialday2.do"><img class="sp_list_image" src="resources/images/system/baby.png"></a>
+				<br>
+				<div class="sp_name">탄생</div>
 			</div>
 			<div class="sp_list">
-				<a href="my_speacialday.do?sp_list=3"><img class="sp_list_image" src="resources/images/system/100day.png"></a>
-				<br>100일
+				<a href="my_speacialday3.do"><img class="sp_list_image" src="resources/images/system/100day.png"></a>
+				<br>
+				<div class="sp_name">100일</div>
 			</div>
 			<div class="sp_list">
-				<a href="my_speacialday.do?sp_list=4"><img class="sp_list_image" src="resources/images/system/frist birthday.jpg"></a>
-				<br>돌기념
+				<a href="my_speacialday4.do"><img class="sp_list_image" src="resources/images/system/frist birthday.jpg"></a>
+				<br>
+				<div class="sp_name">돌기념</div>
 			</div>
 		</div>
 		
 		<div class="sp_group">
 			<div class="sp_list">
-				<a href="my_speacialday.do?sp_list=5"><img class="sp_list_image" src="resources/images/system/cake.jpg"></a>
-				<br>생일
+				<a href="my_speacialday5.do"><img class="sp_list_image" src="resources/images/system/cake.jpg"></a>
+				<br>
+				<div class="sp_name">생일</div>
 			</div>
 			<div class="sp_list">
-				<a href="my_speacialday.do?sp_list=6"><img class="sp_list_image" src="resources/images/system/marry.png"></a>
-				<br>결혼
+				<a href="my_speacialday6.do"><img class="sp_list_image" src="resources/images/system/marry.png"></a>
+				<br>
+				<div class="sp_name">결혼</div>
 			</div>
 			<div class="sp_list">
-				<a href="my_speacialday.do?sp_list=7"><img class="sp_list_image" src="resources/images/system/memorial.png"></a>
-				<br>추모
+				<a href="my_speacialday7.do"><img class="sp_list_image" src="resources/images/system/memorial.png"></a>
+				<br>
+				<div class="sp_name">추모</div>
 			</div>
 			<div class="sp_list">
-				<a href="my_speacialday.do?sp_list=8"><img class="sp_list_image" src="resources/images/system/box.png"></a>
-				<br>나만의기념일
+				<a href="my_speacialday8.do"><img class="sp_list_image" src="resources/images/system/box.png"></a>
+				<br>
+				<div class="sp_name">나만의기념일</div>
 			</div>
 		</div>
 	</form>

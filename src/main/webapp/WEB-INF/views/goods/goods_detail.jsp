@@ -154,7 +154,7 @@ article.goods_content {
 	margin: 8px;
 }
 </style>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script type="text/javascript">
 
 	$(function() {
@@ -197,6 +197,10 @@ article.goods_content {
 	
 	/*바로주문하기*/
 	function goods_order(f) {
+		if ("${login}" != "ok") {
+			alert('로그인이 필요합니다.');
+			return;
+		}
 		f.action = "goods_direct_sale.do";
 		f.submit();
 	}

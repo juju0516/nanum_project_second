@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="resources/css/summernote-lite.css">
 <link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square-neo.css" rel="stylesheet">
 <link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-barun-gothic.css" rel="stylesheet">
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
 	<style type="text/css">
 		table {
 			width: 1000px;
@@ -495,6 +495,22 @@
 			}
 		})
 	</script>
+	<script type="text/javascript">
+		function prj_list_go(f) {
+			f.action="prj_list.do";
+			f.submit();
+		}
+		
+		function prj_save_go() {
+			f.action="prj_save_go.do";
+			f.submit();
+		}
+	
+		function prj_regi_ok(f) {
+			f.action="prj_regi_ok.do";
+			f.submit();
+		}
+	</script>
 </head>
 <body>
 	<header>
@@ -694,7 +710,7 @@
 		</table>
 		
 		<div id="btn">
-			<input id="prj_List" type="button" value="목록" onclick="prj_List_go()">
+			<input id="prj_List" type="button" value="목록" onclick="prj_list_go(this.form)">
 			<input id="prj_save" type="button" value="임시저장" onclick="prj_save_go(this.form)">
 			<input id="prj_regi" type="button" value="신청하기" onclick="prj_regi_ok(this.form)">
 		</div>
@@ -704,8 +720,8 @@
 		<jsp:include page="../footer.jsp" />
 	</footer>
 	
-	<script src="resources/css/js/summernote-lite.js"> </script>
-	<script src="resources/css/js/lang/summernote-ko-KR.js"> </script>
+	<script src="resources/js/summernote-lite.js"> </script>
+	<script src="resources/js/lang/summernote-ko-KR.js"> </script>
 	<script type="text/javascript">
 		$(function(){
 			$("#content").summernote({

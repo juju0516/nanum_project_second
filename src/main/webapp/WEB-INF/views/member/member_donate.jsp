@@ -26,24 +26,22 @@
 						<th>종류&nbsp;</th>
 						<th>제목&nbsp;</th>
 						<th>나누미&nbsp;</th>
-						<th>상태&nbsp;</th>
 						<th class="">날짜&nbsp;</th>
 					</tr>
 					<c:choose>
 						<c:when test="${empty list}">
 							<tr>
-								<td colspan="6"><h2>나누미 전환 내역이 존재하지 않습니다</h2></td>
+								<td colspan="6"><h2>나눔 내역이 존재하지 않습니다</h2></td>
 							</tr>
 						</c:when>
 						<c:otherwise>
 							<c:forEach var="k" items="${list}" varStatus="vs">
 								<tr class="list">
 									<td>${paging.totalRecord - ((paging.nowPage-1)*paging.numPerPage + vs.index)}</td>
-									<td>차감 종류&nbsp;&nbsp;</td>
-									<td>[종류]제목&nbsp;&nbsp;</td>
-									<td>차감 포인트&nbsp;&nbsp;</td>
-									<td>상태(성공(ㅁ%)/실패/진행중(ㅁ%))&nbsp;&nbsp;</td>
-									<td>날짜&nbsp;&nbsp;</td>
+									<td>${k.regular}${k.onetime}</td>
+									<td>${k.prj_name}</td>
+									<td>${k.dnt_point}</td>
+									<td>${k.dnt_date.substring(0,10)}</td>
 								</tr>
 							</c:forEach>
 						</c:otherwise>
@@ -52,43 +50,48 @@
 			</table>
 		</div>
 	</section>
-	<!-- 페이지기법 -->
-	<section>
-		<ol class="paging">
-			<!-- 이전 -->
-			<c:choose>
-				<c:when test="true">
-					<li class="disable">&lt;</li>
-				</c:when>
-				<c:otherwise>
-					<li><a href=""> &lt; </a></li>
-				</c:otherwise>
-			</c:choose>
-
-			<!-- 블록안에 들어간 페이지번호들 -->
-			<c:forEach begin="1" end="4" step="1" var="k">
-				<!-- 현재 페이지와 아닌 아닌 페이지(링크 걸어야) 구분 -->
+		<!-- 페이지기법 -->
+		<section>
+			<ol class="paging">
+				<!-- 이전 -->
 				<c:choose>
-					<c:when test="false">
-						<li class="now">2</li>
+					<c:when test="${paging.beginBlock <= paging.pagePerBlock}">
+						<li class="disable">&lt;</li>
 					</c:when>
 					<c:otherwise>
-						<li><a href="">${k}</a></li>
+						<li><a
+							href="member_donate.do?cPage=${paging.beginBlock-paging.pagePerBlock}">
+								&lt; </a></li>
 					</c:otherwise>
 				</c:choose>
-			</c:forEach>
 
-			<!-- 다음 -->
-			<c:choose>
-				<c:when test="0">
-					<li class="disable">&gt;</li>
-				</c:when>
-				<c:otherwise>
-					<li><a href=""> &gt;</a></li>
-				</c:otherwise>
-			</c:choose>
-		</ol>
-	</section>
+				<!-- 블록안에 들어간 페이지번호들 -->
+				<c:forEach begin="${paging.beginBlock}" end="${paging.endBlock}"
+					step="1" var="k">
+					<!-- 현재 페이지와 아닌 아닌 페이지(링크 걸어야) 구분 -->
+					<c:choose>
+						<c:when test="${k == paging.nowPage}">
+							<li class="now">${k}</li>
+						</c:when>
+						<c:otherwise>
+							<li><a href="member_donate.do?cPage=${k}">${k}</a></li>
+						</c:otherwise>
+					</c:choose>
+				</c:forEach>
+
+				<!-- 다음 -->
+				<c:choose>
+					<c:when test="${paging.endBlock >= paging.totalPage}">
+						<li class="disable">&gt;</li>
+					</c:when>
+					<c:otherwise>
+						<li><a
+							href="member_donate.do?cPage=${paging.beginBlock+paging.pagePerBlock}">
+								&gt;</a></li>
+					</c:otherwise>
+				</c:choose>
+			</ol>
+		</section>
 	<jsp:include page="../footer.jsp" />
 </body>
 </html>

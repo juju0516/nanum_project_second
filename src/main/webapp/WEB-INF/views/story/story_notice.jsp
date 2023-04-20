@@ -66,7 +66,7 @@ td	{
 			<!-- 지금은 그냥 넣었지만, for문으로 넣어야 함. -->
 			<tr>
 				<td>1</td>
-				<td style="text-align: left; padding-left: 20px;"><a href="story_notice_detail.do">[주요공지] 이것은 주요공지 입니다.</a></td>
+				<td style="text-align: left; padding-left: 20px;"><a href="story_notice_detail.do">후원참여안내 및 공지사항</a></td>
 				<td>관리자</td>
 				<td>2023-03-24</td>
 				<td>23</td>
@@ -74,7 +74,7 @@ td	{
 		
 			<tr>
 				<td>2</td>
-				<td style="text-align: left; padding-left: 20px;"><a href="#">나누미포인트 관련 공지사항입니다.</a> </td>
+				<td style="text-align: left; padding-left: 20px;"><a href="#">나누미포인트 관련 공지사항</a> </td>
 				<td>관리자</td>
 				<td>2023-03-20</td>
 				<td>23</td>
@@ -82,7 +82,7 @@ td	{
 		
 			<tr>
 				<td>3</td>
-				<td style="text-align: left; padding-left: 20px;"><a href="#">프로젝트등록에 관한 공지사항입니다.</a> </td>
+				<td style="text-align: left; padding-left: 20px;"><a href="#">프로젝트등록에 관한 공지사항</a> </td>
 				<td>관리자</td>
 				<td>2023-03-15</td>
 				<td>100</td>
@@ -91,7 +91,7 @@ td	{
 			<tr>
 				<td>4</td>
 				<!-- 제목 td에만 왼쪽정렬 주었음.  -->
-				<td style="text-align: left; padding-left: 20px;"><a href="#">공지글입니다. </a></td>
+				<td style="text-align: left; padding-left: 20px;"><a href="#">배송비 관련 안내사항</a></td>
 				<td>관리자</td>
 				<td>2023-03-02</td>
 				<td>150</td>
@@ -99,7 +99,7 @@ td	{
 			<tr>
 				<td>5</td>
 				<!-- 제목 td에만 왼쪽정렬 주었음.  -->
-				<td style="text-align: left; padding-left: 20px;"><a href="#">공지글입니다.</a></td>
+				<td style="text-align: left; padding-left: 20px;"><a href="#">사이트 업데이트 공지사항</a></td>
 				<td>관리자</td>
 				<td>2023-02-07</td>
 				<td>160</td>
@@ -107,20 +107,12 @@ td	{
 			<tr>
 				<td>6</td>
 				<!-- 제목 td에만 왼쪽정렬 주었음.  -->
-				<td style="text-align: left; padding-left: 20px;"><a href="#">공지글입니다.</a></td>
+				<td style="text-align: left; padding-left: 20px;"><a href="#">보조기구신청관련 공지사항</a></td>
 				<td>관리자</td>
 				<td>2023-01-19</td>
 				<td>250</td>
 			</tr>
-			<tr>
-				<td>7</td>
-				<!-- 제목 td에만 왼쪽정렬 주었음.  -->
-				<td style="text-align: left; padding-left: 20px;"><a href="#">공지글입니다.</a></td>
-				<td>관리자</td>
-				<td>2023-01-02</td>
-				<td>270</td>
-			</tr>
-		
+
 		</tbody>
 		<tfoot>
 		</tfoot>

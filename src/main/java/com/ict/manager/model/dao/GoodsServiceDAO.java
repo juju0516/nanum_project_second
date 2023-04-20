@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.ict.goods.model.vo.GoodsVO;
 import com.ict.goods.model.vo.Goods_SaleVO;
 import com.ict.manager.model.vo.ManagerVO;
+import com.ict.manager.model.vo.MngrSearchVO;
 import com.ict.member.model.vo.PointVO;
 
 @Repository
@@ -22,16 +23,23 @@ public class GoodsServiceDAO {
 		this.sqlSessionTemplate = sqlSessionTemplate;
 	}
 	
-	public int getTotalCount() {
-		return sqlSessionTemplate.selectOne("manager.goods_count");
+	public int getTotalCount(String g_s_word) {		
+		if(g_s_word == null || g_s_word.length() <= 0)
+			return sqlSessionTemplate.selectOne("manager.goods_count");
+		else
+			return sqlSessionTemplate.selectOne("manager.goods_s_count", g_s_word);
 	}
 	
-	public List<GoodsVO> getGoodsList(int begin, int end) {
-		Map<String, Integer> map = new HashMap<String, Integer>();
-		map.put("begin", begin);
-		map.put("end", end);
+	public List<GoodsVO> getGoodsList(int begin, int end, String g_s_word) {
+		MngrSearchVO vo = new MngrSearchVO();
+		vo.setBegin(begin);
+		vo.setEnd(end);
+		vo.setS_word(g_s_word);
 		
-		return sqlSessionTemplate.selectList("manager.goods_list", map);
+		if(g_s_word == null || g_s_word.length() <= 0)
+			return sqlSessionTemplate.selectList("manager.goods_list", vo);
+		else
+			return sqlSessionTemplate.selectList("manager.goods_s_list", vo);
 	}
 	
 	public int getGoodsInsert(GoodsVO vo) {
@@ -71,16 +79,12 @@ public class GoodsServiceDAO {
 	}			
 	
 	// Goods Sale table
-	public int getSaleTotalCount() {
-		return sqlSessionTemplate.selectOne("manager.g_s_count");
+	public int getSaleTotalCount(MngrSearchVO vo) {
+		return sqlSessionTemplate.selectOne("manager.g_s_count", vo);
 	}
 	
-	public List<Goods_SaleVO> getGoodsSaleList(int begin, int end) {
-		Map<String, Integer> map = new HashMap<String, Integer>();
-		map.put("begin", begin);
-		map.put("end", end);
-		
-		return sqlSessionTemplate.selectList("manager.g_s_list", map);
+	public List<Goods_SaleVO> getGoodsSaleList(MngrSearchVO vo) {
+		return sqlSessionTemplate.selectList("manager.g_s_list", vo);
 	}
 	
 	public Goods_SaleVO getGoodsSaleOne(String goods_sale_idx) {

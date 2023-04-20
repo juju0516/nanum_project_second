@@ -7,6 +7,12 @@
 <head>
 <meta charset="UTF-8">
 <title>my page</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+	crossorigin="anonymous"></script>
+<link
+	href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square-neo.css"
+	rel="stylesheet">
+<link href="resources/css/mypage.css" type="text/css" rel="stylesheet">
 <script type="text/javascript">
 	function change_nick_ok(f) {
 		if (f.nickname.value.trim().length <= 0) {
@@ -65,7 +71,7 @@
 	function img_change() {
 	    var file = $('#profile_img')[0].files[0];
 	    var formData = new FormData();
-	    formData.append("p_f_name", file);
+	    formData.append("f_param", file);
 	    $.ajax({
 	        url: "member_image_change.do",
 	        type: 'post',
@@ -84,12 +90,7 @@
 	    });
 	};
 </script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"
-	crossorigin="anonymous"></script>
-<link
-	href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square-neo.css"
-	rel="stylesheet">
-<link href="resources/css/mypage.css" type="text/css" rel="stylesheet">
+
 </head>
 <body>
 	<jsp:include page="../header.jsp" />

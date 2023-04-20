@@ -19,9 +19,8 @@
 </style>
 <script type="text/javascript">
 	function goods_search(f) {
-		// ajax로 데이터 가져오기
-		//f.action ="mngr_goods_search.do";
-		//f.submit();
+		f.action ="mngr_goods_list.do?search=y";
+		f.submit();
 	}
 	
 	function goods_write(f) {
@@ -37,7 +36,7 @@
 <form method="post">
 	<div class="title"> 굿즈 정보 </div>
 	<div class="search-wrap new-gap">
-		<span class="search-label"> 제품명 </span><input type="text"> 
+		<span class="search-label"> 제품명 </span><input type="text" name="search-word"> 
 		<div class="btn-loc">
 			<button class="btn-detail" onclick="goods_search(this.form)"> 검 색</button>
 		</div>	

@@ -39,16 +39,17 @@ span{
 </head>
 <body>
 <div>
-<!--<hr> -->
+<!-- 	<hr> -->
 	<hr align="center" noshade="noshade" width="98%" style="border-bottom: 2px solid lightgray">
 	<br>
 	<footer>
 		<nav>
+			<%-- 일부 로그인시 링크 이동하게 처리하기 오시는길, 1대1 문의하기 div? 쪽에 ID부여 후 a링크 뒤에 ID 주기--%>
 			<a href="info.do">개인 정보 처리 방침</a>
 			<a href="TOS.do">이용약관</a>
-			<a href="contact.do">오시는길</a>
-			<a href="contact_us.do">1:1문의하기</a>
-			<a href="FAQ.do">FAQ</a>
+			<a href="story_introduce.do?contact:아이디 있는 곳 링크 바로가기 만드시오 상묵">오시는길</a>
+			<a href="member_inquiry.do">1:1문의하기</a>
+			<a href="story_introduce.do?faq::아이디 있는 곳 링크 바로가기 만드시오 상묵">FAQ</a>
 		</nav>
 		<p>
 			<span>서울시 마포구 백범로 케이터틀 ICT 한국 인재 개발원</span><br>

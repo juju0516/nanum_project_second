@@ -30,7 +30,28 @@
 	width: 180px;
 }
 </style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script type="text/javascript">
+	function search_exec(f) {
+		// 검색 기간
+		var b_date = $("#b-date").val();
+		var e_date = $('#e-date').val();
+	
+		if(e_date != '' && b_date > e_date) {
+			alert("검색 시작 날짜가 종료 날짜보다 늦을 수 없습니다.");
+			return;
+		}
+	
+		// 시작날자, 종료날짜로 검색	
+		var s_type = $("#date-type option:selected").val();
+		
+		// prj_category
+		var s_category = $("#prj-type option:selected").val();
+	
+		f.action = "mngr_prj_list.do?search=y&s_type=" + s_type + 
+				   "&b_date=" + b_date + "&e_date=" + e_date + "&s_category=" + s_category;
+		f.submit();
+	}
 </script>
 </head>
 <body>
@@ -39,23 +60,23 @@
 <form method="post">
 	<div class="title"> 프로젝트 정보 </div>
 	<div class="search-wrap gap">
-		<select class="select" name="date-type">
+		<select class="select" id="date-type">
 			<option value=""> -- 선 택 -- </option>
-			<option value="begin-date"> 시작 날짜 </option>
-			<option value="end-date"> 종료 날짜 </option>
+			<option value="시작날짜"> 시작 날짜 </option>
+			<option value="종료날짜"> 종료 날짜 </option>
 		</select>	
-		<input class="input-width" type="date" value="2023-03-29"> ~ &nbsp;&nbsp;&nbsp;&nbsp; 
-		<input class="input-width" type="date" value="2023-03-29">
-		<select class="select blank" name="prj-type">
+		<input class="input-width" type="date" id="b-date"> ~ &nbsp;&nbsp;&nbsp;&nbsp; 
+		<input class="input-width" type="date" id="e-date">
+		<select class="select blank" id="prj-type">
 			<option value=""> -- 프로젝트 구분 -- </option>
-			<option value="ongoing"> 진행중 </option>
-			<option value="new"> 새로 시작된 </option>
-			<option value="ready"> 오픈 예정 </option>
-			<option value="finish"> 완료 </option>
-			<option value="deleted"> 내림 </option>
+			<option value="진행중"> 진행중 </option>
+			<option value="새로 시작된"> 새로 시작된 </option>
+			<option value="오픈 예정"> 오픈 예정 </option>
+			<option value="완료"> 완료 </option>
+			<option value="내림"> 내림 </option>
 		</select>	
 	</div>
-	<div class="only-btn-wrap"><button class="btn-detail" onclick=""> 검 색</button></div>	
+	<div class="only-btn-wrap"><button class="btn-detail" onclick="search_exec(this.form)"> 검 색</button></div>	
 	<div class="table-wrap">
 	<table class="width-new">
 		<thead>
@@ -65,24 +86,32 @@
 			</tr>
 		</thead>
 		<tbody>	
-			<tr><td>1</td><td>오픈 예정</td>
-			<td><a href="mngr_prj_detail.do"> 프로젝트 9 </a></td>
-			<td> AAA </td><td>A-Nick</td>
-			<td> Y </td><td> 0 원 </td><td> N </td><td> - </td><td> 2023-04-10 </td>
-			<td> 2023-05-31 </td><td> admin1 </td>
-			</tr>
-			
-			<tr><td><a href="mngr_prj_detail.do">2</a></td><td>새로 시작된</td>
-			<td><a href="mngr_prj_detail.do"> 프로젝트 7 </a></td>
-			<td> BBB </td><td>B-Nick</td>
-			<td> Y </td><td> 10,000 원 </td><td> N </td><td> - </td><td> 2023-03-27 </td>
-			<td> 2023-05-31 </td><td> admin1 </td>
-			</tr>
-			
-			<tr><td>3</td><td>진행중</td><td><a href="mngr_prj_detail.do"> 프로젝트 5 </a></td><td> CCC </td><td>C-Nick</td>
-			<td> Y </td><td> 500,000 원 </td><td> Y </td><td> 3 명 </td><td> 2023-03-01 </td>
-			<td> 2023-04-30 </td><td> admin1 </td>
-			</tr>
+		<c:choose>
+			<c:when test="${empty prj_list}">
+				<tr>
+					<td colspan="12"><h3>프로젝트 정보 없음</h3></td>
+				</tr>
+			</c:when>
+			<c:otherwise>
+				<c:forEach var="k" items="${prj_list }" varStatus="vs">
+					<tr>
+					<td>${paging.totalRecord-((paging.nowPage-1)*paging.numPerPage+vs.index)}</td>
+					<td>${k.prj_category}</td>
+					<td><a href="mngr_prj_detail.do?project_idx=${k.project_idx }&cPage=${paging.nowPage}"> 
+						${k.prj_title} </a></td>
+					<td>${k.id }</td>
+					<td>${k.nickname }</td>
+					<td>${k.dnt_flag}</td>
+					<td>${k.cur_point}</td>
+					<td>${k.vlt_flag}</td>
+					<td>${k.cur_num_people}</td>
+					<td>${k.prj_begin_date }</td>
+					<td>${k.prj_end_date }</td>
+					<td>${k.manager_id }</td>
+					</tr>
+				</c:forEach>
+			</c:otherwise>
+		</c:choose>						
 		</tbody>
 		<tfoot>
 		</tfoot>
@@ -93,34 +122,34 @@
 		<ol class="paging">
 			<!-- 이전 -->
 			<c:choose>
-				<c:when test="true">
+				<c:when test="${paging.beginBlock <= paging.pagePerBlock}">
 					<li class="disable"> &lt; </li>
 				</c:when>
 				<c:otherwise>
-					<li><a href=""> &lt; </a></li>
+					<li><a href="mngr_prj_list.do?cPage=${paging.beginBlock-paging.pagePerBlock}"> &lt; </a></li>
 				</c:otherwise>
 			</c:choose>
 			
 			<!-- 블록안에 들어간 페이지번호들 -->
-			<c:forEach begin="1" end="4" step="1" var="k">
+			<c:forEach begin="${paging.beginBlock}" end="${paging.endBlock}" step="1" var="k">
 				<!-- 현재 페이지와 아닌 아닌 페이지(링크 걸어야) 구분 -->
 				<c:choose>
-					<c:when test="false">
-						<li class="now">2</li>
+					<c:when test="${k == paging.nowPage}">
+						<li class="now">${k}</li>
 					</c:when>
 					<c:otherwise>
-						<li><a href="">${k}</a></li>
+						<li><a href="mngr_prj_list.do?cPage=${k}">${k}</a></li>
 					</c:otherwise>
 				</c:choose>
 			</c:forEach>
 			
 			<!-- 다음 -->
 			<c:choose>
-			   	<c:when test="0">
+			   	<c:when test="${paging.endBlock >= paging.totalPage}">
 			   		<li class="disable"> &gt;</li>
 			   	</c:when>
 			   	<c:otherwise>
-			   		<li><a href=""> &gt;</a></li>
+			   		<li><a href="mngr_prj_list.do?cPage=${paging.beginBlock+paging.pagePerBlock}"> &gt;</a></li>
 			   	</c:otherwise>
 			</c:choose>
 		</ol>

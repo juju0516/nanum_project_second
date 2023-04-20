@@ -23,13 +23,15 @@ public class Goods_ServieImpl implements Goods_Service {
 		this.goods_DAO = goods_DAO;
 	}
 	
-	
-	
 	// 굿즈 전체 리스트 보기
 	@Override
 	public List<GoodsVO> getGoodsList() throws Exception {
 		return goods_DAO.getGoodsList();
 	}
+//	@Override
+//	public List<GoodsVO> getGoodsList(int begin, int end) throws Exception {
+//		return goods_DAO.getGoodsList(begin, end);
+//	}
 	
 	// 굿즈 상세내용 보기
 	@Override
@@ -37,6 +39,11 @@ public class Goods_ServieImpl implements Goods_Service {
 		return goods_DAO.getGoodsDetail(goods_idx);
 	}
 	
+	// 주소 변경(최근배송지, 기본배송지)
+	@Override
+	public int delivaryUpdate(MemberVO mvo) throws Exception {
+		return goods_DAO.delivaryUpdate(mvo);
+	}
 
 	// 굿즈 결제 하기
 	@Override

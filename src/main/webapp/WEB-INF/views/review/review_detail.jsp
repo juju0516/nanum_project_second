@@ -100,6 +100,41 @@
 		a { margin-right: 0;}
 		img { max-width: 600px; }/* border를 넘어가지 않을 정도로 이미지 최대너비값 지정*/
 	</style>
+	<script type="text/javascript">
+		function review_list(f) {
+			f.action="review_list.do";
+			f.submit();
+		}
+		
+		function review_update_page(f) {
+			f.action="review_update_page.do?cPage=${cPage}&review_idx=${review_idx}";
+			f.submit();
+		}
+		
+	    function review_delete_page(f){
+	        var url= "review_delete_page.do?cPage=${cPage}&review_idx=${review_idx}";    //팝업창에 출력될 페이지 URL
+	        var name = "review_delete_pop";
+	        
+	     	// 팝업창 크기
+	        var popupWidth = 500;
+	        var popupHeigth = 250;
+
+	        // 팝업창 가운데 정렬
+	        var popupX = window.screenLeft + window.innerWidth/2 - (popupWidth / 2);
+	        var popupY= window.screenTop + window.outerHeight/2 - (popupHeigth / 2);
+
+	        var option="width=" + popupWidth + ",height=" + popupHeigth +
+	                   ",left=" + popupX + ",top=" + popupY + 
+	                   ",location=no,toolbar=no,menubar=no,status=no,scrollbars=no,resizable=no";
+	        
+	        window.open(url, name, option); // 이동할주소, 이름, 팝업옵션
+	    }
+	    
+	    function review_delete(f) {
+			f.action="review_delete.do?cPage=${cPage}&review_idx=${review_idx}";
+			f.submit();
+		}
+	</script>
 </head>
 <body>
 <header>
@@ -108,41 +143,39 @@
 		<h1>후기리스트 상세</h1>
 	</div>
 </header>
-<section>
-	<div class="wrap">
-		<div class="title">
-			<span class="subject">후기 상세페이지</span>
-			<span class="writer">김나누미</span>
-			<span class="date">2023-03-44</span>
+<form method="post">
+	<section>
+		<div class="wrap">
+			<div class="title">
+				<span class="subject">${revo.re_title}</span>
+				<span class="writer">${revo.id}</span>
+				<span class="date">${revo.re_date.substring(0,10)}</span>
+			</div>
+			
+			<div class="content">
+				<pre>${revo.re_content}</pre>
+			</div>
 		</div>
-		
-		<div class="content">
-			<p> 이곳은 공지사항 상세 내용을 보는 페이지 입니다.</p>
-			<p> 공지사항 내용 내용 내용 </p>
-			<p> 사진도 포함될 수 있습니다.  </p>
-			<p> summernote를 이용할 거니까요!  </p>
-			<p><img src="resources/images/system/walker1.png"></p>
-			<p> 공지사항 내용 내용 내용 </p>
-			<p> 공지사항 내용 내용 내용 </p>
-			<p> 공지사항 내용 내용 내용 </p>
-			<p> 공지사항 내용 내용 내용 </p>
-			<p><img src="resources/images/system/special.png"></p>
-			<p> 공지사항 내용 내용 내용 </p>
-			<p> 공지사항 내용 내용 내용 </p>
-			<p> 공지사항 내용 내용 내용  공지사항 내용 내용 내용  공지사항 내용 내용 내용 </p>
-			<p> 공지사항 내용 내용 내용  공지사항 내용 내용 내용  공지사항 내용 내용 내용 </p>
-			<p> 공지사항 내용 내용 내용  공지사항 내용 내용 내용  공지사항 내용 내용 내용 </p>
-			<p> 공지사항 내용 내용 내용  공지사항 내용 내용 내용  공지사항 내용 내용 내용 </p>
-			<p> 공지사항 내용 내용 내용  공지사항 내용 내용 내용  공지사항 내용 내용 내용 </p>
-		</div>
-	</div>
-	
-	<div class="list_go">
-		<a href="#"><button id="list_btn">목록</button></a>
-		<a href="#"><button id="list_btn">수정</button></a>
-		<a href="aids_donator_go.do"><button id="redbtn">삭제하기</button></a>
-	</div>
-</section>
+		<c:choose>
+			<%-- 로그인된 아이디와 글쓴 아이디를 비교 --%>
+			<c:when test="${id == revo.id}">
+				<div class="list_go">
+					<input id="list_btn" type="button" value="목록" onclick="review_list(this.form)">
+					<input id="list_btn" type="button" value="수정" onclick="review_update_page(this.form)">
+					<input id="redbtn" type="button" value="삭제하기" onclick="review_delete_page(this.form)">
+					<div style="display: none;">
+						<input id="deletebtn" type="button" value="실제삭제" onclick="review_delete(this.form)">
+					</div>
+				</div>
+			</c:when>
+				<c:otherwise>
+				<div class="list_go">
+					<input id="list_btn" type="button" value="목록" onclick="review_list(this.form)">
+				</div>
+			</c:otherwise>
+		</c:choose>
+	</section>
+</form>
 <footer>
 	<jsp:include page="../footer.jsp" />
 </footer>

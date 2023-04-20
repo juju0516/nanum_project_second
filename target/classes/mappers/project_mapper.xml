@@ -3,4 +3,23 @@
  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
  <mapper namespace="project">
+ 
+ 	<!-- project List 전체 게시글의 수 -->
+ 	<select id="prjList_count" resultType="int">
+ 		SELECT COUNT(*) FROM PROJECT where prj_category=#{prj_category}
+ 	</select>
+ 	
+ 	<!-- project 리스트 전체보기 -->
+ 	<select id="prjList"  resultType="prjvo" parameterType="plvo">
+ 		select * from (
+        	select rownum r_num, a.* 
+            from (select * from project where prj_category=#{prj_category}order by PROJECT_IDX desc) a 
+        ) where r_num BETWEEN #{begin} and #{end}        
+ 	</select>
+ 	
+ 	<!-- 프로젝트 상세보기 -->
+ 	<select id="prjDetatil" resultType="prjvo" parameterType="String">
+ 			SELECT * FROM PROJECT WHERE PROJECT_IDX = #{project_idx}
+ 	</select>
+ 
  </mapper>

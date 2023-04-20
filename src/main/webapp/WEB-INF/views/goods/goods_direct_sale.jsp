@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Nanum 🌷 : goods_BASKET_ORDER(SALE)</title>
+<title>Nanum 🌷 : goods_DIRECT_ORDER(SALE)</title>
 <link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square-neo.css" rel="stylesheet">
 <link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-barun-gothic.css" rel="stylesheet">
 <link href="resources/css/paging.css?after" type="text/css" rel="stylesheet">
@@ -149,51 +149,55 @@ div .address_info .info .input_box {
     cursor: pointer;
 }
 </style>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script type="text/javascript">
-/* 	$(document).ready(function() {
-		$('input:radio[name="input_addr"]').change(function() {
-			if('#new_addr' == 'checked'){
-				// 새로입력이 선택되면 인풋박스에 사용자가 데이터를 입력하고, 그 값을 가져와서 저장해야한다. 
-				var postcod = $('#postcode').val();
-				var addr =$('#address').val();
-				var detailAddr =$('#detailAddress').val();
-				var memo =$('#memo').val();
-				
-				var address = postcod; // 주소 하나로 합치기
-				address = address.concat("/");
-				address = address.concat(addr);
-				address = address.concat("/");
-				address = address.concat(detailAddr);
-				address = address.concat("/");
-				address = address.concat(memo);
-				// 가져온 주소지 정보를 포인트 결제버튼을 누르면, mvo에 저장하자.
-
-				// 갖고 있어야 할 변수 : name, phone, postcod
-				
-				// 이 부분은 써야하는 부분인지 아직 잘 모름 
-		 		newAddrForm.action ="show_pay_Popup";
-				newAddrForm.method = "post";
-				newAddrForm.submit();
-			 
-			}
-		});
+ 	
+	$(document).ready(function() {  /* 주소 새로 입력할 때 input reset 하기*/
+		
+		$('#new_addr').click(function() {
+		   $('#name').val('${mvo.name}');
+		   $('#phone').val('${mvo.phone}');
+		   $('#postcode').val('');
+		   $('#address').val('');
+		   $('#detailAddress').val('');
+		   $('#memo').val('');
+		 });
+		
+		
+		/*최근배송지 선택시 member 테이블에서 배송지 가져오고 각 화면에 넣기 위해 구분하기*/
+		
+		    var postcode = $('#postcode').val();
+			var addr =$('#address').val();
+			var detailAddr =$('#detailAddress').val();
+			var memo =$('#memo').val();
+			
+		$('#last_addr').click(function() {
+			var last_addr = "${mvo.last_address}";
+			var arrayLastAddr= "${last_addr.split('/')}";
+			
+			   $('#name').val('${mvo.name}');
+			   $('#phone').val('${mvo.phone}');
+			   $('#postcode').val('${arrayLastAddr[0]}');
+			   $('#address').val('${arrayLastAddr[1]}');
+			   $('#detailAddress').val('${arrayLastAddr[2]}');
+			   $('#memo').val('${arrayLastAddr[3]}');
+		 });
+		
+		$('#default').click(function() {
+			var defaultaddr = "${mvo.address}";
+			var arrayAddr= "${defaultaddr.split('/')}";
+			
+			   $('#name').val('${mvo.name}');
+			   $('#phone').val('${mvo.phone}');
+			   $('#postcode').val('${arrayAddr[0]}');
+			   $('#address').val('${arrayAddr[1]}');
+			   $('#detailAddress').val('${arrayAddr[2]}');
+			   $('#memo').val('${arrayAddr[3]}');
+		 });
 	});
-	 */
-
-	$('.payment_btn').click(function(event){  //버튼을 클릭 했을시 show_pay_Popup 함수 출력 
-		// 버튼을 누르면 새로입력한 값이 들어간다.
-		// 새로입력이 선택되면 인풋박스에 사용자가 데이터를 입력하고, 그 값을 가져와서 저장해야한다. 
-		var postcod = $('#postcode').val();
-		var addr =$('#address').val();
-		var detailAddr =$('#detailAddress').val();
-		var memo =$('#memo').val();
-        show_pay_Popup();
-    });
 	
-	
-	function show_pay_Popup(){
-		// 팝업 열기 전 항목 유효성 검사하기 
+	function payment_btn(f){  //버튼을 클릭 했을시 show_pay_Popup 함수 출력 
+		// 팝업 열기 전 버튼을 누르면 각 항목 유효성 검사하기 
 		if (f.name.value.trim().length <= 0 ) {
 			alert("수령인을 입력하세요");
 			f.name.focus();
@@ -214,41 +218,28 @@ div .address_info .info .input_box {
 			return;
 		}
 		
+		// 버튼을 누르면 새로입력한 값이 들어간다.
+		// form에 저장된 값을 가지고 주소 저장하는 controller로 가자.
+		f.action="goods_delivary_addr_save.do";
+		f.submit();
+		show_pay_Popup();
+	  };
+	  
+	function show_pay_Popup(){
+		/*
+		수량, 가격, 상품 번호에 대한 정보를 넣어서 결제 금액을 알자 
+			=> 상품 정보 ${gvo.goods_idx}
+			=> 총 결제 금액 ${gvo.price * amount}
+		총 결제 가격을 알자 배송비 + 결제 상품
+			=> ${(gvo.price * amount) + gvo.delivery_charge}
 		
-		
-		/*입력한 배송지 정보 합쳐서 member주소에 저장하기 */
-/* 				var address = postcod; // 주소 하나로 합치기
-					address = address.concat("/");
-					address = address.concat(addr);
-					address = address.concat("/");
-					address = address.concat(detailAddr);
-					address = address.concat("/");
-					address = address.concat(memo);
-					
-					address = ${mvo.address};
-		 */
-		 
-		 
-		/* 수량, 가격, 상품 번호에 대한 정보를 넣어서 결제 금액을 알자 
-		=> 상품 정보 ${gvo.goods_idx}
-		=> 총 결제 금액 ${gvo.price * amount}
+		memberVO -> controller에서 선언해서 정보를 갖고 있어야한다. ok
+		 ${mvo.cur_point} = 접속한 ID가 보유한 포인트
+		결제 포인트가 부족하면 '포인트 부족' 메세지창 출력 ok
+		내가 가진 포인트가 결제포인트보다 많으면 결제 가능 -> 팝업창 출력하자 ok
 		*/
-		
-		// 배송비를 알자
-		// ${gvo.delivery_charge} = 6나누미
-		
-		// 총 결제 가격을 알자 배송비 + 결제 상품
-		// => ${(gvo.price * amount) + gvo.delivery_charge}
-		
-		
-		// memberVO -> controller에서 선언해서 정보를 갖고 있어야한다. ok
-		// ${mvo.cur_point} = 접속한 ID가 보유한 포인트
-		// 결제 포인트가 부족하면 '포인트 부족' 메세지창 출력 ok
-		// 내가 가진 포인트가 결제포인트보다 많으면 결제 가능 -> 팝업창 출력하자 ok
-		
-		// var totalprice = ${(gvo.price * amount) + gvo.delivery_charge} gvo.delivery_charge=6이라고 가정
-		
-		var totalprice = ${(gvo.price * amount) + 6}
+		 
+		var totalprice = ${(gvo.price * amount) + gvo.delivery_charge}
 		if(${mvo.cur_point} < totalprice){
 			alert('결제 실패 : 보유 포인트가 부족합니다.');
 			return false;
@@ -278,10 +269,9 @@ div .address_info .info .input_box {
 	}	
 </script>
 
-
 </head>
 <body>
-<form method="post" name="f">
+<form method="post" name="f" >
 	<header>
 		<jsp:include page="../header.jsp" />
 	</header>
@@ -292,7 +282,7 @@ div .address_info .info .input_box {
 			<article class="goods_wrap">
 				<table>
 					<tr>
-						<td><img class="thumbnail" src="resources/images/system/${gvo.goods_main_img}"></td>
+						<td><img class="thumbnail" src="resources/upload/system/attach/${gvo.goods_main_img}"></td>
 						<td width="57%"><span class="subject">[굿즈]${gvo.goods_name}</span><br>
 							<span class="amount">수량 : &nbsp;&nbsp; ${amount} </span>
 						 </td>
@@ -309,6 +299,8 @@ div .address_info .info .input_box {
 						<c:when test="${mvo.address == null || mvo.address == ''}">
 							<p><input type="radio" id="default" name="input_addr"  
 							style="accent-color: rgb(0,87,147); zoom: 1.2;">기본배송지&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<input type="radio" id="last_addr"  name="input_addr" 
+								style="accent-color: rgb(0,87,147); zoom: 1.2;">최근배송지&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 								<input type="radio" id="new_addr"  name="input_addr" checked
 								style="accent-color: rgb(0,87,147); zoom: 1.2;">신규입력 </p>
 							<pre>
@@ -317,7 +309,9 @@ div .address_info .info .input_box {
 						<c:otherwise>
 							<p><input type="radio" id="default" name="input_addr" checked 
 							style="accent-color: rgb(0,87,147); zoom: 1.2;">기본배송지&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								<input type="radio" id="new_addr"  name="input_addr"
+								<input type="radio" id="last_addr"  name="input_addr"
+								style="accent-color: rgb(0,87,147); zoom: 1.2;">최근배송지&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<input type="radio" id="new_addr"  name="input_addr" 
 								style="accent-color: rgb(0,87,147); zoom: 1.2;">신규입력 </p>
 							<pre>
 							</pre>
@@ -325,46 +319,30 @@ div .address_info .info .input_box {
 					</c:choose>
 					</div>
 					
- 						<c:choose>
-							<c:when test="${mvo.address == null || mvo.address == ''}">
-								<!-- 멤버에 저장된 주소가 비었다면 새로 입력하자  -->
-								<form action="" method="post" name="newAddrForm">
-								<p class="info">수령인&nbsp;&nbsp;&nbsp;&nbsp;<input class="input_box" type="text" id="name"  value="${mvo.name}" placeholder="수령인" style="margin-left:12px;" ></p>
-								<p class="info">연락처&nbsp;&nbsp;&nbsp;&nbsp;<input class="input_box" type="tel" id="phone" value="${mvo.phone}"  placeholder="(-)를 제외한 휴대전화번호를 입력하세요" style="margin-left:12px;"></p>
-								<p class="info">배송지&nbsp;&nbsp;&nbsp;&nbsp;<input class="input_box" type="text" id="postcode" value="" placeholder="우편번호검색" readonly style="width: 200px; margin-left:12px;">&nbsp;&nbsp;&nbsp;&nbsp;
-								<input type="button" class="post_btn" onclick="execDaumPostcode()" value="우편번호검색">
-								<p class="info"><input class="input_box" type="text" id="address" value="" style="margin-left: 90px;"></p>
-								<p class="info"><input class="input_box" type="text" id="detailAddress" value="" placeholder="상세주소를 입력하세요" style="margin-left: 90px;"></p>
-								<p class="info">배송메모&nbsp;&nbsp;&nbsp;<input class="input_box" type="text" id="memo" value="" placeholder="배송 관련 메모, 요청 사항을 입력하세요" style="margin-left: 0px;"></p>
-						
-					
-								<%-- <c:set var="addr" value="${postcode.value}" /> --%>
-								<%-- <c:set var="addr" value="${addr.concat('/')}" /> --%>
-								<%-- <c:set var="addr" value="${address.value}" /> --%>
-								<%-- <c:set var="addr" value="${addr.concat('/')}" /> --%>
-								<%-- <c:set var="addr" value="${detailAddress.value}" /> --%>
-							<%-- 	<c:set var="addr" value="${addr.concat('/')}" /> --%>
-							<%-- 	<c:set var="addr" value="${memo.value}" /> --%>
-						
-								</form>
-							</c:when>
-							<c:otherwise>
-								<!-- 주소가 저장되어있다면 가져오자 -->
-								<!-- 저장된 주소 가져오기.. -->
-								<form action="" method="post" name = "defAddrForm">
-								<c:set var="address" value="${mvo.address}" />
-								<c:set var="arrayaddr" value="${address.split('/')}" />
-								<p class="info">수령인&nbsp;&nbsp;&nbsp;&nbsp;<input class="input_box" type="text" id="name" value="${mvo.name}" placeholder="수령인" style="margin-left:12px;" ></p>
-								<p class="info">연락처&nbsp;&nbsp;&nbsp;&nbsp;<input class="input_box" type="tel" id="phone" value="${mvo.phone}" placeholder="(-)를 제외한 휴대전화번호를 입력하세요" style="margin-left:12px;"></p>
-								<p class="info">배송지&nbsp;&nbsp;&nbsp;&nbsp;<input class="input_box" type="text" id="postcode" value="${arrayaddr[0]}"  placeholder="우편번호검색" readonly style="width: 200px; margin-left:12px;">&nbsp;&nbsp;&nbsp;&nbsp;
-								<input type="button" class="post_btn" onclick="execDaumPostcode()" value="우편번호검색">
-								<p class="info"><input class="input_box" type="text" id="address" value="${arrayaddr[1]}" style="margin-left: 90px;"></p>
-								<p class="info"><input class="input_box" type="text" id="detailAddress" value="${arrayaddr[2]}" placeholder="상세주소를 입력하세요" style="margin-left: 90px;"></p>
-								<p class="info">배송메모&nbsp;&nbsp;&nbsp;<input class="input_box" type="text" id="memo" value="${arrayaddr[3]}" placeholder="배송 관련 메모, 요청 사항을 입력하세요" style="margin-left: 0px;"></p>
-								<!-- 저장된 주소 끝 -->
-								</form>
-							</c:otherwise>
-						</c:choose> 
+					<c:choose>
+						<c:when test="${mvo.address == null || mvo.address == ''}">
+							<!-- 멤버에 저장된 주소와 최근배송지가 비었다면 새로 입력하자  -->
+							<p class="info">수령인&nbsp;&nbsp;&nbsp;&nbsp;<input class="input_box" type="text" id="name" name="name" value="" placeholder="수령인" style="margin-left:12px;" ></p>
+							<p class="info">연락처&nbsp;&nbsp;&nbsp;&nbsp;<input class="input_box" type="tel" id="phone" name="phone" value=""  placeholder="(-)를 제외한 휴대전화번호를 입력하세요" style="margin-left:12px;"></p>
+							<p class="info">배송지&nbsp;&nbsp;&nbsp;&nbsp;<input class="input_box" type="text" id="postcode" name="postcode" value="" placeholder="우편번호검색" readonly style="width: 200px; margin-left:12px;">&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="button" class="post_btn" onclick="execDaumPostcode()" value="우편번호검색">
+							<p class="info"><input class="input_box" type="text" id="address" name="address" value="" style="margin-left: 90px;"></p>
+							<p class="info"><input class="input_box" type="text" id="detailAddress" name="detailAddress" value="" placeholder="상세주소를 입력하세요" style="margin-left: 90px;"></p>
+							<p class="info">배송메모&nbsp;&nbsp;&nbsp;<input class="input_box" type="text" id="memo" name="memo" value="" placeholder="배송 관련 메모, 요청 사항을 입력하세요" style="margin-left: 0px;"></p>
+						</c:when>
+						<c:otherwise>
+							<c:set var="address" value="${mvo.address}" />
+							<c:set var="arrayaddr" value="${address.split('/')}" />
+							<p class="info">수령인&nbsp;&nbsp;&nbsp;&nbsp;<input class="input_box" type="text" id="name" name="name" value="${mvo.name}" placeholder="수령인" style="margin-left:12px;" ></p>
+							<p class="info">연락처&nbsp;&nbsp;&nbsp;&nbsp;<input class="input_box" type="tel" id="phone" name="phone" value="${mvo.phone}" placeholder="(-)를 제외한 휴대전화번호를 입력하세요" style="margin-left:12px;"></p>
+							<p class="info">배송지&nbsp;&nbsp;&nbsp;&nbsp;<input class="input_box" type="text" id="postcode" name="postcode" value="${arrayaddr[0]}"  placeholder="우편번호검색" readonly style="width: 200px; margin-left:12px;">&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="button" class="post_btn" onclick="execDaumPostcode()" value="우편번호검색">
+							<p class="info"><input class="input_box" type="text" id="address" name="address" value="${arrayaddr[1]}" style="margin-left: 90px;"></p>
+							<p class="info"><input class="input_box" type="text" id="detailAddress" name="detailAddress" value="${arrayaddr[2]}" placeholder="상세주소를 입력하세요" style="margin-left: 90px;"></p>
+							<p class="info">배송메모&nbsp;&nbsp;&nbsp;<input class="input_box" type="text" id="memo" name="memo" value="${arrayaddr[3]}" placeholder="배송 관련 메모, 요청 사항을 입력하세요" style="margin-left: 0px;"></p>
+							<!-- 저장된 주소 끝 -->
+						</c:otherwise>
+					</c:choose> 
 						<pre>
 						</pre>
 						<p style="font-size: 13px;">* 총 결제 포인트에는 <span style="font-style: italic; font-weight: bold; font-size: 15px; margin-left: 0; text-decoration: underline;">기본배송비가 포함</span> 되어있습니다.  (기본 배송비 3000원,  6 나누미)</p>
@@ -426,15 +404,14 @@ div .address_info .info .input_box {
 					
 					<!-- 결제하기 div -->
 					<div class="payment_wrap">
-					
 						<!-- 바로결제 부분 / 바구니 결제 부분은..? -->
 						<p style="font-size: 25px; font-weight: bold; text-align: right; margin-bottom: -30px">총 결제 포인트</p>
-						<p style="font-size: 30px; font-weight: bold; color: rgb(0,87,147); text-align: right;">총 ${(gvo.price * amount) + 6}나누미</p>
+						<p style="font-size: 30px; font-weight: bold; color: rgb(0,87,147); text-align: right;">총 ${(gvo.price * amount) + gvo.delivery_charge}나누미</p>
 						<input type="hidden" name="goods_idx" value="${gvo.goods_idx}">
 						<input type="hidden" name="price" value="${gvo.price}">
 						<input type="hidden" name="id" value="${mvo.id}">
 						<input type="hidden" name="amount" value="${amount}">
-						<p><button class="payment_btn" onclick="show_pay_Popup()">포인트결제</button></p>
+						<p><input type="button" class="payment_btn" onclick="payment_btn(this.form)" value="포인트결제"></p>
 					</div>
 			</article>
 		</div>
@@ -443,6 +420,7 @@ div .address_info .info .input_box {
 		<jsp:include page="../footer.jsp" />
 	</footer>
 	</form>
+	
 	<!-- 새로운 윈도우를 열기 때문에 form으로 정보를 다시 넣어주자. -->
 	<form name ="paypopupForm" method="post">
     	<input type="hidden" name="goods_idx" value="${gvo.goods_idx}">
@@ -450,6 +428,7 @@ div .address_info .info .input_box {
 		<input type="hidden" name="id" value="${mvo.id}">
 		<input type="hidden" name="amount" value="${amount}">
 		<input type="hidden" name="addr" value="${mvo.address}">
+		<input type="hidden" name="last_addr" value="${mvo.last_address}">
 	</form>
 </body>
 </html>

@@ -88,8 +88,14 @@
 	</style>
 	<script type="text/javascript">
 		function review_writing_go(f) {
-			f.action="review_writing_go.do";
-			f.submit();
+ 			if ("${login}" != "ok") {
+				alert('로그인이 필요합니다.');
+				f.action="login_login.do";
+				f.submit();
+			} else {
+				f.action="review_writing_go.do";
+				f.submit();
+			}
 		}
 	</script>
 </head>
@@ -120,109 +126,62 @@
 				<th style="width: 80px">hit</th>
 			</tr>
 		</thead>
-		<tbody>
-			<!-- 지금은 그냥 넣었지만, for문으로 넣어야 함. -->
-			<tr>
-				<td>1</td>
-				<td style="text-align: left; padding-left: 20px;"><a href="review_detail.do">1번 리뷰글</a></td>
-				<td>김나누미</td>
-				<td>2023-03-24</td>
-				<td>23</td>
-			</tr>
-		
-			<tr>
-				<td>2</td>
-				<td style="text-align: left; padding-left: 20px;"><a href="#">2번 리뷰글</a> </td>
-				<td>이나누미</td>
-				<td>2023-03-20</td>
-				<td>23</td>
-			</tr>
-		
-			<tr>
-				<td>3</td>
-				<td style="text-align: left; padding-left: 20px;"><a href="#">3번 리뷰글</a> </td>
-				<td>고나누미</td>
-				<td>2023-03-15</td>
-				<td>100</td>
-			</tr>
-		
-			<tr>
-				<td>4</td>
-				<!-- 제목 td에만 왼쪽정렬 주었음.  -->
-				<td style="text-align: left; padding-left: 20px;"><a href="#">공지글입니다. </a></td>
-				<td>관리자</td>
-				<td>2023-03-02</td>
-				<td>150</td>
-			</tr>
-			<tr>
-				<td>5</td>
-				<!-- 제목 td에만 왼쪽정렬 주었음.  -->
-				<td style="text-align: left; padding-left: 20px;"><a href="#">공지글입니다.</a></td>
-				<td>관리자</td>
-				<td>2023-02-07</td>
-				<td>160</td>
-			</tr>
-			<tr>
-				<td>6</td>
-				<!-- 제목 td에만 왼쪽정렬 주었음.  -->
-				<td style="text-align: left; padding-left: 20px;"><a href="#">공지글입니다.</a></td>
-				<td>관리자</td>
-				<td>2023-01-19</td>
-				<td>250</td>
-			</tr>
-			<tr>
-				<td>7</td>
-				<!-- 제목 td에만 왼쪽정렬 주었음.  -->
-				<td style="text-align: left; padding-left: 20px;"><a href="#">공지글입니다.</a></td>
-				<td>관리자</td>
-				<td>2023-01-02</td>
-				<td>270</td>
-			</tr>
-		
-		</tbody>
+		<c:choose>
+			<c:when test="${empty review_list}">
+				<tr>
+					<td colspan="5" style="border: none;">
+						<h1 style="font-size: 30px;"> 후기글이 존재하지 않습니다.</h1>
+					</td>
+				</tr>
+			</c:when>
+			<c:otherwise>
+				<c:forEach var="k" items="${review_list}" varStatus="vs">
+					<tbody>
+						<tr>
+							<td>${paging.totalRecord - ((paging.nowPage - 1) * paging.numPerPage + vs.index)}</td>
+							<td><a href="review_detail.do?review_idx=${k.review_idx}&cPage=${paging.nowPage}">${k.re_title}</a></td>
+							<td>${k.id}</td>
+							<td>${k.re_date.substring(0,10)}</td>
+							<td>${k.re_hit}</td>
+						</tr>
+					</tbody>
+				</c:forEach>
+			</c:otherwise>
+		</c:choose>
 		<tfoot>
 			<tr>
-				<td colspan="5" style="border: none; text-align: center; padding-top: 80px;">
-					<ol class="paging">
-						<!-- 이전 -->
-						<c:choose>
-							<c:when test="true">
-								<li class="disable"> &lt; </li>
-							</c:when>
-							<c:otherwise>
-								<li><a href=""> &lt; </a></li>
-							</c:otherwise>
-						</c:choose>
-						<!-- 블록안에 들어간 페이지번호들 -->
-						<c:forEach begin="1" end="4" step="1" var="k">
-							<!-- 현재 페이지와 아닌 아닌 페이지(링크 걸어야) 구분 -->
-							<c:choose>
-								<c:when test="false">
-									<li class="now">2</li>
-								</c:when>
-								<c:otherwise>
-									<li><a href="">${k}</a></li>
-								</c:otherwise>
-							</c:choose>
+				<td colspan="5" style="border: none;">
+					   <%-- 이전 --%>
+					    <c:choose>
+					    	<c:when test="${paging.beginBlock > paging.pagePerBlock }">
+					    		<a href="review_list.do?cPage=${paging.beginBlock-paging.pagePerBlock}">이전으로</a>
+					    	</c:when>
+					    </c:choose>
+						    
+					    <!-- 블록안에 들어간 페이지번호들 -->
+						<c:forEach begin="${paging.beginBlock}" end="${paging.endBlock}" step="1" var="k">
+							<%-- 현재 페이지는 링크X, 나머지는 해당 페이지로 링크 처리 --%>
+							<c:if test="${k==paging.nowPage}">
+								${k}
+							</c:if>
+							<c:if test="${k!=paging.nowPage}">
+								<a href="review_list.do?cPage=${k}">${k}</a>
+							</c:if>
 						</c:forEach>
+						
 						<!-- 다음 -->
 						<c:choose>
-						   	<c:when test="0">
-						   		<li class="disable"> &gt;</li>
-						   	</c:when>
-						   	<c:otherwise>
-						   		<li><a href=""> &gt;</a></li>
-						   	</c:otherwise>
-						</c:choose>
-					</ol>
-				</td>
-			</tr>
+					    	<c:when test="${paging.endBlock < paging.totalPage }">
+					    		<a href="review_list.do?cPage=${paging.beginBlock+paging.pagePerBlock}">다음으로</a>
+					    	</c:when>
+					    </c:choose>
+					</td>
+				</tr>
 		</tfoot> 
 	</table>
 </section>
 <footer>
 	<jsp:include page="../footer.jsp" />
 </footer>
-
 </body>
 </html>

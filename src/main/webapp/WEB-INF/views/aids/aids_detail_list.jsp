@@ -130,7 +130,7 @@
 	</div>
 	
 	<div class="list_go">
-		<a href="#"><button id="list_btn">목록</button></a>
+		<a href="aids_main_go.do"><button id="list_btn">목록</button></a>
 		<a href="aids_donator_go.do"><button id="redbtn">참여하기</button></a>
 	</div>
 </section>

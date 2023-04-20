@@ -36,6 +36,13 @@
 		<constructor-arg ref="sqlSessionFactory" />
 	</bean>
 	
+	<bean id="regularVO" class="com.ict.project.model.vo.RegularVO" />
+	<bean id="Goods_SaleVO" class="com.ict.goods.model.vo.Goods_SaleVO" />
+	<bean id="Req_AidsVO" class="com.ict.aids.model.vo.Req_AidsVO" />
+	<bean id="Special_DonateVO" class="com.ict.special.model.vo.Special_DonateVO" />
+	<bean id="Prj_RegiVO" class="com.ict.project.model.vo.Prj_RegiVO" />
+	<bean id="DonatorVO" class="com.ict.project.model.vo.DonatorVO" />
+	
 	<!-- annotation -->
 	<context:annotation-config />
 	<context:component-scan base-package="com.ict.*" />

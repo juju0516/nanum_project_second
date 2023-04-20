@@ -82,8 +82,4 @@ public class Special_DonateVO {
 	public void setRegi_date(String regi_date) {
 		this.regi_date = regi_date;
 	}
-	
-	
-	
-
 }

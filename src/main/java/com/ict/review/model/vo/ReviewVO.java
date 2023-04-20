@@ -1,5 +1,7 @@
 package com.ict.review.model.vo;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class ReviewVO {
 	private int		review_idx;
 	private String	id;
@@ -14,6 +16,14 @@ public class ReviewVO {
 	private String	re_date;
 	private int		re_hit;
 	private String	re_state;
+	private MultipartFile re_f_param1;
+	
+	public MultipartFile getRe_f_param1() {
+		return re_f_param1;
+	}
+	public void setRe_f_param1(MultipartFile re_f_param1) {
+		this.re_f_param1 = re_f_param1;
+	}
 	
 	public int getReview_idx() {
 		return review_idx;

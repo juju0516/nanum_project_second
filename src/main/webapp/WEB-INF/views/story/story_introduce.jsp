@@ -68,9 +68,6 @@ article.faq_wrap {
 	clear: both;
 }
 
-.question>ul>li,.answer>ul>li {
-/* 	float: left; */
-}
 .faq {
 	width: 900px;
     line-height: 280%;
@@ -85,7 +82,7 @@ article.faq_wrap {
     list-style: none;
 }
 .answer {
- 	background: #00579308; 
+ 	background: #00579318; 
 	border-bottom-left-radius: 20px;
 	border-bottom-right-radius: 20px;
 	font-size: 17px;
@@ -116,8 +113,6 @@ article.faq_wrap {
 	top: 0;
 	left: 0;
 }
-
-
 
 /* 오시는길 관련 */
 article.contact {
@@ -155,7 +150,7 @@ div.addr p{
 }
 
 </style>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script type="text/javascript">
 $(function(){
     var className =""  //변수를 선언한다.
@@ -224,7 +219,7 @@ $(function(){
 
 
 			<!-- FAQ -->
-			<article class="faq_wrap">
+			<article class="faq_wrap" id="faq">
 				<span class="subject">FAQ</span>
 				<ul class="faq">
 					<li class="question">
@@ -313,7 +308,7 @@ $(function(){
 
 
 			<!-- 오시는 길 -->
-			<article class="contact">
+			<article class="contact" id="contact">
 				<span class="subject">오시는 길(Contact)</span>
 				<div class="addr">
 					<p style="font-family: 'NanumSquareNeoBold';">서울시 마포구 백범로 케이터틀 ICT 한국 인재개발원</p>

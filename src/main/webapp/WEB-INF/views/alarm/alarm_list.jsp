@@ -96,7 +96,7 @@
 				<td>1</td>
 				<td style="text-align: left; padding-left: 20px;"><a href="#">공지글입니다.</a></td>
 				<td>2023-03-24</td>
-				<td><img class="alarm_delete" src="resources/images/system/trash.png" onclick="javascript:alarm_delete();"></td>
+				<td><img class="alarm_delete" src="resources/images/system/trash.png" onclick="alarm_delete();"></td>
 			</tr>
 		
 			<tr>

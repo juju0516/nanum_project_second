@@ -62,7 +62,7 @@
 	}
 	
 	function goods_list(f) {
-		f.action ="mngr_goods_list.do";
+		f.action ="mngr_goods_list.do?init=y";
 		f.submit();
 	}
 </script>

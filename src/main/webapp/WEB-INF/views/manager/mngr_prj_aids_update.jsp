@@ -13,33 +13,57 @@
 <link rel="stylesheet" href="resources/css/summernote-lite.css">
 <style type="text/css">
 .new-width {
-	width:71.5%; 
+	width:70%; 
 }
-
+.btn-len {
+	width: 140px;
+}
 .text-title {
 	width: 90%;
 	font-family: 'NanumSquareNeoLight';
 }
-
+.t-detail {
+	text-align: left;
+	text-indent: 10px;
+	margin-left: 0;
+}
 .it-gap {
 	margin: 0px;
-	width: 93%;
+	width: 90%;
 }
 .td-padding {
 	padding-left: 50px;
 }
 .span-gap {
-	padding-left: 10px;
+	padding-left: 30px;
 }
 </style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script type="text/javascript">
+	$(function() {
+		$('#rglr_yn').val('${vo.regular}').prop("selected", true);
+		$('#onetime_yn').val('${vo.onetime}').prop("selected", true);
+	});
+	
 	function project_aids_update_exec(f) {
-		f.action ="mngr_prj_aids_update_exec.do";
+		//var category = $('#category option:selected').val();
+		//var dnt = $('#dnt_yn option:selected').val();
+		var rglr = $('#rglr_yn option:selected').val();
+		var onetime = $('#onetime_yn option:selected').val();
+		//var vlt = $('#vlt_yn option:selected').val();
+		
+		f.action ="mngr_prj_aids_update_exec.do?rglr="+rglr+"&onetime="+onetime+
+				  "&project_idx=${project_idx}&a_cPage=${a_cPage}";
 		f.submit();
 	}
 
 	function project_aids_update_cancel(f) {
-		f.action ="mngr_prj_aids_detail.do";
+		f.action ="mngr_prj_aids_detail.do?project_idx=${project_idx}&a_cPage=${a_cPage}";
+		f.submit();
+	}
+	
+	function project_list(f) {
+		f.action ="mngr_prj_aids.do?project_idx=${project_idx}&a_cPage=${a_cPage}";
 		f.submit();
 	}
 </script>
@@ -47,65 +71,88 @@
 <body>
 <jsp:include page="mngr_header_menu.jsp" />
 <section>
-<form method="post">
+<form method="post" encType="multipart/form-data">
 	<div class="title"> 상시 프로젝트 수정 </div>
-	<div class="admin-loc new-width"><span class="admin-text">관리자 : admin1</span></div>
+	<div class="only-btn-wrap new-width"></div>
+	<div class="admin-loc"><span class="admin-text">관리자 : ${vo.manager_id }</span></div>
 	
 	<div class="tb-detail-wrap">
 	<table class="tb-detail">
 		<thead>
-			<tr><th><div><span class="text-category"> [ 상시 ] </span></div></th>
+			<tr><th><div><span class="text-category">${vo.prj_category }</span></div></th>
 				<th><div class="title-view-wrap">
 					<div class="text-title">
-						<input class="input-title it-gap" type="text" value="상시 프로젝트 ABC 제목입니다."></div>
-					<div class="text-view">300 views</div>
+						<input class="input-title it-gap" type="text" name="prj_title" value="${vo.prj_title}"></div>
+					<div class="text-view">${vo.prj_hit} views</div>
 				</div></th>
 			</tr>
 		</thead>
 		<tbody>			
-			<tr><td width=13%>등록자 ID</td><td class="td-padding">admin1</td></tr>
-			<tr><td>시작 날짜</td><td class="td-padding"><input class="input-date" type="date" value="2023-03-30 09:00:30"></td></tr>
-			<tr><td>종료 날짜</td><td class="td-padding"><input class="input-date" type="date" value="2023-04-10 23:59:59"></td></tr>
-			<tr><td>지원자 목표</td>	 
-				<td class="td-padding"><input class="input-text" style="margin-left:0" type="number" value="20"> 명</td></tr>
-			<tr><td>후원</td>
-				<td class="td-padding">현재 50 나누미 / 목표 <input class="input-text" type="number" value="500"> 나누미</td></tr>
+			<tr><td width=13%>ID</td><td class="td-padding"><input class="input-text t-detail" type="text" name="id" value="${vo.id}"></td></tr>
+			<tr><td>시작 날짜</td><td class="td-padding"><input class="input-date" type="date" name="prj_begin_date" value="${vo.prj_begin_date.substring(0,10)}"></td></tr>
+			<tr><td>종료 날짜</td><td class="td-padding"><input class="input-date" type="date" name="prj_end_date" value="${vo.prj_end_date.substring(0,10)}"></td></tr>
+			<tr><td>후원 </td>
+				<td class="td-padding">현재 ${vo.cur_point + vo.r_cur_point} 나누미 / 
+									목표 	<input class="input-text" type="number" name="goal_point" value="${vo.goal_point}"> 나누미</td>
+			</tr>
 			<tr><td></td>
-				<td class="td-padding">정기 : <span class="span-gap"> 20 나누미 (2 회 후원, 후원자 2 명)</span>
+				<td class="td-padding">정기 &nbsp;&nbsp;&nbsp; 
+					<select class="select-s" id="rglr_yn">
+						<option value="Y"> Y </option>
+						<option value="N"> N </option>
+					</select>
+					<span class="span-gap"> ${vo.r_cur_point} 나누미 (${vo.r_dnt_count} 회 후원, 후원자 ${vo.r_p_count} 명)</span>
 				</td>
 			</tr>
 			<tr><td></td>
-				<td class="td-padding">일시 : <span class="span-gap"> 30 나누미 (5 회 후원)</span>
+				<td class="td-padding">일시 &nbsp;&nbsp;&nbsp;  
+					<select class="select-s" id="onetime_yn">
+						<option value="Y"> Y </option>
+						<option value="N"> N </option>
+					</select><span class="span-gap"> ${vo.cur_point} 나누미 (${vo.dnt_count} 회 후원)</span>
 				</td>
 			</tr>
+			<tr><td>지원 &nbsp;&nbsp;&nbsp; 
+					<select class="select-s" id="vlt_yn">
+						<option value="Y"> Y </option>
+						<option value="N"> N </option>
+					</select></td>	 
+				<td class="td-padding">현재 ${vo.cur_num_people} 명 /
+					 목표 <input class="input-text" type="number" name="goal_num_people" value="${vo.goal_num_people}"> 명</td></tr>
 			<tr><td>태그</td><td class="td-padding tag-padding">
-					<textarea class="ta" style="width: 90%" rows="4">#tag #tag #태그 #태그</textarea></td></tr>
+					<textarea class="ta" style="width: 90%" rows="3" name="tag"><c:out value="${vo.tag}" />
+					</textarea></td></tr>
 			<tr><td><b>내  용 </b></td><td></td></tr>
-			<tr><td colspan="2"><textarea id="content" rows="10">content</textarea></td></tr>
+			<tr><td colspan="2"><textarea id="content" rows="10" name="prj_content">
+								<c:out value="${vo.prj_content }" /></textarea></td></tr>
 			<tr><td></td></tr>
 			<tr class="tr-color"><td></td><td></td></tr>
 			<tr class="tr-color">
-				<td><b>첨부 파일</b></td>
+				<td><b>이미지 파일</b></td>
 				<td  class="td-padding" style="text-indent: 0">
-				<img src="resources/images/system/fullheart.png" class="img-attached">
-					<span style="vertical-align:17px;"> image_name1.png</span>
-					<input class="input-file" type="file">
+				<img src="resources/upload/system/attach/${vo.prj_main_img}" class="img-attached">
+					<span style="vertical-align:17px;"> ${vo.prj_main_img} </span><br>
+					<input class="input-file" type="file" name="f_main">
 				<br>
-				<img src="resources/images/system/fullheart.png" class="img-attached">
-					<span style="vertical-align:17px;"> image_name2.png </span>
-					<input class="input-file" type="file">
+				<c:if test="${vo.f_name1 ne null}">	
+				<img src="resources/upload/system/attach/${vo.f_name1}" class="img-attached">
+					<span style="vertical-align:17px;"> ${vo.f_name1} </span><br></c:if>
+					<input class="input-file" type="file" name="f_name1">
 				<br>
-				<img src="resources/images/system/fullheart.png" class="img-attached">
-					<span style="vertical-align:17px;"> image_name3.png </span>
-					<input class="input-file" type="file">
+				<c:if test="${vo.f_name2 ne null}">	
+				<img src="resources/upload/system/attach/${vo.f_name2}" class="img-attached">
+					<span style="vertical-align:17px;"> ${vo.f_name2} </span><br></c:if>
+					<input class="input-file" type="file" name="f_name2">
 				<br>
-				<img src="resources/images/system/fullheart.png" class="img-attached">
-					<span style="vertical-align:17px;"> image_name4.png </span>
-					<input class="input-file" type="file">
+				<c:if test="${vo.f_name3 ne null}">		
+				<img src="resources/upload/system/attach/${vo.f_name3}" class="img-attached">
+					<span style="vertical-align:17px;"> ${vo.f_name3} </span><br></c:if>
+					<input class="input-file" type="file" name="f_name3">
 				<br>
-				<img src="resources/images/system/fullheart.png" class="img-attached">
-					<span style="vertical-align:17px;"> image_name5.png </span>
-					<input class="input-file" type="file"><br>
+				<c:if test="${vo.f_name4 ne null}">	
+				<img src="resources/upload/system/attach/${vo.f_name4}" class="img-attached">
+					<span style="vertical-align:17px;"> ${vo.f_name4} </span><br></c:if>
+					<input class="input-file" type="file" name="f_name4"><br>
 				</td>				
 			</tr>
 			<tr class="tr-color"><td></td><td></td></tr>
@@ -114,7 +161,9 @@
 			<tr class="tr-color"><td></td><td></td></tr>
 			<tr class="tr-color"><td><b>프로젝트 결과</b></td><td></td></tr>
 			<tr class="tr-color">
-				<td colspan="2" class="result-padding"><textarea class="ta" rows="10">프로젝트 결과 보고</textarea></td>				
+				<td colspan="2" class="result-padding">
+					<textarea class="ta" rows="5" name="prj_result">
+						<c:out value="${vo.prj_result }" /></textarea></td>				
 			</tr>
 			<tr class="tr-color"><td></td><td></td></tr>
 		</tbody>
@@ -123,8 +172,9 @@
 	</table>
 	</div>
 	<div class="btn-wrap-btm">
-		<div class="btn-btm-loc"><button class="btn-detail-l" onclick="project_aids_update_cancel(this.form)">취 소</button></div>
-		<div class="btn-btm-loc"><button class="btn-detail-l" onclick="project_aids_update_exec(this.form)">저 장</button></div>
+		<div class="btn-btm-loc"><button class="btn-detail-l" onclick="project_list(this.form)">목 록</button></div>
+		<div class="btn-btm-loc"><button class="btn-detail-l" onclick="project_update_cancel(this.form)">취 소</button></div>
+		<div class="btn-btm-loc"><button class="btn-detail-l" onclick="project_update_exec(this.form)">저 장</button></div>
 	</div> 
 </form>	
 </section>

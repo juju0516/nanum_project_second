@@ -16,8 +16,6 @@ public class StoryVO {
 	
 	
 	//get / set
-	
-	
 	public int getStory_idx() {
 		return story_idx;
 	}

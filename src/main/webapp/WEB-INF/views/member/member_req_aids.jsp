@@ -29,16 +29,16 @@
 					<c:choose>
 						<c:when test="${empty list}">
 							<tr>
-								<td colspan="4"><h2>나누미 전환 내역이 존재하지 않습니다</h2></td>
+								<td colspan="4"><h2>보조기구 신청 내역이 존재하지 않습니다</h2></td>
 							</tr>
 						</c:when>
 						<c:otherwise>
 							<c:forEach var="k" items="${list}" varStatus="vs">
 								<tr class="list">
 									<td>${paging.totalRecord - ((paging.nowPage-1)*paging.numPerPage + vs.index)}</td>
-									<td>제목 ㅁㅁㅁ신청합니다&nbsp;&nbsp;</td>
-									<td>날짜&nbsp;&nbsp;</td>
-									<td>상태(신청 완료/반려)&nbsp;&nbsp;</td>
+									<td>${k.req_title}</td>
+									<td>${k.req_date}</td>
+									<td>${k.req_state}</td>
 								</tr>
 							</c:forEach>
 						</c:otherwise>
@@ -48,42 +48,47 @@
 		</div>
 	</section>
 	<!-- 페이지기법 -->
-	<section>
-		<ol class="paging">
-			<!-- 이전 -->
-			<c:choose>
-				<c:when test="true">
-					<li class="disable">&lt;</li>
-				</c:when>
-				<c:otherwise>
-					<li><a href=""> &lt; </a></li>
-				</c:otherwise>
-			</c:choose>
-
-			<!-- 블록안에 들어간 페이지번호들 -->
-			<c:forEach begin="1" end="4" step="1" var="k">
-				<!-- 현재 페이지와 아닌 아닌 페이지(링크 걸어야) 구분 -->
+		<section>
+			<ol class="paging">
+				<!-- 이전 -->
 				<c:choose>
-					<c:when test="false">
-						<li class="now">2</li>
+					<c:when test="${paging.beginBlock <= paging.pagePerBlock}">
+						<li class="disable">&lt;</li>
 					</c:when>
 					<c:otherwise>
-						<li><a href="">${k}</a></li>
+						<li><a
+							href="member_req_aids_list.do?cPage=${paging.beginBlock-paging.pagePerBlock}">
+								&lt; </a></li>
 					</c:otherwise>
 				</c:choose>
-			</c:forEach>
 
-			<!-- 다음 -->
-			<c:choose>
-				<c:when test="0">
-					<li class="disable">&gt;</li>
-				</c:when>
-				<c:otherwise>
-					<li><a href=""> &gt;</a></li>
-				</c:otherwise>
-			</c:choose>
-		</ol>
-	</section>
+				<!-- 블록안에 들어간 페이지번호들 -->
+				<c:forEach begin="${paging.beginBlock}" end="${paging.endBlock}"
+					step="1" var="k">
+					<!-- 현재 페이지와 아닌 아닌 페이지(링크 걸어야) 구분 -->
+					<c:choose>
+						<c:when test="${k == paging.nowPage}">
+							<li class="now">${k}</li>
+						</c:when>
+						<c:otherwise>
+							<li><a href="member_req_aids_list.do?cPage=${k}">${k}</a></li>
+						</c:otherwise>
+					</c:choose>
+				</c:forEach>
+
+				<!-- 다음 -->
+				<c:choose>
+					<c:when test="${paging.endBlock >= paging.totalPage}">
+						<li class="disable">&gt;</li>
+					</c:when>
+					<c:otherwise>
+						<li><a
+							href="member_req_aids_list.do?cPage=${paging.beginBlock+paging.pagePerBlock}">
+								&gt;</a></li>
+					</c:otherwise>
+				</c:choose>
+			</ol>
+		</section>
 	<jsp:include page="../footer.jsp" />
 
 </body>

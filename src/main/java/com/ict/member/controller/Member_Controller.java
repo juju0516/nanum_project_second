@@ -18,12 +18,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ict.aids.model.vo.Req_AidsVO;
 import com.ict.common.FileReName;
 import com.ict.common.Paging;
+import com.ict.goods.model.vo.Goods_SaleVO;
 import com.ict.member.model.service.Member_Service;
 import com.ict.member.model.vo.InquiryVO;
 import com.ict.member.model.vo.MemberVO;
 import com.ict.member.model.vo.PointVO;
+import com.ict.project.model.vo.DonatorVO;
+import com.ict.project.model.vo.Prj_RegiVO;
+import com.ict.project.model.vo.RegularVO;
+import com.ict.special.model.vo.Special_DonateVO;
 
 @Controller
 public class Member_Controller {
@@ -67,8 +73,8 @@ public class Member_Controller {
 			mv.addObject("nickname", nickname);
 			mv.addObject("mvo", mvo);
 
-			//System.out.println("mvo" + mvo);
-			//System.out.println("nickname:" + nickname);
+			// System.out.println("mvo" + mvo);
+			// System.out.println("nickname:" + nickname);
 		}
 
 		return mv;
@@ -79,7 +85,7 @@ public class Member_Controller {
 	public ModelAndView getChangeNick(HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView("redirect:member_mypage.do");
 		String id = (String) request.getSession().getAttribute("memberID");
-		//System.out.println(id); // null
+		// System.out.println(id); // null
 
 		MemberVO mvo = member_Service.getNickname_Name(id);
 		String nickname = request.getParameter("nickname");
@@ -94,10 +100,11 @@ public class Member_Controller {
 	}
 
 	// 프로필 사진 변경
-	@RequestMapping(value = "member_image_change.do", method = RequestMethod.POST)
+	@RequestMapping(value = "member_image_change.do", method = RequestMethod.POST, consumes = "multipart/form-data")
 	@ResponseBody
 	public String memberImageChange(HttpSession session, HttpServletRequest request,
-			@RequestParam("p_f_name") MultipartFile multipartFile) {
+			@RequestParam("f_param") MultipartFile multipartFile) {
+		
 		ModelAndView mv = new ModelAndView("member_mypage.do");
 		String id = (String) session.getAttribute("memberID");
 		String path = session.getServletContext().getRealPath("/resources/upload/" + id + "/attach");
@@ -223,17 +230,17 @@ public class Member_Controller {
 			// System.out.println("point:" + point);
 			pvo.setReq_point(point);
 		} else {
-			 String[] split = select.replaceAll("[^0-9()]", "").split("\\(|\\)");
-			    String str_point = split[0];
-			    int point = Integer.parseInt(str_point);
-			    String priceStr = split[1].replaceAll(",", "");
-			    int money = Integer.parseInt(priceStr);
-			    
-			   // System.out.println("money:"+money);
-			   // System.out.println("point:"+point);
-			    
-			    pvo.setReq_money(money);
-			    pvo.setReq_point(point);
+			String[] split = select.replaceAll("[^0-9()]", "").split("\\(|\\)");
+			String str_point = split[0];
+			int point = Integer.parseInt(str_point);
+			String priceStr = split[1].replaceAll(",", "");
+			int money = Integer.parseInt(priceStr);
+
+			// System.out.println("money:"+money);
+			// System.out.println("point:"+point);
+
+			pvo.setReq_money(money);
+			pvo.setReq_point(point);
 		}
 		member_Service.getPointInsert(pvo);
 		// 디비에 값이 하나도 없을 경우 "Index 0 out of bounds for length 0"오류 발생
@@ -283,7 +290,7 @@ public class Member_Controller {
 		}
 
 		List<PointVO> list = member_Service.getChangePointList(paging.getBegin(), paging.getEnd());
-		//System.out.println("list:" + list);
+		// System.out.println("list:" + list);
 
 		mv.addObject("paging", paging);
 		mv.addObject("list", list);
@@ -303,7 +310,7 @@ public class Member_Controller {
 	public ModelAndView getDonate(HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView("member/member_donate");
 
-		int count = member_Service.getTotalCount();
+		int count = member_Service.getTotalCountDNT();
 		paging.setTotalRecord(count);
 
 		// 전체 페이지의 수
@@ -338,7 +345,7 @@ public class Member_Controller {
 			paging.setEndBlock(paging.getTotalPage());
 		}
 
-		List<MemberVO> list = member_Service.getList(paging.getBegin(), paging.getEnd());
+		List<DonatorVO> list = member_Service.getDNTList(paging.getBegin(), paging.getEnd());
 		mv.addObject("paging", paging);
 		mv.addObject("list", list);
 		return mv;
@@ -347,8 +354,8 @@ public class Member_Controller {
 	@RequestMapping("member_inquiry.do")
 	public ModelAndView getInquiry(HttpServletRequest request, InquiryVO iqvo) {
 		ModelAndView mv = new ModelAndView("member/member_inquiry");
-		
-		//String id = (String) request.getSession().getAttribute("memberID");
+
+		// String id = (String) request.getSession().getAttribute("memberID");
 
 		// 전체 게시물의 수
 		int count = member_Service.getTotalCountInq();
@@ -387,7 +394,7 @@ public class Member_Controller {
 		}
 
 		List<InquiryVO> list = member_Service.getInqList(paging.getBegin(), paging.getEnd());
-		
+
 		mv.addObject("paging", paging);
 		mv.addObject("list", list);
 		return mv;
@@ -463,9 +470,9 @@ public class Member_Controller {
 
 	@RequestMapping("member_regular_list.do")
 	public ModelAndView getRegularList(HttpServletRequest request) {
-		ModelAndView mv = new ModelAndView("member/member_project_status");
+		ModelAndView mv = new ModelAndView("member/member_regular_list");
 
-		int count = member_Service.getTotalCount();
+		int count = member_Service.getTotalCountRegular();
 		paging.setTotalRecord(count);
 
 		// 전체 페이지의 수
@@ -500,7 +507,7 @@ public class Member_Controller {
 			paging.setEndBlock(paging.getTotalPage());
 		}
 
-		List<MemberVO> list = member_Service.getList(paging.getBegin(), paging.getEnd());
+		List<RegularVO> list = member_Service.getRegularList(paging.getBegin(), paging.getEnd());
 		mv.addObject("paging", paging);
 		mv.addObject("list", list);
 		return mv;
@@ -510,7 +517,7 @@ public class Member_Controller {
 	public ModelAndView getAnniDonate(HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView("member/member_special_donate");
 
-		int count = member_Service.getTotalCount();
+		int count = member_Service.getTotalCountSpec();
 		paging.setTotalRecord(count);
 
 		// 전체 페이지의 수
@@ -545,7 +552,7 @@ public class Member_Controller {
 			paging.setEndBlock(paging.getTotalPage());
 		}
 
-		List<MemberVO> list = member_Service.getList(paging.getBegin(), paging.getEnd());
+		List<Special_DonateVO> list = member_Service.getSpecList(paging.getBegin(), paging.getEnd());
 		mv.addObject("paging", paging);
 		mv.addObject("list", list);
 		return mv;
@@ -555,7 +562,7 @@ public class Member_Controller {
 	public ModelAndView getProjectStatus(HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView("member/member_project_status");
 
-		int count = member_Service.getTotalCount();
+		int count = member_Service.getTotalCountRegi();
 		paging.setTotalRecord(count);
 
 		// 전체 페이지의 수
@@ -590,7 +597,7 @@ public class Member_Controller {
 			paging.setEndBlock(paging.getTotalPage());
 		}
 
-		List<MemberVO> list = member_Service.getList(paging.getBegin(), paging.getEnd());
+		List<Prj_RegiVO> list = member_Service.getRegiList(paging.getBegin(), paging.getEnd());
 		mv.addObject("paging", paging);
 		mv.addObject("list", list);
 		return mv;
@@ -600,7 +607,7 @@ public class Member_Controller {
 	public ModelAndView getReqAids(HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView("member/member_req_aids");
 
-		int count = member_Service.getTotalCount();
+		int count = member_Service.getTotalCountReq();
 		paging.setTotalRecord(count);
 
 		// 전체 페이지의 수
@@ -635,7 +642,7 @@ public class Member_Controller {
 			paging.setEndBlock(paging.getTotalPage());
 		}
 
-		List<MemberVO> list = member_Service.getList(paging.getBegin(), paging.getEnd());
+		List<Req_AidsVO> list = member_Service.getReqList(paging.getBegin(), paging.getEnd());
 		mv.addObject("paging", paging);
 		mv.addObject("list", list);
 		return mv;
@@ -645,7 +652,8 @@ public class Member_Controller {
 	public ModelAndView getGoodsList(HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView("member/member_goods_list");
 
-		int count = member_Service.getTotalCount();
+		int count = member_Service.getTotalCountGoods();
+		
 		paging.setTotalRecord(count);
 
 		// 전체 페이지의 수
@@ -680,7 +688,7 @@ public class Member_Controller {
 			paging.setEndBlock(paging.getTotalPage());
 		}
 
-		List<MemberVO> list = member_Service.getList(paging.getBegin(), paging.getEnd());
+		List<Goods_SaleVO> list = member_Service.getGoodsList(paging.getBegin(), paging.getEnd());
 		mv.addObject("paging", paging);
 		mv.addObject("list", list);
 		return mv;

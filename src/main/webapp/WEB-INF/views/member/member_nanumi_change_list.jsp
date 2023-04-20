@@ -56,35 +56,35 @@
 		<ol class="paging">
 			<!-- 이전 -->
 			<c:choose>
-				<c:when test="true">
-					<li class="disable">&lt;</li>
+				<c:when test="${paging.beginBlock <= paging.pagePerBlock}">
+					<li class="disable"> &lt; </li>
 				</c:when>
 				<c:otherwise>
-					<li><a href=""> &lt; </a></li>
+					<li><a href="member_nanumi_change_list.do?cPage=${paging.beginBlock-paging.pagePerBlock}"> &lt; </a></li>
 				</c:otherwise>
 			</c:choose>
-
+			
 			<!-- 블록안에 들어간 페이지번호들 -->
-			<c:forEach begin="1" end="4" step="1" var="k">
+			<c:forEach begin="${paging.beginBlock}" end="${paging.endBlock}" step="1" var="k">
 				<!-- 현재 페이지와 아닌 아닌 페이지(링크 걸어야) 구분 -->
 				<c:choose>
-					<c:when test="false">
-						<li class="now">2</li>
+					<c:when test="${k == paging.nowPage}">
+						<li class="now">${k}</li>
 					</c:when>
 					<c:otherwise>
-						<li><a href="">${k}</a></li>
+						<li><a href="member_nanumi_change_list.do?cPage=${k}">${k}</a></li>
 					</c:otherwise>
 				</c:choose>
 			</c:forEach>
-
+			
 			<!-- 다음 -->
 			<c:choose>
-				<c:when test="0">
-					<li class="disable">&gt;</li>
-				</c:when>
-				<c:otherwise>
-					<li><a href=""> &gt;</a></li>
-				</c:otherwise>
+			   	<c:when test="${paging.endBlock >= paging.totalPage}">
+			   		<li class="disable"> &gt;</li>
+			   	</c:when>
+			   	<c:otherwise>
+			   		<li><a href="member_nanumi_change_list.do?cPage=${paging.beginBlock+paging.pagePerBlock}"> &gt;</a></li>
+			   	</c:otherwise>
 			</c:choose>
 		</ol>
 	</section>

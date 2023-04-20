@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="prj_regi">
+	<select id="getprj_regi_id" parameterType="String" resultType="regivo">
+		select * from prj_regi where id = #{id}
+	</select>
+	<select id="count" resultType="int">
+		select count(*) from prj_regi
+	</select>
+	<select id="prj_regi_list" parameterType="Map" resultType="regivo">
+		select * from(
+		select rownum r_num, a.*
+		from (select * from prj_regi order by
+		prj_regi_idx asc)
+		a) where r_num between #{begin} and #{end}
+	</select>
+</mapper>

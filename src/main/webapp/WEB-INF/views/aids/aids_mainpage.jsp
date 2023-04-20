@@ -99,7 +99,7 @@
 	
 	<div id="btn">
 		<a href="aids_regi.do"><button id="aids_regi">지원하기</button></a>
-		<a href="aids_detail_list.do"><button id="aids_donator">후원하기</button></a>
+		<a href="aids_detail_list.do"><button id="aids_donator">상세보기</button></a>
 	</div>
 	
 	<footer>

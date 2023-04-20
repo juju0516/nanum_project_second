@@ -98,7 +98,7 @@ ul.menu a:hover {
 		<div id="title-logo"><a href ="main_page.do" style="color: rgb(0,87,147)"> NANUM </a></div>
 		<div class="title-icon1"><a href ="search.do"><img src="resources/images/system/search.png" style="width:50px"></a></div>
 		<div class="title-icon2"><a href ="basket_prj.do"><img src="resources/images/system/cart.png" style="width:50px"></a></div>
-		<div class="title-icon2"><a href =""><img src="resources/images/system/bell2.png" style="width:50px"></a></div>
+		<div class="title-icon2"><a href ="alarm_list_go.do"><img src="resources/images/system/bell2.png" style="width:50px"></a></div>
 		<div class="title-icon2"><a href ="member_mypage.do"><img src="resources/images/system/profile.png" style="width:50px"></a></div>
 	</div> 
 	</c:when>
@@ -116,9 +116,9 @@ ul.menu a:hover {
 			<a href="prj_flag_list.do"><button id="btn_donation" onclick="donatioln_go()">참여하기</button></a>
 		</div>
 		<ul class="menu">		
-			<li><a href="#">후기</a></li>
-			<li><a href="#">지원요청</a></li>
-			<li><a href="#">기념일후원</a></li>
+			<li><a href="review_list.do">후기</a></li>
+			<li><a href="aids_main_go.do">보조기구신청</a></li>
+			<li><a href="sp_donator_list_go.do">기념일후원</a></li>
 			<li><a href="goods_list.do">굿즈</a></li>
 			<li><a href="prj_list.do">프로젝트</a></li>
 			<li><a href="story_list.do">스토리</a></li>

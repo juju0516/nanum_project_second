@@ -46,4 +46,26 @@ public class ManagerServiceImpl implements ManagerService {
 	public int getManagerUpdateState(String manager_idx, String manager_state) throws Exception {
 		return managerServiceDAO.getManagerUpdateState(manager_idx, manager_state);
 	}
+	
+	// alarm
+	@Override
+	public int getPointStateCount(String p_state) throws Exception {
+		return managerServiceDAO.getPointStateCount(p_state);
+	}
+	@Override
+	public int getPrjRegiStateCount(String p_r_state) throws Exception {
+		return managerServiceDAO.getPrjRegiStateCount(p_r_state);
+	}
+	@Override
+	public int getGoodsSaleStateCount(String g_s_state) throws Exception {
+		return managerServiceDAO.getGoodsSaleStateCount(g_s_state);
+	}
+	@Override
+	public int getReqAidsStateCount(String req_state) throws Exception {
+		return managerServiceDAO.getReqAidsStateCount(req_state);
+	}
+	@Override
+	public int getInquiryStateCount(String inq_state) throws Exception {
+		return managerServiceDAO.getInquiryStateCount(inq_state);
+	}
 }

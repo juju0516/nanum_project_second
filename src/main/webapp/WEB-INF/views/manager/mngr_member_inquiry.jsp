@@ -22,19 +22,19 @@
 	<div class="table-wrap">
 	<table>
 		<thead>
-			<tr><th>No.</th><th>ID</th><th>닉네임</th><th>작성일</th><th width="39%">제 목</th>
+			<tr><th>No.</th><th>상태</th><th>ID</th><th>닉네임</th><th>작성일</th><th width="39%">제 목</th>
 			<th width="5%"></th></tr>
 		</thead>
 		<tbody>	
-			<tr><td>1</td><td>AAA</td><td>A-Nick</td><td>2023-03-31</td>
+			<tr><td>3</td><td>답변 대기</td><td>AAA</td><td>A-Nick</td><td>2023-03-31</td>
 				<td><a href="mngr_member_inquiry_detail.do">문의합니다.</a></td>
 				<td><a href=""><img src="resources/images/system/arrow-down2.png" width="16px"></a></td>
 			</tr>
-			<tr><td>2</td><td>BBB</td><td>B-Nick</td><td>2023-03-30</td>
+			<tr><td>2</td><td>답변 대기</td><td>BBB</td><td>B-Nick</td><td>2023-03-30</td>
 				<td><a href="mngr_member_inquiry_detail.do">문의합니다.</a></td>
 				<td><a href=""><img src="resources/images/system/arrow-down2.png" width="16px"></a></td>
 			</tr>
-			<tr><td>3</td><td>CCC</td><td>C-Nick</td><td>2023-03-10</td>
+			<tr><td>1</td><td>답변 완료</td><td>CCC</td><td>C-Nick</td><td>2023-03-10</td>
 				<td><a href="mngr_member_inquiry_detail.do">문의합니다.</a></td>
 				<td><a href=""><img src="resources/images/system/arrow-down2.png" width="16px"></a></td>
 			</tr>

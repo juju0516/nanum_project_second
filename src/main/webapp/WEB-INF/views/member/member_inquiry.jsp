@@ -22,6 +22,8 @@
 <link
 	href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square-neo.css"
 	rel="stylesheet">
+<link href="resources/css/paging.css?after" type="text/css"
+	rel="stylesheet">
 <link href="resources/css/inquiry.css" type="text/css" rel="stylesheet">
 </head>
 <body>
@@ -75,12 +77,48 @@
 		</form>
 	</section>
 	<section>
-		<form>
-			<div class="contents">
-				<input type="button" class="moreview" value="더보기" onclick="">
-			</div>
-		</form>
+		<!-- 페이지기법 -->
+		<section>
+			<ol class="paging">
+				<!-- 이전 -->
+				<c:choose>
+					<c:when test="${paging.beginBlock <= paging.pagePerBlock}">
+						<li class="disable">&lt;</li>
+					</c:when>
+					<c:otherwise>
+						<li><a
+							href="member_inquiry.do?cPage=${paging.beginBlock-paging.pagePerBlock}">
+								&lt; </a></li>
+					</c:otherwise>
+				</c:choose>
 
+				<!-- 블록안에 들어간 페이지번호들 -->
+				<c:forEach begin="${paging.beginBlock}" end="${paging.endBlock}"
+					step="1" var="k">
+					<!-- 현재 페이지와 아닌 아닌 페이지(링크 걸어야) 구분 -->
+					<c:choose>
+						<c:when test="${k == paging.nowPage}">
+							<li class="now">${k}</li>
+						</c:when>
+						<c:otherwise>
+							<li><a href="member_inquiry.do?cPage=${k}">${k}</a></li>
+						</c:otherwise>
+					</c:choose>
+				</c:forEach>
+
+				<!-- 다음 -->
+				<c:choose>
+					<c:when test="${paging.endBlock >= paging.totalPage}">
+						<li class="disable">&gt;</li>
+					</c:when>
+					<c:otherwise>
+						<li><a
+							href="member_inquiry.do?cPage=${paging.beginBlock+paging.pagePerBlock}">
+								&gt;</a></li>
+					</c:otherwise>
+				</c:choose>
+			</ol>
+		</section>
 	</section>
 	<jsp:include page="../footer.jsp" />
 </body>

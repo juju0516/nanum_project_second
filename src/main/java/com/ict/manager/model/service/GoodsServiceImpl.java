@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.ict.goods.model.vo.GoodsVO;
 import com.ict.goods.model.vo.Goods_SaleVO;
 import com.ict.manager.model.dao.GoodsServiceDAO;
+import com.ict.manager.model.vo.MngrSearchVO;
 import com.ict.member.model.vo.PointVO;
 
 @Service
@@ -16,13 +17,13 @@ public class GoodsServiceImpl implements GoodsService {
 	GoodsServiceDAO goodsServiceDAO;
 	
 	@Override
-	public int getTotalCount() throws Exception {
-		return goodsServiceDAO.getTotalCount();
+	public int getTotalCount(String g_s_word) throws Exception {
+		return goodsServiceDAO.getTotalCount(g_s_word);
 	}
 	
 	@Override
-	public List<GoodsVO> getGoodsList(int begin, int end) throws Exception {
-		return goodsServiceDAO.getGoodsList(begin, end);
+	public List<GoodsVO> getGoodsList(int begin, int end, String g_s_word) throws Exception {
+		return goodsServiceDAO.getGoodsList(begin, end, g_s_word);
 	}
 	
 	@Override
@@ -62,13 +63,13 @@ public class GoodsServiceImpl implements GoodsService {
 	
 	// Goods Sale
 	@Override
-	public int getSaleTotalCount() throws Exception {
-		return goodsServiceDAO.getSaleTotalCount();
+	public int getSaleTotalCount(MngrSearchVO vo) throws Exception {
+		return goodsServiceDAO.getSaleTotalCount(vo);
 	}
 	
 	@Override
-	public List<Goods_SaleVO> getGoodsSaleList(int begin, int end) throws Exception {
-		return goodsServiceDAO.getGoodsSaleList(begin, end);
+	public List<Goods_SaleVO> getGoodsSaleList(MngrSearchVO vo) throws Exception {
+		return goodsServiceDAO.getGoodsSaleList(vo);
 	}
 	
 	@Override

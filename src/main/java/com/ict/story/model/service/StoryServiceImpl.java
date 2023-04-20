@@ -11,9 +11,6 @@ public class StoryServiceImpl  implements StoryService{
 	@Autowired
 	StoryDAO storyDAO;
 
-	public void setStoryDAO(StoryDAO storyDAO) {
-		this.storyDAO = storyDAO;
-	}
 
 
 }

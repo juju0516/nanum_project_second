@@ -19,6 +19,7 @@
 		<typeAlias type="com.ict.alarm.model.vo.AlarmVO" alias="almvo"/>
 		
 		<typeAlias type="com.ict.project.model.vo.ProjectVO" alias="prjvo"/>
+		<typeAlias type="com.ict.project.model.vo.PrjListVO" alias="plvo"/>
 		<typeAlias type="com.ict.project.model.vo.Prj_RegiVO" alias="regivo"/>
 		<typeAlias type="com.ict.project.model.vo.RegularVO" alias="rvo"/>
 		<typeAlias type="com.ict.project.model.vo.DonatorVO" alias="dvo"/>
@@ -33,6 +34,7 @@
 		<typeAlias type="com.ict.goods.model.vo.Goods_SaleVO" alias="salevo"/>
 		
 		<typeAlias type="com.ict.basket.model.vo.Project_BasketVO" alias="pbvo"/>
+		<typeAlias type="com.ict.basket.model.vo.PrjListBasketVO" alias="plistbvo"/>
 		<typeAlias type="com.ict.basket.model.vo.Goods_BasketVO" alias="gbvo"/>
 		
 		<typeAlias type="com.ict.story.model.vo.StoryVO" alias="strvo"/>
@@ -44,14 +46,21 @@
 	<mappers>
 		<mapper resource="mappers/login_mapper.xml"/>
 		<mapper resource="mappers/member_mapper.xml"/>
+		<mapper resource="mappers/inquiry_mapper.xml"/>
 		<mapper resource="mappers/basket_mapper.xml"/>
 		<mapper resource="mappers/goods_mapper.xml"/>
 		<mapper resource="mappers/project_mapper.xml"/>
 		<mapper resource="mappers/story_mapper.xml"/>
 		<mapper resource="mappers/search_mapper.xml"/>
-		<mapper resource="mappers/manager_mapper.xml"/>		
-		<mapper resource="mappers/inquiry_mapper.xml"/>		
+		<mapper resource="mappers/review_mapper.xml"/>
+		<mapper resource="mappers/manager_mapper.xml"/>	
 		<mapper resource="mappers/point_mapper.xml"/>		
+		<mapper resource="mappers/regular_mapper.xml"/>		
+		<mapper resource="mappers/goods_sale_mapper.xml"/>		
+		<mapper resource="mappers/req_aids_mapper.xml"/>		
+		<mapper resource="mappers/special_mapper.xml"/>		
+		<mapper resource="mappers/prj_regi_mapper.xml"/>		
+		<mapper resource="mappers/donator_mapper.xml"/>		
 	</mappers>
 	
 </configuration>

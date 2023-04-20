@@ -32,6 +32,12 @@ public class Goods_DAO {
 		return sqlSessionTemplate.selectOne("goods.goodsDetail", goods_idx);
 	}
 	
+	// 굿즈 배송지 변경하기
+	public int delivaryUpdate(MemberVO mvo) {
+		return sqlSessionTemplate.update("goods.delivaryUpdate", mvo);
+	}
+	
+	
 	// 굿즈 결제하기
 	public int getGoodsSaleInsert(Goods_SaleVO salevo) {
 		return sqlSessionTemplate.insert("goods.goodsSaleInsert", salevo);

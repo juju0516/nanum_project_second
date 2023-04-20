@@ -45,6 +45,9 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script type="text/javascript">
 	$(function() {
+		//document.getElementById("b-date").value = new Date().toISOString().slice(0, 10);
+		document.getElementById("e-date").value = new Date().toISOString().substring(0, 10);
+	
 		$("#popup").on('click', function() {
 			var idx = $("#goods_sale_idx").val();
 			open_state_change_popup(idx, "${paging.nowPage}");
@@ -74,24 +77,25 @@
 	
 	function search_exec(f) {
 		// 검색 기간
-		const b_date = document.querySelector("b-date").value;
-		const e_date = document.querySelector("e-date").value;
+		var b_date = $("#b-date").val();
+		var e_date = $('#e-date').val();
+		
 		if(b_date > e_date) {
 			alert("검색 시작 날짜가 종료 날짜보다 늦을 수 없습니다.");
 			return;
 		}
 		
 		// 제품명, 제품번호로 검색
-		const s_type = document.getElementById("s-type");
-		const type_val = s_type.options[s_type.selectedIndex].value;
-		const s_word = document.getElementById("s-word").value.trim();
+		var s_type = $("#s-type option:selected").val();
+		var s_word = $("#s-word").val();
 		
 		// 주문 처리 상태값
-		const state = document.getElementById("state");
-		const state_val = state.options[state.selectedIndex].value;
+		//var state = document.getElementById("state");
+		//var state_val = state.options[state.selectedIndex].value;
+		var s_state = $("#state option:selected").val();
 		
-		f.action = "mngr_goods_sale_search.do?s_type=" + type_val + "&s_word=" + s_word + 
-				   "&state=" + state + "&b_date=" + b_date + "&e_date=" + e_date;
+		f.action = "mngr_goods_sale.do?search=y&s_type=" + s_type + "&s_word=" + s_word + 
+				   "&s_state=" + s_state + "&b_date=" + b_date + "&e_date=" + e_date;
 		f.submit();
 	}
 </script>
@@ -121,8 +125,8 @@
 			</div>
 			<div class="search-row">
 				<span class="search-label"> 구입 날짜 </span> 
-				<input class="input-width" type="date" id="b-date" value="2023-03-29"> ~ &nbsp;&nbsp;&nbsp;&nbsp;
-				<input class="input-width" type="date" id="e-date" value="2023-03-29">
+				<input class="input-width" type="date" id="b-date"> ~ &nbsp;&nbsp;&nbsp;&nbsp;
+				<input class="input-width" type="date" id="e-date">
 			</div>
 			<div class="only-btn-wrap">
 				<button class="btn-detail" onclick="search_exec(this.form)">검 색</button>
@@ -186,7 +190,7 @@
 										<td>${k.sale_date }</td>
 										<td>${k.cancel_date }</td>
 										<td>${k.cancel_cmpl }</td>
-										<td>${manager_id }</td>
+										<td>${k.manager_id }</td>
 									</tr>
 								</c:forEach>
 							</c:otherwise>

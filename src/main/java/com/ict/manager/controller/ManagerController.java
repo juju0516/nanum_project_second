@@ -98,7 +98,33 @@ public class ManagerController {
 
 	@RequestMapping("mngr_alarm.do")
 	public ModelAndView managerAlarm() {
-		return new ModelAndView("manager/mngr_alarm");
+		ModelAndView mv = new ModelAndView("manager/mngr_alarm");
+		try {
+			int count = managerService.getPointStateCount("신청");
+			mv.addObject("p_cnt", count);
+			
+			count = managerService.getPrjRegiStateCount("승인 요청");
+			mv.addObject("p_r_cnt", count);
+			count = managerService.getPrjRegiStateCount("취소 요청");
+			mv.addObject("p_r_c_cnt", count);
+						
+			count = managerService.getGoodsSaleStateCount("주문");
+			mv.addObject("g_s_cnt", count);
+			count = managerService.getGoodsSaleStateCount("주문취소 신청");
+			mv.addObject("g_s_c_cnt", count);
+			
+			count = managerService.getReqAidsStateCount("신청");
+			mv.addObject("req_cnt", count);
+
+			count = managerService.getInquiryStateCount("대기");
+			mv.addObject("inq_cnt", count);
+			
+		} catch (Exception e) {
+			logger.info("managerAlarm: err");
+			e.printStackTrace();
+			return new ModelAndView("manager/error");
+		}
+		return mv;
 	}
 
 	@RequestMapping("mngr_manager_info.do")

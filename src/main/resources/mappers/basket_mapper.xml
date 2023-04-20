@@ -4,6 +4,21 @@
  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
  <mapper namespace="basket">
  
+ 	<!-- 프로젝트 바구니 전체보기 -->
+ 	<select id="basket_prjlist" parameterType="String" resultType="plistbvo">
+ 		SELECT * FROM PROJECT_BASKET WHERE ID = #{id}
+ 	</select>
+ 	
+	<!--  프로젝트 바구니 삭제하기 -->
+	<delete id="basket_prjdelete" parameterType="int">
+		DELETE FROM 
+ 			PROJECT_BASKET 
+ 		WHERE 
+ 			PROJECT_BASKET_IDX = #{project_basket_idx}
+	</delete>
+ 
+ 
+ 
   	<!-- 굿즈 바구니 전체보기 -->
  	<select id="basket_goodslist" parameterType="String" resultType="gbvo">
  		SELECT * FROM GOODS_BASKET WHERE ID = #{id}
@@ -35,5 +50,29 @@
  		WHERE 
  			ID = #{id} AND GOODS_IDX = #{goods_idx}
  	</update> 
+ 	
+ 	<!-- 굿즈 바구니목록에서 수량 수정하기 -->
+ 	<update id="basket_goodsedit" parameterType="Map">
+ 		UPDATE 
+ 			GOODS_BASKET 
+ 		SET 
+ 			AMOUNT = #{amount}
+ 		WHERE 
+ 			GOODS_BASKET_IDX = #{goods_basket_idx}
+ 	</update>
+ 	
+ 	<!-- 굿즈바구니 목록에서 삭제하기 -->
+ 	<delete id="basket_goodsdelete" parameterType="String">
+ 		DELETE FROM 
+ 			GOODS_BASKET 
+ 		WHERE 
+ 			GOODS_BASKET_IDX = #{goods_basket_idx}
+ 	</delete>
+ 
+ 	<!-- 바구니에서 다중선택하여 주문 전 굿즈 정보확인하기(goods_basket_idx 사용)-->
+ 	<select id="BasketGoodsOneList" parameterType="String" resultType="gbvo">
+ 		SELECT * FROM GOODS_BASKET WHERE GOODS_BASKET_IDX = #{goods_basket_idx}
+ 	</select>
+ 	
 
  </mapper>

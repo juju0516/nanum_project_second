@@ -30,7 +30,7 @@
 		<h1 style="text-align: center; margin-top: 130px;">로그인</h1>
 
 
-		<form method="post">
+		<form method="post" class="login_all">
 			<div id="wrap">
 
 				<div class="login_part">
@@ -45,27 +45,10 @@
 					<div class="go_login">
 						<a><button id="btn_login" onclick="login_go(this.form)">로그인</button></a>
 					</div>
+
 				</div>
 
-				<div class="chk_id">
-					<span style="background-color: rgba(224, 224, 224, 0.35);">
-						<a><input type="checkbox" id="chk_btn" name="chk_btn"
-							onclick="saveId()">아이디저장 &nbsp;&nbsp;</a> <a
-						href="login_find_id.do" onclick="">ID 찾기</a>/<a
-						href="login_find_id.do" onclick="">PW 찾기</a>
-					</span>
-					<!-- <a
-						href="https://kauth.kakao.com/oauth/authorize?client_id=ecf16dad0bf2a470548b7a10f0a60323&redirect_uri=http://localhost:8083/login_kakao_login.do&response_type=code">
-						<img
-						src="resources/images/system/kakao_login_small.png"
-						style="margin-left: 20px;"></a> -->
 
-					<a
-						href="https://kauth.kakao.com/oauth/authorize?client_id=ba35fcb2b495ffa24babfedb6d4d6492&redirect_uri=http://localhost:8090/login_kakao_login.do&response_type=code">
-						<img src="resources/images/system/kakao_login_small.png"
-						style="margin-left: 20px;">
-					</a>
-				</div>
 
 				<div class="button">
 					<button class="bottom_btn" onclick="">
@@ -78,6 +61,26 @@
 							style="color: white; font-family: 'NanumSquareNeoBold'; font-size: 15px; margin: 0px;">회원가입
 							▶</a>
 					</button>
+					<div class="chk_id">
+						<!-- <span style="background-color: rgba(224, 224, 224, 0.35);">
+						<a><input type="checkbox" id="chk_btn" name="chk_btn"
+							onclick="saveId()">아이디저장 &nbsp;&nbsp;</a> <a
+						href="login_find_id.do" onclick="">ID 찾기</a>/<a
+						href="login_find_id.do" onclick="">PW 찾기</a>
+					</span> -->
+
+						<!-- <a
+						href="https://kauth.kakao.com/oauth/authorize?client_id=ecf16dad0bf2a470548b7a10f0a60323&redirect_uri=http://localhost:8083/login_kakao_login.do&response_type=code">
+						<img
+						src="resources/images/system/kakao_login_small.png"
+						style="margin-left: 20px;"></a> -->
+
+						<a
+							href="https://kauth.kakao.com/oauth/authorize?client_id=ba35fcb2b495ffa24babfedb6d4d6492&redirect_uri=http://localhost:8090/login_kakao_login.do&response_type=code">
+							<img src="resources/images/system/kakao_login_small.png"
+							style="margin-top: 25px;">
+						</a>
+					</div>
 				</div>
 
 

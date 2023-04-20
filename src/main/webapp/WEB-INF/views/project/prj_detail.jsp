@@ -42,8 +42,6 @@ footer{
     position: relative;
     column-gap: 500px;
 }
-
-
  
 .optView2{
 	width: 350px;
@@ -54,7 +52,6 @@ footer{
 	position: sticky;
 	top: 100px;
 }
-
 
 p.period{
 	margin: 30px 30px;
@@ -93,7 +90,6 @@ span.nanumi_goal{
 }
  
 #basket_btn{
- 
  	border-radius: 5px; /*버튼 모서리 둥글게*/
 	width: 130px; 
 	height: 50px; 
@@ -104,7 +100,6 @@ span.nanumi_goal{
 	font-family: 'NanumSquareNeoBold'; 
 	cursor: pointer;
  }
- 
  
 #dnt_flag_btn{
 	margin-left:20px;
@@ -174,10 +169,7 @@ div#icons {
     cursor: pointer;
 }
 
-
 /* 태그리스트 */
-
-
 .prj_tag_wrap{
     float: left;
     width: 630px;
@@ -271,19 +263,42 @@ il.parti_people_li > p { /*프사와 닉네임 간격 조정*/
 il.parti_people_li_more { /*더보기 버튼 가운데로 위치 조정*/
     display: flex;
     margin-top: 15px;
-
 }
 </style>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script type="text/javascript">
-function add_prj_basket() {
-	alert('해당프로젝트를 나눔바구니에 담았습니다.');
-}
+	
+	window.onload = function () {
+		
+		// D-Day 계산하기
+		// 종료일을 Date 객체로 변환합니다.
+		const endDate = new Date("${prjvo.prj_end_date.substring(0, 10)}");
+		// 현재 날짜를 가져옵니다.
+		const now = new Date();
+		// 종료일과 현재 날짜의 차이를 계산합니다.
+		const diffTime = endDate.getTime() - now.getTime();
+		const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+		  // 결과를 HTML 요소에 출력합니다.
+	    document.getElementById("d-day").innerHTML = "D-"+ diffDays ;
+	}
+
+
+	
+	
+	// 바구니 담기	
+	function add_prj_basket() {
+		alert('해당프로젝트를 나눔바구니에 담았습니다.');
+	}
+	
+	function add_flag() {
+		
+	}
 </script>
 
 </head>
 
 <body>
+<form method="post">
 <header>
 	<jsp:include page="../header.jsp" />
 </header>
@@ -291,42 +306,37 @@ function add_prj_basket() {
 
 <section class="prj_detail_wrap">
 	
-	<div class="prj_detail"> <!-- 사이드바와 프로젝트 상세내용 전체를 하나로 묶자. -->
-	<!-- 프로젝트 메인이미지 + 짧은 소개글  div로 묶기-->
-	<!-- 프로젝트 상세 내용은 article로 묶기 -->
-	<!-- 사이드바도 article로 묶기( 사이드바(div) + 버튼까지(div) )  -->
-	<!-- 태그 article로 wrap -->
-	
-	
-		<!-- 오른쪽상단 현황박스 (기간, D-Day, 프로그래스바 1 or 2, 버튼 두개: 바구니/참여 ) aside바 -->
+	<div class="prj_detail">
 		<article class="optView2">
-		<!-- 	<div class="optView"> -->
 			<div>
-				<p class="period">2023.03.01 ~ 2023.03.31</p>
-				<span class="d-day">D-24(종료일까지)</span>
+				<p class="period">${prjvo.prj_begin_date.substring(0,10)} ~ ${prjvo.prj_end_date.substring(0,10)}</p>
+				<p style="font-size: 12px;"><span id="d-day" style="font-size: 20px; font-weight: bold; padding-left: 10px"></span>(종료일까지)</p>
 				
 				<!-- 여기부터 프로그래스바   -->
 				<div class="progresss_wrap">
 					<div class="goal_nanumi_prg">
-					<progress class="progressbar" value="92" min="0" max="100"></progress><b>92%</b>
-						<br><span class="nanumi_goal" >목표 1,500,000</span> 나누미</p>
+					<progress class="progressbar" value="${Math.round(((prjvo.cur_point + k.r_cur_point) / prjvo.goal_point) * 100)}" min="0" max="100"></progress>
+					<b style="font-size: 12px;">${Math.min(Math.round(((prjvo.cur_point + k.r_cur_point) / prjvo.goal_point) * 100), 100)}%</b>
+						<br><span class="nanumi_goal" >목표 <fmt:formatNumber value="${prjvo.goal_point * 500}" pattern="#,##0" /></span> 원</p>
 					</div>
-					<div class="goal_people_prg">
-					<progress class="progressbar" value="30" min="0" max="100"></progress><b>33명</b>
-						<br><span class="nanumi_goal">목표인원 100명</span>
-					</div>
+					<c:if test="${prjvo.vlt_flag == 'Y'}">
+						<div class="goal_people_prg">
+						<progress class="progressbar" value="${Math.round((prjvo.cur_num_people / prjvo.goal_num_people) * 100)}" min="0" max="100"></progress><b style="font-size: 12px;">${prjvo.cur_num_people}명</b>
+							<br><span class="nanumi_goal">목표인원 <fmt:formatNumber value="${prjvo.goal_num_people}" />명 </span>
+						</div>
+					</c:if>
 				</div>
 				
 				<!-- 버튼 들어가는 부분 -->
 				<div class="btn_wrap">
-					<button id="basket_btn" onclick="add_prj_basket()">나눔바구니</button>
+					<input type="hidden" name="project_idx" value="${prjvo.project_idx}">
+					<button id="basket_btn" onclick="add_prj_basket(this.form)">나눔바구니</button>
 					<!-- 정보를 가지고 후원폼으로 이동해야함. -->
-					<a href="#후원참여폼으로이동"><button id="dnt_flag_btn">참여하기</button></a>
+					<button id="dnt_flag_btn" onclick="flag(this.form)">참여하기</button>
 				</div>
 			</div>
 		 </article>
 		
-		<!-- 왼쪽 프로젝트 메인단 article --><!-- div < 이미지 >-< 제목 >-<간단설명> /div  -->
 		<article>
 			<!-- 메인이미지 및 제목 -->
 			<div class="main_title_wrap">
@@ -337,105 +347,70 @@ function add_prj_basket() {
 					</div> -->
 					
 						<div class="main_img">
-				       	<img src="resources/images/system/m_main_img.jpg" >
+				       	<img src="resources/upload/${prjvo.id}/attach/${prjvo.prj_main_img}"  style="max-width: 600px; max-height: 500px;" >
 				       	<!-- 공유, 뷰 아이콘 수직정렬 하기 -->
 						<div id="icons">
-						<img src="resources/images/system/share.png" style="width: 30px;" onclick="alert('해당프로젝트 주소뜨기')">
+						<!-- cPage를 어떻게 가져오지? -->
+						<img src="resources/images/system/share.png" style="width: 30px; cursor: pointer;" onclick="pageLocation()" >
 						<br><img src="resources/images/system/view.png" style="width: 30px;">
-						<span class="viewChk" style="font-size: 9px; vertical-align: 14px; margin-left: 0;">1000</span>
+						<span class="viewChk" style="font-size: 9px; vertical-align: 14px; margin-left: 0;">${prjvo.prj_hit}</span>
 						</div>
 					</div>
-				</div><!-- 하트 포함 이미지 -->
+				</div>
 				
-			       	<div class="prj_title">[ABCD 프로젝트 : 보육시설 보수공사] </div>
-			       	<p class="prj_subcontent"> ABCD 프로젝트는 abcd 보육시설 보수공사를 지원하여 기거하는 아이들의 처우개선에 동참하고자 합니다.</p>
+			       	<div class="prj_title">${prjvo.prj_title} </div>
+			       	<p class="prj_subcontent"></p>
 			       	
 			    </div>
 		</article>
 		
-		<!-- 더보기 누르기 전 화면에 출력되는 부분 (실행안했음) -->
 		<article class="prj_substance">
-			<!--  더보기 만들기 위해 높이를 600으로 지정했기 때문에 footer가  600 높이에 만들어진다. 높이 없애면 원래자리로 돌아간다.  -->
-			<!-- <div class="moreHidden" style="height: 600px;">  -->
-			<div class="moreHidden" style="height:"> 
+			<%--  더보기 만들기 위해 높이를 600으로 지정했기 때문에 footer가  600 높이에 만들어진다. 높이 없애면 원래자리로 돌아간다.  --%>
+			<%-- <div class="moreHidden" style="height: 600px;">  --%>
 		        <div class="prj_content">  
-	               <p> 이 곳은 프로젝트 세부내용이 시작되는 곳 입니다. </p>
-	               <p> ABCD 프로젝트는 어떻게 시작하게 되었나요? </p>
-	               <p> abcd 보육시설의 열악한 환경으로 인해 기거하는 아동들의 건강에 악영향을 미치고 있습니다.</p>
-	               <p> 이러한 환경을 개선하고자 프로젝트를 진행하게 되었습니다. </p>
-	               <p> <img src="resources/images/system//puppy.jpg"> </p>
-	               <p> 설명 설명 설명 설명 설명 설명 설명 설명 설명 </p>
-	               <p> 설명 설명 설명 설명 설명 설명 설명 설명 설명 </p>
-	               <p> 설명 설명 설명 설명 설명 설명 설명 설명 설명 </p>
-	               <p> 설명 설명 설명 설명 설명 설명 설명 설명 설명 </p>
-	               <p> <img src="resources/images/system/kob.png"> </p>
-	               <p> 설명 설명 설명 설명 설명 설명 설명 설명 설명 </p>
-	               <p> 설명 설명 설명 설명 설명 설명 설명 설명 설명 </p>
-	               <p> <img src="resources/images/system/special.png"> </p>
-	               <p> 설명 설명 설명 설명 설명 설명 설명 설명 설명 </p>
-	               <p> 설명 설명 설명 설명 설명 설명 설명 설명 설명 </p>
-	               <p> 설명 설명 설명 설명 설명 설명 설명 설명 설명 </p>
-	               <p> 설명 설명 설명 설명 설명 설명 설명 설명 설명 </p>
-	               <p> 설명 설명 설명 설명 설명 설명 설명 설명 설명 </p>
-	               <p> 설명 설명 설명 설명 설명 설명 설명 설명 설명 </p>
-	               <p> ... </p>
+	              ${prjvo.prj_content}
 		        </div>
-			</div>
-			<!-- 더보기 버튼 관련이나 일단은 주석 처리 -->
-			<!--  <div class="view_more">
+		<%-- 	</div> --%>
+			<%-- 더보기 버튼 관련이나 일단은 주석 처리 --%>
+<%--			  <div class="view_more">
 				<button id="view_more_btn" type="button" class="view_more_btn_style">
 					<span>더보기</span>
 				</button>
-			</div> -->
-		
+			</div> 
+		--%>
 		</article>
 		
-		<!-- 태그관련 -->
+		<%-- 태그관련 --%>
 		<article>
 			<div class="prj_tag_wrap">
 				<ul class="prj_tag_list">
-					<li class="prj_tag" onclick="태그클릭시가는 곳">
-						<span class="tag">#보육시설</span>
-					</li>
-					<li class="prj_tag" onclick="태그클릭시가는 곳">
-						<span class="tag">#재능나눔</span>
-					</li>
-					<li class="prj_tag" onclick="태그클릭시가는 곳">
-						<span class="tag">#후원</span>
-					</li>
-					<li class="prj_tag" onclick="태그클릭시가는 곳">
-						<span class="tag">#아동</span>
-					</li>
-					<li class="prj_tag" onclick="태그클릭시가는 곳">
-						<span class="tag">#기부</span>
-					</li>
-					<li class="prj_tag" onclick="태그클릭시가는 곳">
-						<span class="tag">#나눔후원</span>
-					</li>
+					  <c:set var="tag" value="${prjvo.tag}" />
+					  <c:set var="arraytaglist" value="${tag.split(' ')}" />
+						  <c:forEach var="arraytag" items="${arraytaglist}">
+						    <li class="prj_tag" onclick="태그클릭시가는 곳">
+						      <span class="tag">${arraytag}</span>
+						    </li>
+						  </c:forEach>
 				</ul>
-			
 			</div>
-		
 		</article>
 		
 		
 		<!-- 왼쪽 하단 참여한 사람들 : 프사 + 응원메세지 -->
 		<article class="msg_wrap">
 			<div>
-				<img src="resources/images/system/people.png" width="50px;">
+				<img src="resources/images/system/person.png" width="50px;">
 					<span style="font-family: 'NanumSquareNeoBold'; font-size: 20px; vertical-align: 20px; ">참여한 사람들</span>
 					<ul class="msg_ul">
-						<li class="msg_list"><a href="#프사정보"><img src="resources/images/system/profile.png" width="40px"></a>
-						<span class="msg">응원메세지가 출력되는 곳 입니다. </span>
-						 </li>
-						<li class="msg_list"><a href="#프사정보"><img src="resources/images/system/profile.png" width="40px"></a>
-						<span class="msg">응원메세지가 출력되는 곳 입니다. </span>
-						 </li>
-						<li class="msg_list"><a href="#프사정보"><img src="resources/images/system/profile.png" width="40px"></a>
-						<span class="msg">응원메세지가 출력되는 곳 입니다. </span>
-						 </li>
-						 <!-- 여기에도 더보기란 만들기  -->
-					
+						<c:forEach var="k" items="${donator}">
+							<li class="msg_list"><a href="#프사정보">
+						<%-- donator 정보와 member 정보 필요.	<c:if test="${}"> --%>
+								<img src="resources/images/system/profile.png" width="40px">
+	<%-- 						</c:if> --%>
+							</a>
+								<span class="msg">응원메세지가 출력되는 곳 입니다. </span>
+							 </li>
+						</c:forEach>
 					</ul>
 			
 			</div>
@@ -447,13 +422,16 @@ function add_prj_basket() {
 		<article class="participate_people_wrap">
 			<div class="participate_people">
 				<ul class="parti_people_ul">
-					
+				
+				<c:forEach var="k" items="${donator}">
 					<il class="parti_people_li">
 						<span style="margin: 7px;">
 						<a href="#프사정보"><img src="resources/images/system/profile.png" width="40px;"></a>
 						</span>
 						<p>닉네임</p>
 					</il>
+				</c:forEach>
+
 					<il class="parti_people_li">
 						<span style="margin: 7px;">
 						<a href="#프사정보"><img src="resources/images/system/profile.png" width="40px;"></a>
@@ -502,6 +480,6 @@ function add_prj_basket() {
 <footer>
 	<jsp:include page="../footer.jsp" />
 </footer>
-
+</form>
 </body>
 </html>

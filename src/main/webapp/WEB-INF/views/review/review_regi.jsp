@@ -1,6 +1,14 @@
-<%@ page language="java"   contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.text.SimpleDateFormat"%>
+<%@ page import="java.util.Date"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%
+	Date date = new Date();
+	SimpleDateFormat simDateFormat = new SimpleDateFormat("yyyy. MM. dd");
+	String sysdate = simDateFormat.format(date);
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,7 +17,8 @@
 <link rel="stylesheet" href="resources/css/summernote-lite.css">
 <link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square-neo.css" rel="stylesheet">
 <link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-barun-gothic.css" rel="stylesheet">
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
+	<%-- <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script> --%>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 	<style type="text/css">
 		table {
 			width: 1000px;
@@ -39,6 +48,7 @@
 			font-size: 19px; 
 			font-family: 'NanumSquareNeoBold';
 			margin-right: 30px;
+			cursor: pointer;
 		}
 		
 		#review_regi{
@@ -50,6 +60,7 @@
 			background-color: rgb(253, 95, 0); 
 			font-size: 19px; 
 			font-family: 'NanumSquareNeoBold'; 
+			cursor: pointer;
 		}
 		
 		#btn{
@@ -64,6 +75,14 @@
 			font-size: 15px;
 			border: none;
 			background-color: white;
+		}
+		#re_title{
+			width: 700px;
+			height: 30px;
+			font-size: 15px;
+			text-align: center;
+			border: none;
+			outline: none;
 		}
 	</style>
 	<script type="text/javascript">
@@ -105,12 +124,12 @@
 					// 파일 크기
 					// fileSize = file.files[0].size;
 					
-					$("#review_img_name1").val(fileName + "." + fileExt);
+					$("#re_f_name1").val(fileName + "." + fileExt);
 					}
 				}
 			
 			// 파일을 선택하면 반복 종료
-			if ($("#review_img_name1").val(fileName + "." + fileExt) != ".undefined") {
+			if ($("#re_f_name1").val(fileName + "." + fileExt) != ".undefined") {
 				clearInterval(img_name_start);
 			}
 			
@@ -140,12 +159,15 @@
 					// 파일 크기
 					// fileSize = file.files[0].size;
 					
-					$("#review_img_name2").val(fileName + "." + fileExt);
+					$("#re_f_name2").val(fileName + "." + fileExt);
+					if (fileName == null) {
+						$("#re_f_name2").val("");
 					}
 				}
+			}
 			
 			// 파일을 선택하면 반복 종료
-			if ($("#review_img_name2").val(fileName + "." + fileExt) != ".undefined") {
+			if ($("#re_f_name2").val(fileName + "." + fileExt) != ".undefined") {
 				clearInterval(img_name_start);
 			}
 			
@@ -175,12 +197,12 @@
 					// 파일 크기
 					// fileSize = file.files[0].size;
 					
-					$("#review_img_name3").val(fileName + "." + fileExt);
+					$("#re_f_name3").val(fileName + "." + fileExt);
 					}
 				}
 			
 			// 파일을 선택하면 반복 종료
-			if ($("#review_img_name3").val(fileName + "." + fileExt) != ".undefined") {
+			if ($("#re_f_name3").val(fileName + "." + fileExt) != ".undefined") {
 				clearInterval(img_name_start);
 			}
 			
@@ -210,12 +232,12 @@
 					// 파일 크기
 					// fileSize = file.files[0].size;
 					
-					$("#review_img_name4").val(fileName + "." + fileExt);
+					$("#re_f_name4").val(fileName + "." + fileExt);
 					}
 				}
 			
 			// 파일을 선택하면 반복 종료
-			if ($("#review_img_name4").val(fileName + "." + fileExt) != ".undefined") {
+			if ($("#re_f_name4").val(fileName + "." + fileExt) != ".undefined") {
 				clearInterval(img_name_start);
 			}
 			
@@ -245,15 +267,26 @@
 					// 파일 크기
 					// fileSize = file.files[0].size;
 					
-					$("#review_img_name5").val(fileName + "." + fileExt);
+					$("#re_f_name5").val(fileName + "." + fileExt);
 					}
 				}
 			
 			// 파일을 선택하면 반복 종료
-			if ($("#review_img_name5").val(fileName + "." + fileExt) != ".undefined") {
+			if ($("#re_f_name5").val(fileName + "." + fileExt) != ".undefined") {
 				clearInterval(img_name_start);
 			}
 		})
+	</script>
+	<script type="text/javascript">
+		function review_write(f) {
+			f.action="review_write.do";
+			f.submit();
+		}
+		
+		function review_list_go(f) {
+			f.action="review_list.do";
+			f.submit();
+		}
 	</script>
 </head>
 <body>
@@ -264,18 +297,18 @@
 		</div>
 	</header>
 	
-	<form method="get">
+	<form method="post" enctype="multipart/form-data">
 		<div style="width: 100%">
 		<table border="1">
 			<tbody>
 				<tr>
-					<td>제목글</td>
-					<td width="15%">김나누미</td>
-					<td width="15%">2023.03.10</td>
+					<td><input type="text" id="re_title" name="re_title"></td>
+					<td width="15%">${id}</td>
+					<td width="15%"><%=sysdate%></td>
 				</tr>
 				<tr>
 					<td colspan="3">
-						<textarea name="content" id="content" rows="50" cols="138" style="resize: none"></textarea>
+						<textarea name="re_content" id="re_content" rows="50" cols="138" style="resize: none"></textarea>
 					</td>
 				</tr>
 			</tbody>
@@ -287,60 +320,60 @@
 				<tr>
 					<td width="30%">첨부이미지</td>
 					<td>
-						<span><input type="text" id="review_img_name1" class="review_attach" disabled></span>
+						<span><input type="text" id="re_f_name1" class="review_attach" disabled></span>
 						<a href="javascript:void(0);" id="review_img_attach1">
 							<img src="resources/images/system/clip.png" style="width:30px; margin-right: 10px" align="right">
 						</a>
 						<span style="display: none;">
-							<input id="review_attach1" type="file" accept="image/*" onclick="review_img_attach1_url(this);">
+							<input id="review_attach1" type="file" name="re_f_param1" accept="image/*" onclick="review_img_attach1_url(this);">
 						</span>
 					</td>
 				</tr>
 				<tr>
 					<td>첨부이미지</td>
 					<td>
-						<span><input type="text" id="review_img_name2" class="review_attach" disabled></span>
+						<span><input type="text" id="re_f_name2" class="review_attach" disabled></span>
 						<a href="javascript:void(0);" id="review_img_attach2">
 							<img src="resources/images/system/clip.png" style="width:30px; margin-right: 10px" align="right">
 						</a>
 						<span style="display: none;">
-							<input id="review_attach2" type="file" accept="image/*" onclick="review_img_attach2_url(this);">
+							<input id="review_attach2" type="file" name="re_f_param2" accept="image/*" onclick="review_img_attach2_url(this);">
 						</span>
 					</td>
 				</tr>
 				<tr>
 					<td>첨부이미지</td>
 					<td>
-						<span><input type="text" id="review_img_name3" class="review_attach" disabled></span>
+						<span><input type="text" id="re_f_name3" class="review_attach" disabled></span>
 						<a href="javascript:void(0);" id="review_img_attach3">
 							<img src="resources/images/system/clip.png" style="width:30px; margin-right: 10px" align="right">
 						</a>
 						<span style="display: none;">
-							<input id="review_attach3" type="file" accept="image/*" onclick="review_img_attach3_url(this);">
+							<input id="review_attach3" type="file" name="re_f_param3" accept="image/*" onclick="review_img_attach3_url(this);">
 						</span>
 					</td>
 				</tr>
 				<tr>
 					<td>첨부이미지</td>
 					<td>
-						<span><input type="text" id="review_img_name4" class="review_attach" disabled></span>
+						<span><input type="text" id="re_f_name4" class="review_attach" disabled></span>
 						<a href="javascript:void(0);" id="review_img_attach4">
 							<img src="resources/images/system/clip.png" style="width:30px; margin-right: 10px" align="right">
 						</a>
 						<span style="display: none;">
-							<input id="review_attach4" type="file" accept="image/*" onclick="review_img_attach4_url(this);">
+							<input id="review_attach4" type="file" name="re_f_param4" accept="image/*" onclick="review_img_attach4_url(this);">
 						</span>
 					</td>
 				</tr>
 				<tr>
 					<td>첨부이미지</td>
 					<td>
-						<span><input type="text" id="review_img_name5" class="review_attach" disabled></span>
+						<span><input type="text" id="re_f_name5" class="review_attach" disabled></span>
 						<a href="javascript:void(0);" id="review_img_attach5">
 							<img src="resources/images/system/clip.png" style="width:30px; margin-right: 10px" align="right">
 						</a>
 						<span style="display: none;">
-							<input id="review_attach5" type="file" accept="image/*" onclick="review_img_attach5_url(this);">
+							<input id="review_attach5" type="file" name="re_f_param5" accept="image/*" onclick="review_img_attach5_url(this);">
 						</span>
 					</td>
 				</tr>
@@ -349,7 +382,11 @@
 		</div>
 		<div id="btn">
 			<input id="review_list" type="button" value="목록" onclick="review_list_go(this.form)">
-			<input id="review_save" type="button" value="글쓰기" onclick="review_save_go(this.form)">
+			<input id="review_save" type="button" value="글쓰기" onclick="review_write(this.form)">
+			<input type="hidden" name="cPage" value="${cPage}">
+			<input type="hidden" name="review_idx" value="${review_idx}">
+			<input type="hidden" name="id" value="${id}">
+			<input type="hidden" name="nickname" value="${nickname}">
 		</div>
 	</form>
 	
@@ -357,12 +394,11 @@
 		<jsp:include page="../footer.jsp" />
 	</footer>
 	
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
-	<script src="resources/css/js/summernote-lite.js"> </script>
-	<script src="resources/css/js/lang/summernote-ko-KR.js"> </script>
+	<script src="resources/js/summernote-lite.js"> </script>
+	<script src="resources/js/lang/summernote-ko-KR.js"> </script>
 	<script type="text/javascript">
 		$(function(){
-			$("#content").summernote({	
+			$("#re_content").summernote({	
 				toolbar: [
 					// [groupName, [list of button]]
 					['fontname', ['fontname']],
@@ -392,7 +428,7 @@
 					}
 				}
 			});
-			$("#content").summernote("lineHeight", .7);
+			$("#re_content").summernote("lineHeight", .7);
 		});	
 		
 		function sendImage(file, editor) {
@@ -417,7 +453,7 @@
 				// 이미지가 서버의 upload 폴더에 저장 성공시
 				// 이미지 경로가 data에 저장되어 넘어온다.
 				// 이것을 에디터에 넣어주면 된다.
-				$("#content").summernote("editor.insertImage", path+"/"+fname);
+				$("#re_content").summernote("editor.insertImage", path+"/"+fname);
 			});
 		}
 	</script>

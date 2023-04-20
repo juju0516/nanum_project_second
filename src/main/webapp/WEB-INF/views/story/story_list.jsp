@@ -9,7 +9,7 @@
 <title>Nanum 🌷 : story_list</title>
 <link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square-neo.css" rel="stylesheet">
 <link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-barun-gothic.css" rel="stylesheet">
-<link href="resources/css/project_list.css" type="text/css" rel="stylesheet">
+<link href="resources/css/prj_list.css" type="text/css" rel="stylesheet">
 <link href="resources/css/paging.css?after" type="text/css" rel="stylesheet">
 <style type="text/css">
 
@@ -78,8 +78,9 @@
     margin-top: 20px;
     margin-bottom: 4px;
 }
-img {
-	width: 300px;
+.story_list img {
+	width: 250px;
+	height:300px;
 	max-width: 320px;
 	border-radius: 5%; /*이미지 모서리 둥글게*/
 	
@@ -95,46 +96,48 @@ img {
 	<div id="wrap_story1">
 		 <div class="story_list">
            <a href="story_detail.do" class="storycase">
-               <img src="resources/images/system/237.jpg">
-               <div class="story_subject"> [보조기구지원] 'ㅁㅁㅁ님'에게 보내는 선물같은 이야기</div>
-               <div class="story_subcontent">보조기구 지원을 받은 'ㅁㅁㅁ 님'의 일상이 어떻게 바뀌었을까요?</div></a>
+               <img src="resources/images/system/chair.png">
+               <div class="story_subject"> [보조기구지원] 'ㅁㅁㅁ님'에게 보내는 선물같은 이야기 </div>
+               <div class="story_subcontent"></div></a>
          </div>
 		 <div class="story_list">
            <a href="#" class="storycase">
-               <img src="resources/images/system/279.jpg">
-               <div class="story_subject"> [기념일후원후기] 아기의 태명으로 기부했어요</div>
-               <div class="story_subcontent">선물같은 아이가 찾아와 좋은일에 동참하고 싶었어요.</div></a>
+               <img src="resources/images/system/fetusname.png">
+            <%--    <img src="resources/upload/system/attach/${}"> --%>
+               <div class="story_subject"> [기념일후원후기] 아기의 태명으로 기부했어요 - 아기님의 후기</div>
+               <div class="story_subcontent"></div></a>
           </div>
 
 		 <div class="story_list">
            <a href="#" class="storycase">
-               <img src="resources/images/system/866.jpg">
-               <div class="story_subject"> [프로젝트후기] 재능나눔에 참여했어요</div>
-               <div class="story_subcontent">몸소 실천했던 자원봉사! 내용이 궁금하시죠?</div></a>
+               <img src="resources/images/system/groupvlt.jpg">
+            <%--    <img src="resources/upload/system/attach/${}"> --%>
+               <div class="story_subject"> [프로젝트후기] 재능나눔에 참여했어요 - 짱장이님의 후기</div>
+               <div class="story_subcontent"></div></a>
          </div>
      </div>
            
      <div id="wrap_story2">
 		 <div class="story_list">
            <a href="#" class="storycase">
-       			<img src="resources/images/system/237.jpg">
-              	<div class="story_subject"> [보조기구지원] 보조기구 지원 그후 ..</div>
-	          	<div class="story_subcontent">보조기구 지원을 받은 'ㅁㅁㅁ 님'의 일상이 어떻게 바뀌었을까요?</div></a>
+       			<img src="resources/images/system/eyecam.jpg">
+              	<div class="story_subject"> [보조기구지원] 보조기구 지원 그후 .. - 알알님의 사연</div>
+	          	<div class="story_subcontent"></div></a>
          </div>
            
 
 		 <div class="story_list">
            <a href="#" class="storycase">
-               <img src="resources/images/system/866.jpg">
-               <div class="story_subject"> [프로젝트후기] ABCD 프로젝트 후기</div>
-               <div class="story_subcontent">ABCD프로젝트에 참여하진 '모메모'님의 후기입니다.<br>모두 궁금하시죠?</div></a>
+               <img src="resources/images/system/hands.jpg">
+               <div class="story_subject"> [프로젝트후기] 도레미 프로젝트 후기 - 모메모님의 후기</div>
+               <div class="story_subcontent"></div></a>
          </div>
 
 		 <div class="story_list">
            <a href="#" class="storycase">
-               <img src="resources/images/system/279.jpg">
-              <div class="story_subject"> [프로젝트후기] ABCD 프로젝트 후기</div>
-               <div class="story_subcontent">ABCD프로젝트에 참여하진 '모메모'님의 후기입니다.<br>모두 궁금하시죠?</div></a>
+               <img src="resources/images/system/32595.jpg">
+              <div class="story_subject"> [프로젝트후기] 포그니 프로젝트 후기 - 고마워님의 후기</div>
+               <div class="story_subcontent"></div></a>
          </div>
     </div>    
 	</section>

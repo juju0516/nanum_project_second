@@ -10,11 +10,17 @@ import com.ict.member.model.vo.PointVO;
 public interface Goods_Service {
 	
 	// DB 정리 메서드 입력.
+	
 	// 굿즈 제품 전체 리스트
 	public List<GoodsVO> getGoodsList() throws Exception;
 	
 	// 굿즈 제품 상세보기
 	public GoodsVO getGoodsDetail(String goods_idx) throws Exception;
+	
+	
+	// 주소 정보 변경시 업데이트하기 (주소가 없는데 넣을때,)
+	public int delivaryUpdate(MemberVO mvo) throws Exception;
+	
 	
 	// 주문 및 결제하기 (Goods_Sale DB 삽입)
 	public int getGoodsSaleInsert(Goods_SaleVO salevo) throws Exception;
